@@ -1,22 +1,23 @@
 # cpuProj
 Zach and Sam build a computer!
 
-# Phase 1
+## Phase 1
 # Work to Be Done
-  *Bus
-  *MDR
-  *ALU
-    *ADD/SUB
-    *MUL
-      *Array MUL
-      *Booth MUL
-    *DIV
-    *OR
-    *SHR/SHL
+  * Bus
+  * MDR
+  * ALU
+    * ADD/SUB
+    * MUL
+      * Array MUL
+      * Booth MUL
+    * DIV
+    * OR
+    * SHR/SHL
 # Work in Progress
 
 # Work to be Tested
 * 32 bit Register 
+
 # Work Completed
 
 # Macro Work To Be Done on "cpu_codyale.vhd"
