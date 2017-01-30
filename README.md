@@ -1,8 +1,7 @@
 # cpuProj
 
 **Move! That! BusMux!**
-
-    __Extreme Makeover: Comp Edition__
+_- Extreme Makeover: Comp Edition_
 
 
 # Jump to
