@@ -1,8 +1,18 @@
 # cpuProj
-> To err is human, but to really fuck things up you need a computer. 
+> "Move! That! BusMux!" __ - Extreme Makeover: Computer Edition __
+# Jump to
+1. [Bugs] (#bugs)
+2. [Bulletin Board] (#bboard)
+2. 1. [Phase 1] (#ph1)
+2. 2. [Phase 2] (#ph2)
+2. 3. [Phase 3] (#ph3)
+2. 4. [Phase 4] (#ph4)
+2. 5. [Bonus] (#bonus)
 
-# Log
-# Phase 1
+***
+
+## Bulletin Board
+## Phase 1
 ## Work to Be Done
 ### Components
   * Bus (Z)
@@ -14,7 +24,7 @@
     * DIV
     * OR
     * SHR/SHL
-###Macro Work
+### Macro Work
 	* Connect MDR register to the bus
 	* Connect Arithmetic Components within ALU
 	* Connect Bus to ALU
