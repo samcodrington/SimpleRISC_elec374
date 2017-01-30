@@ -14,10 +14,10 @@ ARCHITECTURE behavioural OF reg32 IS
 BEGIN
 	Reg32: PROCESS(clk)
 	BEGIN
-		IF rising_edge(clk) THEN
-			IF(clr = '1') THEN
+		IF (clr = '1') THEN
 				output <= b"0000_0000_0000_0000_0000_0000_0000_0000";
-			ELSIF (reg_in = '1') THEN
+		IF rising_edge(clk) THEN
+			IF (reg_in = '1') THEN
 				output <= input;
 			END IF;
 		END IF;
