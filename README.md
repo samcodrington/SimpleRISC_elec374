@@ -7,12 +7,12 @@ _     - Extreme Makeover: Computer Edition _
 
 # Jump to
 1. [Bugs] (#bugs)
-2. [Bulletin Board] (#bboard)
-2. + [Phase 1] (#ph1)
-2. + [Phase 2] (#ph2)
-2. + [Phase 3] (#ph3)
-2. + [Phase 4] (#ph4)
-2. + [Bonus] (#bonus)
+2. [Bulletin Board] (#bulletin-board)
+    1. [Phase 1] (#phase-1)
+    2. [Phase 2] (#phase-2)
+    3. [Phase 3] (#phase-3)
+    4. [Phase 4] (#phase-4)
+    5. [Bonus] (#bonus)
 
 ***
 ## Bugs
