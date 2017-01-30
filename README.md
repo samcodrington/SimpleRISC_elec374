@@ -1,5 +1,10 @@
 # cpuProj
-> "Move! That! BusMux!" __ - Extreme Makeover: Computer Edition __
+
+** "Move! That! BusMux!" **
+
+_     - Extreme Makeover: Computer Edition _
+
+
 # Jump to
 1. [Bugs] (#bugs)
 2. [Bulletin Board] (#bboard)
@@ -23,14 +28,18 @@
       * Booth MUL
     * DIV
     * OR
-    * SHR/SHL  
+    * SHR/SHL 
+    
 ### Macro Work
 * Connect MDR register to the bus
 * Connect Arithmetic Components within ALU
 * Connect Bus to ALU  
+
 ## Work in Progress
 * Connect all registers to Bus & check that they are wired properly (S)
+
 ## Work to be Tested
 * MDR (S)
+
 ## Work Completed
 * 32 bit Register
