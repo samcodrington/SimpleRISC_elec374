@@ -1,0 +1,5 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY tb_busMux IS
+END tb_busMux

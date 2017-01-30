@@ -19,8 +19,7 @@
 ## Bulletin Board
 ## Phase 1
 ## Work to Be Done
-### Components
-  * Bus (Z)
+### Components 
   * ALU
     * ADD/SUB
     * MUL
@@ -43,5 +42,6 @@
 
 ## Work Completed
 * 32 bit Register
+* Bus
 
 ***
