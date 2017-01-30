@@ -8,14 +8,16 @@ _     - Extreme Makeover: Computer Edition _
 # Jump to
 1. [Bugs] (#bugs)
 2. [Bulletin Board] (#bboard)
-2. 1. [Phase 1] (#ph1)
-2. 2. [Phase 2] (#ph2)
-2. 3. [Phase 3] (#ph3)
-2. 4. [Phase 4] (#ph4)
-2. 5. [Bonus] (#bonus)
+2. + [Phase 1] (#ph1)
+2. + [Phase 2] (#ph2)
+2. + [Phase 3] (#ph3)
+2. + [Phase 4] (#ph4)
+2. + [Bonus] (#bonus)
 
 ***
+## Bugs
 
+***
 ## Bulletin Board
 ## Phase 1
 ## Work to Be Done
@@ -43,3 +45,5 @@ _     - Extreme Makeover: Computer Edition _
 
 ## Work Completed
 * 32 bit Register
+
+***
