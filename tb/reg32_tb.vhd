@@ -10,7 +10,7 @@ ARCHITECTURE reg32_tb_arch OF reg32_tb IS
 	SIGNAL input_tb, output_tb 			: std_logic_vector (31 downto 0);
 	SIGNAL clr_tb, clk_tb, reg_in_tb 	: std_logic:= '0';
 	
-	--COMPONENTs
+	--COMPONENTS
 	COMPONENT reg32
 		PORT(
 			input				:	IN std_logic_vector(31 downto 0);
