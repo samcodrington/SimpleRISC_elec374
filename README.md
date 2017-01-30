@@ -1,10 +1,12 @@
 # cpuProj
 Zach and Sam build a computer!
 
+
+# Log
 # Phase 1
 ## Work to Be Done
+### Components
   * Bus (Z)
-  * MDR (S)
   * ALU
     * ADD/SUB
     * MUL
@@ -13,16 +15,13 @@ Zach and Sam build a computer!
     * DIV
     * OR
     * SHR/SHL
+###Macro Work
+	* Connect MDR register to the bus
+	* Connect Arithmetic Components within ALU
+	* Connect Bus to ALU
 ## Work in Progress
-
+	* Connect all registers to Bus & check that they are wired properly (S)
 ## Work to be Tested
-
+	* MDR (S)
 ## Work Completed
-* 32 bit Register 
-
-
-## Macro Work To Be Done on "cpu_codyale.vhd"
-* Connect all registers to Bus & check that they are wired properly
-* Connect MDR register to the bus
-* Connect Arithmetic Components within ALU
-* Connect Bus to ALU
+	* 32 bit Register

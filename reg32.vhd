@@ -16,7 +16,7 @@ BEGIN
 	BEGIN
 		IF (clr = '1') THEN
 				output <= b"0000_0000_0000_0000_0000_0000_0000_0000";
-		IF rising_edge(clk) THEN
+		ELSIF rising_edge(clk) THEN
 			IF (reg_in = '1') THEN
 				output <= input;
 			END IF;
