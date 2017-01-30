@@ -23,14 +23,14 @@
       * Booth MUL
     * DIV
     * OR
-    * SHR/SHL
+    * SHR/SHL  
 ### Macro Work
-	* Connect MDR register to the bus
-	* Connect Arithmetic Components within ALU
-	* Connect Bus to ALU
+* Connect MDR register to the bus
+* Connect Arithmetic Components within ALU
+* Connect Bus to ALU  
 ## Work in Progress
-	* Connect all registers to Bus & check that they are wired properly (S)
+* Connect all registers to Bus & check that they are wired properly (S)
 ## Work to be Tested
-	* MDR (S)
+* MDR (S)
 ## Work Completed
-	* 32 bit Register
+* 32 bit Register
