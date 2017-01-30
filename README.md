@@ -1,6 +1,5 @@
 # cpuProj
-Zach and Sam build a computer!
-
+> To err is human, but to really fuck things up you need a computer. 
 
 # Log
 # Phase 1
