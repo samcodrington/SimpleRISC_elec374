@@ -23,175 +23,49 @@ ARCHITECTURE arch OF cpu_codyale IS
 		);
 	END COMPONENT reg32;
 	
+	COMPONENT MDR
+	PORT(
+		busMuxOut, MDataIn			:	IN std_logic_vector(31 downto 0);
+		clr,clk,mdr_in,MDRread		:	IN std_logic;
+		output							:	OUT std_logic_vector(31 downto 0)
+	);
+	END COMPONENT MDR;
+	
 BEGIN 
 	-- INSTANTIATION OF COMPONENTS
-	R00 : reg32
-	PORT MAP (
-		input => input00,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in00,
-		output=> --BUS
+	--Registers
+	R00 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R00in,	output=> BusMuxInR00);
+	R01 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R01in,	output=> BusMuxInR01);
+	R02 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R02in,	output=> BusMuxInR02);
+	R03 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R03in,	output=> BusMuxInR03);
+	R04 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R04in,	output=> BusMuxInR04);
+	R05 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R05in,	output=> BusMuxInR05);
+	R06 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R06in,	output=> BusMuxInR06);
+	R07 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R07in,	output=> BusMuxInR07);
+	R08 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R08in,	output=> BusMuxInR08);
+	R09 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R09in,	output=> BusMuxInR09);
+	R10 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R10in,	output=> BusMuxInR10);
+	R11 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R11in,	output=> BusMuxInR11);
+	R12 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R12in,	output=> BusMuxInR12);
+	R13 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R13in,	output=> BusMuxInR13);
+	R14 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R14in,	output=> BusMuxInR14);
+	R15 : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>R15in,	output=> BusMuxInR15);
+	
+	HI : reg32  PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>HIin,	output=> BusMuxInHI);	-- to/from BUS
+	LO : reg32	PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=>LOin,	output=> BusMuxInLO); -- to/from BUS
+	ZHI : reg32	PORT MAP (input => inputZHI,	clr=>clr,	clk=>clk,	reg_in=>	ZHIin,	output=> BusMuxInZHI); -- FROM ALU to BUS
+ 	ZLO : reg32	PORT MAP (input => inputZLO,	clr=>clr,	clk=>clk,	reg_in=>	ZLOin,	output=> BusMuxInZLO); -- FROM ALU to BUS	
+	--Y  : reg32  PORT MAP (input => ,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> ALU_A); -- FROM BUS TO ALU
+	PC : reg32	PORT MAP (input => , clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
+	--IR : reg32  PORT MAP (input => , clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> IROut); --from BUS to OUT
+	MDR : MDR
+	PORT MAP(
+		busMuxOut =>busMuxOut,
+		MDataIn	=> MDataIn,
+		clr => clr, clk=>clk,mdr_in=>MDRin, MDRread => MDRread,
+		output => BusMuxInMDR					
 	);
-	R01 : reg32
-	PORT MAP (
-		input => input01,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in01,
-		output=> --BUS
-	);
-	R02 : reg32
-	PORT MAP (
-		input => input02,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in02,
-		output=> --BUS
-	);
-	R03 : reg32
-	PORT MAP (
-		input => input03,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in03,
-		output=> --BUS
-	);
-	R04 : reg32
-	PORT MAP (
-		input => input04,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in04,
-		output=> --BUS
-	);
-	R05 : reg32
-	PORT MAP (
-		input => input05,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in05,
-		output=> --BUS
-	);
-	R06 : reg32
-	PORT MAP (
-		input => input06,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in06,
-		output=> --BUS
-	);
-	R07 : reg32
-	PORT MAP (
-		input => input07,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in07,
-		output=> --BUS
-	);
-	R08 : reg32
-	PORT MAP (
-		input => input08,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in08,
-		output=> --BUS
-	);
-	R09 : reg32
-	PORT MAP (
-		input => input09,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in09,
-		output=> --BUS
-	);
-	R10 : reg32
-	PORT MAP (
-		input => input10,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in10,
-		output=> --BUS
-	);
-	R11 : reg32
-	PORT MAP (
-		input => input11,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in11,
-		output=> --BUS
-	);
-	R12 : reg32
-	PORT MAP (
-		input => input12,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in12,
-		output=> --BUS
-	);
-	R13 : reg32
-	PORT MAP (
-		input => input13,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in13,
-		output=> --BUS
-	);
-	R14 : reg32
-	PORT MAP (
-		input => input14,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in14,
-		output=> --BUS
-	);
-	R15 : reg32
-	PORT MAP (
-		input => input15,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_in15,
-		output=> --BUS
-	);
-	HI : reg32
-	PORT MAP (
-		input => inputHI,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_inHI,
-		output=> --BUS
-	);
-	LO: reg32
-	PORT MAP (
-		input => inputLO,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_inLO,
-		output=> --BUS
-	);
-	ZHI : reg32
-	PORT MAP (
-		input => inputZHI,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_inZHI,
-		output=> --BUS
-	);
-	ZLO: reg32
-	PORT MAP (
-		input => inputZLO,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_inZLO,
-		output=> --BUS
-	);
-	---MDR GOES HERE
-	Y: reg32
-	PORT MAP (
-		input => inputY,
-		clr 	=> clr,
-		clk	=> clk,
-		reg_in=>	reg_inY,
-		output=> --ALU
-	);
+
+	
+		
 END;
