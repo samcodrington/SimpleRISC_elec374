@@ -30,18 +30,20 @@
     * SHR/SHL 
     
 ### Macro Work
-* Connect MDR register to the bus
+* Connect MDR register to the bus (S)
 * Connect Arithmetic Components within ALU
 * Connect Bus to ALU  
+* Enclose BusMux with Encoder into Bus (S)
 
 ## Work in Progress
 * Connect all registers to Bus & check that they are wired properly (S)
-
+* Bus Encoder (Z)
 ## Work to be Tested
-* MDR (S)
+
 
 ## Work Completed
+* BusMux
 * 32 bit Register
-* Bus
+* MDR
 
 ***

@@ -3,3 +3,4 @@ output_files/*
 cpu_codyale_nativelink_simulation.rpt
 incremental_db/*
 simulation/*
+*.bak
