@@ -14,7 +14,8 @@
 
 ***
 ## Bugs
-
+*Register outputs need to be mapped to signals so the output can be shown in the test bench.
+  * These signals will go to their destinations as well as top-level port
 ***
 ## Bulletin Board
 ## Phase 1
@@ -33,16 +34,16 @@
 * Connect MDR register to the bus (S)
 * Connect Arithmetic Components within ALU
 * Connect Bus to ALU  
-* Enclose BusMux with Encoder into Bus (S)
 
 ## Work in Progress
 * Connect all registers to Bus & check that they are wired properly (S)
-* Bus Encoder (Z)
 ## Work to be Tested
+* Enclose BusMux with Encoder into CPU_Bus (S)
 
 
 ## Work Completed
 * BusMux
+* Bus Encoder
 * 32 bit Register
 * MDR
 
