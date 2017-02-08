@@ -15,6 +15,7 @@ ENTITY cpu_codyale IS
 		R08Out,	R09Out,	R10Out,	R11Out,	R12Out,	R13Out,	R14Out,	R15Out,
 		HIOut,	LOOut, 	PCOut,	ZHIOut,	ZLOOut,	
 		YOut,		MDROut	: IN STD_LOGIC;
+		Op						: IN STD_LOGIC_VECTOR (4 DOWNTO 0);
 		MDATAin				: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		--END CTL PORTS
 		
@@ -76,10 +77,20 @@ ARCHITECTURE arch OF cpu_codyale IS
 		BusMuxOut	:	OUT std_logic_vector(31 downto 0)
 	);
 	END COMPONENT cpu_bus;
+	
+	COMPONENT ALU
+	PORT(
+		Ain, Bin				:	IN std_logic_vector(31 downto 0);
+		clk					:  IN std_logic;
+		op						:	IN std_logic_vector (4 downto 0);
+		Zout					:	OUT std_logic_vector(31 downto 0)
+	);
+	END COMPONENT ALU;
 		
 	
 BEGIN 
 	-- INSTANTIATION OF COMPONENTS
+	
 	--Registers
 	R00 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R00in,	output=> BusMuxInR00);
 	R01 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R01in,	output=> BusMuxInR01);
