@@ -75,6 +75,10 @@ BEGIN
 		clr => clr, clk=>clk,mdr_in=>MDRin, MDRread => MDRread,
 		output => BusMuxInMDR					
 	);
+	
+	cpu_bus : cpu_bus
+	PORT MAP(
+	
 
 	
 		
