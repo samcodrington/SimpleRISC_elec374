@@ -5,3 +5,4 @@ incremental_db/*
 simulation/*
 *.bak
 *.qsf
+*.qws

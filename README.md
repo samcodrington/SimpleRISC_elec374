@@ -26,6 +26,7 @@
     * MUL
       * Array MUL
       * Booth MUL
+      * *BONUS* Booth w/Bit Pair Recoding
     * DIV
     * OR
     * SHR/SHL 
