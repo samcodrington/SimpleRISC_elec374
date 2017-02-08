@@ -39,6 +39,10 @@ ARCHITECTURE arch OF cpu_codyale IS
 	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
 	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC : std_logic_vector(31 downto 0);
 	
+	SIGNAL w_y2alu : std_logic_vector(31 downto 0);
+	SIGNAL w_alu2z : std_logic_vector(63 downto 0);
+	SIGNAL w_z2zhi, w_z2zlo : std_logic_vector(31 downto 0);
+	
 	--temporary signals
 	SIGNAL gnd		: std_logic :='0';
 	SIGNAL gnd32	: std_logic_vector(31 downto 0) := x"0000_0000"; 
@@ -83,12 +87,14 @@ ARCHITECTURE arch OF cpu_codyale IS
 		Ain, Bin				:	IN std_logic_vector(31 downto 0);
 		clk					:  IN std_logic;
 		op						:	IN std_logic_vector (4 downto 0);
-		Zout					:	OUT std_logic_vector(31 downto 0)
+		Zout					:	OUT std_logic_vector(63 downto 0)
 	);
 	END COMPONENT ALU;
 		
 	
 BEGIN 
+	w_alu2z(63 downto 32)	<= w_z2zhi;
+	w_alu2z(31 downto 0)		<= w_z2zlo;
 	-- INSTANTIATION OF COMPONENTS
 	
 	--Registers
@@ -111,9 +117,9 @@ BEGIN
 
 	HI : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>HIin,	output=> BusMuxInHI);	-- to/from BUS
 	LO : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>LOin,	output=> BusMuxInLO); -- to/from BUS
-	ZHI : reg32	PORT MAP (input => gnd32,		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZHI); -- FROM ALU to BUS
- 	ZLO : reg32	PORT MAP (input => gnd32,		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZLO); -- FROM ALU to BUS	
-	Y  : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> open); -- FROM BUS TO ALU
+	ZHI : reg32	PORT MAP (input => w_z2zhi,		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZHI); -- FROM ALU to BUS
+ 	ZLO : reg32	PORT MAP (input => w_z2zlo,		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZLO); -- FROM ALU to BUS	
+	Y  : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> w_y2ALU); -- FROM BUS TO ALU
 	PC : reg32	PORT MAP (input => w_BusMuxOut, clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
 	IR : reg32  PORT MAP (input => w_BusMuxOut, clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> open); --from BUS to OUT??
 	
@@ -145,7 +151,11 @@ BEGIN
 		PCin=>BusMuxInPC,		MDRin=>BusMuxInMDR,	portIn=>gnd32,		cIn=>gnd32,	
 		BusMuxOut=>w_BusMuxOut	
 	);
-
-	
+	ALU_inst : ALU 
+	PORT MAP(
+		Ain =>w_y2ALU, 	Bin=>w_BusMuxOut,
+		clk =>clk,		op=>op,			
+	   Zout =>w_ALU2Z		
+	);
 		
 END;
