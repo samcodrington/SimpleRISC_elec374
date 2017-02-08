@@ -6,3 +6,6 @@ simulation/*
 *.bak
 *.qsf
 *.qws
+*.flow.rpt
+*.map.rpt
+*.map.summary
