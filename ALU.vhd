@@ -10,11 +10,3 @@ PORT(
 );
 END ALU;
 
-ARCHITECTURE behavioural OF ALU IS
-signal w_and_out : std_logic_vector;
-BEGIN
-	case op IS
-		when "00000" => 
-			Zout <= w_and_out;
-	
-END;
