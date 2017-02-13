@@ -14,8 +14,8 @@
 
 ***
 ## Bugs
-*Register outputs need to be mapped to signals so the output can be shown in the test bench.
-  * These signals will go to their destinations as well as top-level port
+* Do ALU operations need to be signed?
+  
 ***
 ## Bulletin Board
 ## Phase 1

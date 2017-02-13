@@ -3,6 +3,7 @@ output_files/*
 cpu_codyale_nativelink_simulation.rpt
 incremental_db/*
 simulation/*
+<<<<<<< HEAD
 # to see filetypes look here:
 # http://quartushelp.altera.com/14.1/mergedProjects/reference/glossary/def_file_types.htm
 #.Bak something to do with RTL
@@ -11,6 +12,14 @@ simulation/*
 *.qsf 
 #workplace file that changes with open files, positions in windows etc.
 *.qws 
-*.flow.rpt
-*.map.rpt
-*.map.summary
+
+*.rpt
+*.summary
+=======
+*.bak
+*.qsf
+*.qws
+*.rpt
+*.done
+*.summary
+>>>>>>> alu
