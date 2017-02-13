@@ -151,11 +151,6 @@ BEGIN
 		PCin=>BusMuxInPC,		MDRin=>BusMuxInMDR,	portIn=>gnd32,		cIn=>gnd32,	
 		BusMuxOut=>w_BusMuxOut	
 	);
-	ALU_inst : ALU 
-	PORT MAP(
-		Ain =>w_y2ALU, 	Bin=>w_BusMuxOut,
-		clk =>clk,		op=>op,			
-	   Zout =>w_ALU2Z		
-	);
+	
 		
 END;
