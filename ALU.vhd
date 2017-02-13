@@ -120,17 +120,34 @@ PORT MAP(direction => lr_sel,
 		 distance => dist,
 		 result => shift_out);
 
-process(Ain,Bin,opcode)
-case opcode is
-	when "00101" op<= add;
-	when "00110" op<= sub;
-	when "00111" op<= and_op;
-	when "01000" op<= or_op;
-	when "01001" op<= shr;
-	when "01010" op<= shl;
-	when "01011" op<= rot_r;
-	when "01100" op<= rot_l;
-	when "
-end case;		 
+op_proc: process(opcode)
+begin
+	case opcode is
+		when "00101" op<= add;
+		when "00110" op<= sub;
+		when "00111" op<= and_op;
+		when "01000" op<= or_op;
+		when "01001" op<= shr;
+		when "01010" op<= shl;
+		when "01011" op<= rot_r;
+		when "01100" op<= rot_l;
+		when "01101" op<= add; --addi
+		when "01110" op<= and_op; --andi
+		when "01111" op<= or_op; --ori
+		when "10000" op<= mul;
+		when "10001" op<= div;
+		when "10010" op<= neg;
+		when "10011" op<= not_op;
+		when "11110" op<= inc_pc;
+		when "11111" op<= rc_add;
+	end case;
+end process;
+
+main: process(opcode,Ain,Bin)
+begin
+	case op is
+	when add
+		
+end process;
 
 END bdf_type;
