@@ -10,7 +10,3 @@ PORT(
 );
 END ALU;
 
-ARCHITECTURE behavioural OF ALU IS
-BEGIN
-	--DO STUFF
-END;
