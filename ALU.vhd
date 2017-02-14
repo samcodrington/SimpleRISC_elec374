@@ -65,6 +65,20 @@ COMPONENT lpm_clshift0
 	);
 END COMPONENT;
 
+COMPONENT twos_comp
+	PORT(
+		Ain :		STD_LOGIC_VECTOR(31 downto 0);
+		result : STD_LOGIC_VECTOR(31 downto 0)
+	);
+END COMPONENT;
+COMPONENT rca32
+PORT(
+A, B 		:	IN 	STD_LOGIC_VECTOR(31 downto 0);
+Cin		:	IN 	STD_LOGIC;
+Sout		:	OUT STD_LOGIC_VECTOR(31 downto 0);
+Cout		:	OUT	STD_LOGIC);
+END COMPONENT;
+
 SIGNAL	add_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	sub_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	incpc_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -76,7 +90,11 @@ SIGNAL	rot_lr_sel :  STD_LOGIC;
 SIGNAL	rot_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	shift_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	zlo : STD_LOGIC_VECTOR(31 DOWNTO 0);
-TYPE op IS (add, sub, mul, div, and_op, or_op, shr, shl, rot_r, rot_l, inc_pc, neg, not_op, ;
+SIGNAL	RCA_out : STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL	RCA_c_out, gnd : STD_LOGIC;
+SIGNAL	w_bin		: STD_LOGIC_VECTOR(31 DOWNTO 0);
+TYPE state IS (add, sub, mul, div, and_op, or_op, shr, shl, rot_r, rot_l, inc_pc, neg, not_op, rc_add);
+SIGNAL op : state;
 
 
 BEGIN 
@@ -104,7 +122,7 @@ b2v_divider : lpm_divide0
 PORT MAP(denom => Bin,
 		 numer => Ain,
 		 quotient =>div_quo,
-		 remainder=>div_rem);
+		 remain=>div_rem);
 
 
 b2v_rotator : lpm_clshift1
@@ -119,34 +137,59 @@ PORT MAP(direction => lr_sel,
 		 data => Ain,
 		 distance => dist,
 		 result => shift_out);
+RCA_inst : rca32
+PORT MAP(A => Ain,
+			B =>Bin,
+			Cin => '0',
+			Sout => RCA_out,
+			Cout => gnd);
+
 
 op_proc: process(opcode)
 begin
 	case opcode is
-		when "00101" op<= add;
-		when "00110" op<= sub;
-		when "00111" op<= and_op;
-		when "01000" op<= or_op;
-		when "01001" op<= shr;
-		when "01010" op<= shl;
-		when "01011" op<= rot_r;
-		when "01100" op<= rot_l;
-		when "01101" op<= add; --addi
-		when "01110" op<= and_op; --andi
-		when "01111" op<= or_op; --ori
-		when "10000" op<= mul;
-		when "10001" op<= div;
-		when "10010" op<= neg;
-		when "10011" op<= not_op;
-		when "11110" op<= inc_pc;
-		when "11111" op<= rc_add;
+		when "00101" => op<= add;
+		when "00110" => op<= sub;
+		when "00111" => op<= and_op;
+		when "01000" => op<= or_op;
+		when "01001" => op<= shr;
+		when "01010" => op<= shl;
+		when "01011" => op<= rot_r;
+		when "01100" => op<= rot_l;
+		when "01101" => op<= add; --addi
+		when "01110" => op<= and_op; --andi
+		when "01111" => op<= or_op; --ori
+		when "10000" => op<= mul;
+		when "10001" => op<= div;
+		when "10010" => op<= neg;
+		when "10011" => op<= not_op;
+		when "11111" => op<= inc_pc;
+		when "11000" => op<= rc_add;
 	end case;
 end process;
 
 main: process(opcode,Ain,Bin)
 begin
 	case op is
-	when add
+		when add	=>	
+			w_Bin <= Bin;	
+			Zout(31 downto 0) <= add_out;
+		when sub =>
+			Zout(31 downto 0) <= sub_out;
+		when and_op =>
+			Zout(31 downto 0) <= (Ain and Bin);
+		when or_op =>
+			Zout(31 downto 0) <= (Ain or Bin);
+		when shr =>		lr_sel <= '0';	Zout(31 downto 0) <= shift_out;
+		when shl =>		lr_sel <= '1';	Zout(31 downto 0) <= shift_out;
+		when rot_r =>	lr_sel <= '0';	Zout(31 downto 0) <=rot_out;
+		when rot_l =>	lr_sel <= '1';	Zout(31 downto 0) <=rot_out;
+		when mul	 =>	Zout(31 downto 0) <= "00000000"; --TEMP VALUE
+		when div =>		Zout(31 downto 0) <= div_quo; Zout(63 downto 32) <= div_rem;
+		when neg =>		Zout(31 downto 0) <= "00000000"; --TEMP VALUE
+		when inc_pc => w_Bin <= x"00000004"; Zout(31 downto 0) <= add_out;
+		when rc_add => Zout(31 downto 0) <= RCA_out;
+	end case;
 		
 end process;
 
