@@ -28,13 +28,17 @@ BEGIN
 	);
 	test_proc :process
 	begin
-	wait 10 ns;
-	Ain_tb <= x"000000F3";
-	Bin_tb <= x"00000008";
-	opcode_tb <= "00101";
+	opcode_tb <= "00000"; --init
+	Ain_tb <= x"00000000";
+	Bin_tb <= x"00000000";
 	
 	wait for 10 ns;
-	opcode_tb <="00110";
+	Ain_tb <= x"000000F3";
+	Bin_tb <= x"00000008";
+	opcode_tb <= "00110";
+	
+	wait for 10 ns;
+	opcode_tb <="00101";
 	
 	wait for 10 ns;
 	Ain_tb <= x"FFFFFF00";

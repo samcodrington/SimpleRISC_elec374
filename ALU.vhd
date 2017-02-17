@@ -79,6 +79,13 @@ Sout		:	OUT STD_LOGIC_VECTOR(31 downto 0);
 Cout		:	OUT	STD_LOGIC);
 END COMPONENT;
 
+COMPONENT twos_comp
+PORT(
+input	:	IN STD_LOGIC_VECTOR(31 downto 0);
+output:	OUT STD_LOGIC_VECTOR(31 downto 0);
+);
+END COMPONENT;
+
 SIGNAL	add_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	sub_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	incpc_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -143,31 +150,31 @@ PORT MAP(A => Ain,
 			Sout => RCA_out,
 			Cout => gnd);
 
+negator : twos_comp			
+PORT MAP(input => Ain,
+			output => neg_out);
 
 op_proc: process(opcode,Ain,Bin)
 begin
 	case opcode is
-		when "00101" =>	Zout(31 downto 0) <= add_out; --op<= add;
-		when "00110" => 	Zout(31 downto 0) <= sub_out;	--op<= sub;
-		when "00111" => 	Zout(31 downto 0) <= (Ain and Bin);	--op<= and_op;
-		when "01000" =>	Zout(31 downto 0) <= (Ain or Bin);  --op<= or_op;
-		when "01001" =>	Zout(31 downto 0) <= shift_out;	lr_sel <= '0';	-- op<= shr;
-		when "01010" =>	Zout(31 downto 0) <= shift_out;	lr_sel <= '1';	-- op<= shl;
-		when "01011" =>	Zout(31 downto 0) <=rot_out; 		lr_sel <= '0';	-- op<= rot_r;
-		when "01100" =>	Zout(31 downto 0) <=rot_out;		lr_sel <= '1';	-- op<= rot_l;
-		when "01101" =>	Zout(31 downto 0) <= add_out;		-- op<= add; --addi
-		when "01110" =>	Zout(31 downto 0) <= sub_out;		-- op<= and_op; --andi
-		when "01111" =>	Zout(31 downto 0) <= (Ain or Bin);		-- op<= or_op; --ori
-		when "10000" =>	Zout(31 downto 0) <= x"00000000"; --TEMP VALUE		-- op<= mul;
-		when "10001" =>	Zout(31 downto 0) <= div_quo; Zout(63 downto 32) <= div_rem;	-- op<= div;
-		when "10010" =>	Zout(31 downto 0) <= x"00000000"; --TEMP VALUE		-- op<= neg;
-		when "10011" =>	Zout(31 downto 0) <= (not Ain);		-- op<= not_op;
-		when "11111" =>	Zout(31 downto 0) <= incpc_out;		-- op<= inc_pc;
-		when "11000" =>	Zout(31 downto 0) <= RCA_out;		-- op<= rc_add;
-		when others => 	Zout(63 downto 0) <= x"0F0F0F0F0F0F0F0F";		--op<= other;
+		when "00101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= add_out; 		--op<= add;
+		when "00110" => 	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= sub_out;			--op<= sub;
+		when "00111" => 	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain and Bin);	--op<= and_op;
+		when "01000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);  --op<= or_op;
+		when "01001" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= shift_out;	dist <= Bin(4 downto 0); lr_sel <= '0';	-- op<= shr;
+		when "01010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= shift_out;	dist <= Bin(4 downto 0); lr_sel <= '1';	-- op<= shl;
+		when "01011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <=rot_out; 		dist <= Bin(4 downto 0); lr_sel <= '0';	-- op<= rot_r;
+		when "01100" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <=rot_out;		dist <= Bin(4 downto 0); lr_sel <= '1';	-- op<= rot_l;
+		when "01101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= add_out;			-- op<= add; --addi
+		when "01110" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= sub_out;			-- op<= and_op; --andi
+		when "01111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);	-- op<= or_op; --ori
+		when "10000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= x"00000000"; 	-- TEMP VALUE		-- op<= mul;
+		when "10001" =>	Zout(63 downto 32) <= div_rem;		Zout(31 downto 0) <= div_quo; 		-- op<= div;
+		when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= xneg_out;  	 	-- op<= neg;
+		when "10011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain);		-- op<= not_op;
+		when "11111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= incpc_out;		-- op<= inc_pc;
+		when "11000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= RCA_out;			-- op<= rc_add;
+		when others => 	Zout(63 downto 0)  <= x"0F0F0F0F0F0F0F0F";		--op<= other;
 	end case;
 end process;
-
-
-
 END bdf_type;
