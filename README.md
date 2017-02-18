@@ -16,10 +16,23 @@
 
 ***
 ## Bugs
-* ALU adder/subtractor seems to use the values given to it right before receiving the "ADD/SUB" opcode
 
 ## Sam's notebook
-* ALU add subtract function outputs values taken right before opcode selects it... why? fixable?
+* The sequential statements inside a process operate on the values they are at immediately before the process begins
+ie. If two signals val and clk change from 0 to 1 at 10ns and you have two different processes
+```VHDL
+ex1_proc :process(clk)
+begin
+  output1 => val; 
+end ex1_proc;
+
+ex2_proc : process(flag)
+begin
+  output2 => val;
+end ex2_proc;
+```
+output1 = 0 and output2 = 1
+but if you change it to process(flag)
 * need to make sure bus/ALU works inside of 1 clock cycle per norm
 * check twos works as a concurrent statement
 * 
