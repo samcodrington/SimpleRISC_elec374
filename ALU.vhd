@@ -34,14 +34,6 @@ END ALU;
 
 ARCHITECTURE bdf_type OF ALU IS 
 
-COMPONENT lpm_add_sub0
-	PORT(add_sub : IN STD_LOGIC;
-		 dataa : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-		 datab : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-		 result : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
-	);
-END COMPONENT;
-
 COMPONENT lpm_divide0
 	PORT(denom : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		 numer : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -80,7 +72,7 @@ input	:	IN STD_LOGIC_VECTOR(31 downto 0);
 output:	OUT STD_LOGIC_VECTOR(31 downto 0));
 END COMPONENT;
 
-SIGNAL	add_out, sub_out, incpc_out,div_quo,div_rem, rot_out, shift_out, neg_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL	div_quo,div_rem, rot_out, shift_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	dist :  STD_LOGIC_VECTOR(4 DOWNTO 0);
 SIGNAL	lr_sel, rot_lr_sel :  STD_LOGIC;
 
@@ -92,25 +84,6 @@ SIGNAL op : state;
 
 BEGIN 
 --COMPONENT INSTANTIATION
-adder : lpm_add_sub0
-PORT MAP(add_sub => '1',
-		 dataa => Ain,
-		 datab => Bin,
-		 result =>add_out);
-
-subber : lpm_add_sub0
-PORT MAP(add_sub => '0',
-		 dataa => Ain,
-		 datab => Bin,
-		 result =>sub_out);
-
-incpc : lpm_add_sub0
-PORT MAP(add_sub => '1',
-			dataa => Ain,
-			datab => x"0000_0004",
-			result=> incpc_out);
-
-
 b2v_divider : lpm_divide0
 PORT MAP(denom => Bin,
 		 numer => Ain,
@@ -123,8 +96,7 @@ PORT MAP(direction => rot_lr_sel,
 		 data => Ain,
 		 distance => dist,
 		 result => rot_out);
-
-
+		 
 b2v_shifter : lpm_clshift0
 PORT MAP(direction => lr_sel,
 		 data => Ain,
@@ -137,10 +109,6 @@ PORT MAP(A => Ain,
 			Sout => RCA_out,
 			Cout => gnd);
 
-negator : twos_comp			
-PORT MAP(input => Ain,
-			output => neg_out);
-
 op_proc: process(opcode,Ain,Bin)
 begin
 	case opcode is
@@ -152,8 +120,8 @@ begin
 		when "01010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= shift_out;	dist <= Bin(4 downto 0); lr_sel <= '1';	-- op<= shl;
 		when "01011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <=rot_out; 		dist <= Bin(4 downto 0); lr_sel <= '0';	-- op<= rot_r;
 		when "01100" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <=rot_out;		dist <= Bin(4 downto 0); lr_sel <= '1';	-- op<= rot_l;
-		when "01101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= add_out;			-- op<= add; --addi
-		when "01110" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= sub_out;			-- op<= and_op; --andi
+		when "01101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + Bin);			-- op<= add; --addi
+		when "01110" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain and Bin);			-- op<= and_op; --andi
 		when "01111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);	-- op<= or_op; --ori
 		when "10000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= x"00000000"; 	-- TEMP VALUE		-- op<= mul;
 		when "10001" =>	Zout(63 downto 32) <= div_rem;		Zout(31 downto 0) <= div_quo; 		-- op<= div;
