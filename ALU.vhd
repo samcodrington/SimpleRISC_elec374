@@ -17,7 +17,8 @@
 -- CREATED		"Mon Feb 13 09:20:11 2017"
 
 LIBRARY ieee;
-USE ieee.std_logic_1164.all; 
+use ieee.std_logic_1164.all;
+use ieee.std_logic_signed.all;
 
 LIBRARY work;
 
@@ -143,8 +144,8 @@ PORT MAP(input => Ain,
 op_proc: process(opcode,Ain,Bin)
 begin
 	case opcode is
-		when "00101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= add_out; 		--op<= add;
-		when "00110" => 	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= sub_out;			--op<= sub;
+		when "00101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + Bin); 		--op<= add;
+		when "00110" => 	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain - Bin);			--op<= sub;
 		when "00111" => 	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain and Bin);	--op<= and_op;
 		when "01000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);  --op<= or_op;
 		when "01001" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= shift_out;	dist <= Bin(4 downto 0); lr_sel <= '0';	-- op<= shr;

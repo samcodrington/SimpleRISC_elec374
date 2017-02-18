@@ -53,6 +53,7 @@ BEGIN
 	opcode_tb <= "01000";
 	
 	wait for 10 ns;
+	Ain_tb <= x"000000F1";
 	opcode_tb <= "10010";
 	wait for 10 ns;
 	wait;

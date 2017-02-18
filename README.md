@@ -46,8 +46,6 @@
 ## Work to be Tested
 * Enclose BusMux with Encoder into CPU_Bus (S)
 * Connect MDR register to the bus (S)
-* 2s COMPLEMENT (NEG) (S)
-
 
 ## Work Completed
 * BusMux
