@@ -65,12 +65,6 @@ COMPONENT lpm_clshift0
 	);
 END COMPONENT;
 
-COMPONENT twos_comp
-	PORT(
-		Ain :		STD_LOGIC_VECTOR(31 downto 0);
-		result : STD_LOGIC_VECTOR(31 downto 0)
-	);
-END COMPONENT;
 COMPONENT rca32
 PORT(
 A, B 		:	IN 	STD_LOGIC_VECTOR(31 downto 0);
@@ -82,21 +76,13 @@ END COMPONENT;
 COMPONENT twos_comp
 PORT(
 input	:	IN STD_LOGIC_VECTOR(31 downto 0);
-output:	OUT STD_LOGIC_VECTOR(31 downto 0);
-);
+output:	OUT STD_LOGIC_VECTOR(31 downto 0));
 END COMPONENT;
 
-SIGNAL	add_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
-SIGNAL	sub_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
-SIGNAL	incpc_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL	add_out, sub_out, incpc_out,div_quo,div_rem, rot_out, shift_out, neg_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	dist :  STD_LOGIC_VECTOR(4 DOWNTO 0);
-SIGNAL	div_quo :  STD_LOGIC_VECTOR(31 DOWNTO 0);
-SIGNAL	div_rem :  STD_LOGIC_VECTOR(31 DOWNTO 0);
-SIGNAL	lr_sel :  STD_LOGIC;
-SIGNAL	rot_lr_sel :  STD_LOGIC;
-SIGNAL	rot_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
-SIGNAL	shift_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
-SIGNAL	zlo : STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL	lr_sel, rot_lr_sel :  STD_LOGIC;
+
 SIGNAL	RCA_out : STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	RCA_c_out, gnd : STD_LOGIC;
 TYPE state IS (add, sub, mul, div, and_op, or_op, shr, shl, rot_r, rot_l, inc_pc, neg, not_op, rc_add, other);
@@ -170,7 +156,7 @@ begin
 		when "01111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);	-- op<= or_op; --ori
 		when "10000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= x"00000000"; 	-- TEMP VALUE		-- op<= mul;
 		when "10001" =>	Zout(63 downto 32) <= div_rem;		Zout(31 downto 0) <= div_quo; 		-- op<= div;
-		when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= xneg_out;  	 	-- op<= neg;
+		when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= neg_out;  	 	-- op<= neg;
 		when "10011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain);		-- op<= not_op;
 		when "11111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= incpc_out;		-- op<= inc_pc;
 		when "11000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= RCA_out;			-- op<= rc_add;

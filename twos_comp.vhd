@@ -27,12 +27,12 @@ BEGIN
 			result => output
 		);
 		
-	process 
+	negate: process(input)
 	begin
 		for i in 0 to 31 loop
 			neg(i)<= not input(i);
 		end loop;
-	end process;
+	end process negate;
 	
 END ARCHITECTURE twos_comp_arch;
 

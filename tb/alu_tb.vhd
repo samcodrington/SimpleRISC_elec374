@@ -38,6 +38,10 @@ BEGIN
 	opcode_tb <= "00110";
 	
 	wait for 10 ns;
+	Ain_tb <= x"00000F31";
+	Bin_tb <= x"00002350";
+	
+	wait for 10 ns;
 	opcode_tb <="00101";
 	
 	wait for 10 ns;
@@ -48,6 +52,8 @@ BEGIN
 	wait for 10 ns;
 	opcode_tb <= "01000";
 	
+	wait for 10 ns;
+	opcode_tb <= "10010";
 	wait for 10 ns;
 	wait;
 	end process test_proc;
