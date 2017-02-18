@@ -38,8 +38,7 @@ end ex2_proc;
 
 ### To Do
 * need to make sure bus/ALU works inside of 1 clock cycle per norm
-* check twos works as a concurrent statement
-* 
+ 
 
 ***
 ## Bulletin Board
