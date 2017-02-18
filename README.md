@@ -19,6 +19,7 @@
 
 ## Sam's notebook
 ### Sensitivity List Signals inside Processes
+NOT SURE HOW THIS REALLY WORKS ONLY KNOW IT CAN HAPPEN SOMETIMES
 The sequential statements inside a process operate on the values they are at immediately before the process begins 
 
 ie. If two signals val and clk change from 0 to 1 at 10ns and you have two different processes
@@ -33,7 +34,7 @@ begin
   output2 => val;
 end ex2_proc;
 ```
-output1 = 0 and output2 = 1
+`output1 = 0` and `output2 = 1`
 
 ### To Do
 * need to make sure bus/ALU works inside of 1 clock cycle per norm
@@ -72,22 +73,22 @@ output1 = 0 and output2 = 1
 ***
 
 ## OpCodes
-00101   Add
-00110   Subtract
-00111   And
-01000   Or
-01001   Shift Right
-01010   Shift Left
-01011   Rotate Right
-01100   Rotate Left
-01101   Add immediate
-01110   And immediate
-01111   Or Immediate
-10000   Multiply
-10001   Divide
-10010   Negate
-11111   IncPC (add by 4)
+00101   Add  
+00110   Subtract  
+00111   And  
+01000   Or  
+01001   Shift Right  
+01010   Shift Left  
+01011   Rotate Right  
+01100   Rotate Left  
+01101   Add immediate  
+01110   And immediate  
+01111   Or Immediate  
+10000   Multiply  
+10001   Divide  
+10010   Negate  
+11111   IncPC (add by 4)  
 
 Extras
-11000   Ripple Carry Adder (soon to be Carry Lookahead Adder)
-11001   Booth Multiplier with Bit Pair Recoding (if we get there)   
+11000   Ripple Carry Adder (soon to be Carry Lookahead Adder)  
+11001   Booth Multiplier with Bit Pair Recoding (if we get there)     

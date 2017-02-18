@@ -157,9 +157,9 @@ begin
 		when "01111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);	-- op<= or_op; --ori
 		when "10000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= x"00000000"; 	-- TEMP VALUE		-- op<= mul;
 		when "10001" =>	Zout(63 downto 32) <= div_rem;		Zout(31 downto 0) <= div_quo; 		-- op<= div;
-		when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= neg_out;  	 	-- op<= neg;
+		when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain + x"00000001");  	 	-- op<= neg;
 		when "10011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain);		-- op<= not_op;
-		when "11111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= incpc_out;		-- op<= inc_pc;
+		when "11111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + x"00000004");		-- op<= inc_pc;
 		when "11000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= RCA_out;			-- op<= rc_add;
 		when others => 	Zout(63 downto 0)  <= x"0F0F0F0F0F0F0F0F";		--op<= other;
 	end case;
