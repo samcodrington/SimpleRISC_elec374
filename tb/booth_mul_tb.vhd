@@ -18,6 +18,8 @@ ARCHITECTURE arch OF booth_mul_tb IS
 --	alias result64 is <<signal .^.booth_mul.result: STD_LOGIC_VECTOR(63 downto 0)>>;
 --	signal result_tb : result64;
 BEGIN
+	DUT : booth_mul PORT MAP (	Ain => A_tb, Bin => B_tb, output => out_tb);
+
 	test: process
 	begin 
 		A_tb <= x"000000C2";

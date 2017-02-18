@@ -1,6 +1,7 @@
 LIBRARY ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_signed.all;
+use ieee.numeric_std.all;
 
 ENTITY booth_mul IS
 	PORT
@@ -12,27 +13,37 @@ ENTITY booth_mul IS
 END booth_mul;
 
 ARCHITECTURE booth_mul OF booth_mul IS
-	SIGNAL aneg :							STD_LOGIC_VECTOR(31 downto 0);
-	SIGNAL shift_pos, shift_neg :  	STD_LOGIC_VECTOR(63 downto 0);
-	SIGNAL result: 						STD_LOGIC_VECTOR(63 downto 0);
 BEGIN
 	process(Ain, Bin)
+	variable result, toResult:  	STD_LOGIC_VECTOR(63 downto 0);
+	variable toAdd, toSub : STD_LOGIC_VECTOR(31 downto 0);
 	begin
-		shift_pos		<= x"00000000" & Ain;
-		shift_neg 		<= x"00000000" & (not Ain + x"00000001");
-		if (Bin(0) = '1') then
-			result <= result + shift_pos;
-		end if;
-		for i in 1 to 15 loop
-			shift_pos <= shift_pos(63 downto 2) & "00";
-			shift_neg <= shift_neg(63 downto 2) & "00";
-			if (Bin(i*2+1 downto i*2) = "01" ) then
-					result <= result + shift_neg;
-			elsif	(Bin(i*2+1 downto i*2) = "10" ) then
-					result <= result + shift_pos;
+		toAdd := Ain;
+		toSub := (0 - Ain);
+		for i in 0 to 31 loop
+			if i = 0 then
+				if Bin(0) <= '1' then
+					toResult(31 downto 0):= toSub;
+				end if;
+			else 
+				if (Bin(i) <= '1' and Bin(i-1) <='0') then
+					toResult(31 downto 0):= toSub;
+				elsif (Bin(i) <= '0' and Bin(i-1) <='1') then
+					toResult(31 downto 0):= toAdd;
+				end if;
 			end if;
+			
+			--Sign Extension
+			if toResult(31) <= '1' then
+				toResult(63 downto 32) := x"11111111";
+			else
+				toResult(63 downto 32) := x"00000000";
+			end if;
+			--toResult := STD_LOGIC_VECTOR(SHIFT_LEFT(UNSIGNED(toResult), i*2));
+			
+			result := result + toResult;
 		end loop;
-	output <= result;	
+		output <= result;
 	end process;
 END;
 	
