@@ -18,21 +18,24 @@
 ## Bugs
 
 ## Sam's notebook
-* The sequential statements inside a process operate on the values they are at immediately before the process begins
+### Sensitivity List Signals inside Processes
+The sequential statements inside a process operate on the values they are at immediately before the process begins 
+
 ie. If two signals val and clk change from 0 to 1 at 10ns and you have two different processes
 ```VHDL
-ex1_proc :process(clk)
+ex1_proc :process(val)
 begin
   output1 => val; 
 end ex1_proc;
 
-ex2_proc : process(flag)
+ex2_proc : process(clk)
 begin
   output2 => val;
 end ex2_proc;
 ```
 output1 = 0 and output2 = 1
-but if you change it to process(flag)
+
+### To Do
 * need to make sure bus/ALU works inside of 1 clock cycle per norm
 * check twos works as a concurrent statement
 * 
