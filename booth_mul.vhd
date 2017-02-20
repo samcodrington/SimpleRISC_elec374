@@ -24,23 +24,23 @@ BEGIN
 		zeroes := x"00000000";
 		for i in 0 to 31 loop
 			if (i = 0) then
-				if Bin(0) <= '1' then
+				if (Bin(0) = '1') then
 					toResult(31 downto 0):= toSub;
-			end if;
+				end if;
 			else 
-				if (Bin(i) <= '1' and Bin(i-1) <='0') then
-					toResult(31 downto 0):= toSub;
-				elsif (Bin(i) <= '0' and Bin(i-1) <='1') then
-					toResult(31 downto 0):= toAdd;
+				if (Bin(i) = '1' and Bin(i-1) = '0') then
+					toResult:= zeroes & toSub;
+				elsif (Bin(i) = '0' and Bin(i-1) = '1') then
+					toResult:= zeroes & toAdd;
 				else
-					toResult(31 downto 0) := zeroes;
+					toResult := zeroes & zeroes;
 				end if;
 			end if;
-		--	
-		--	--Sign Extension
-			if toResult(31) <= '1' then
-				toResult(63 downto 32) := x"11111111";
-			else
+			
+		--Sign Extension
+			if (toResult(31) = '1') then
+				toResult(63 downto 32) := x"FFFFFFFF";
+			elsif (toResult(31) = '0') then
 				toResult(63 downto 32) := x"00000000";
 			end if;
 			toResult := STD_LOGIC_VECTOR(SHIFT_LEFT(UNSIGNED(toResult), i));
