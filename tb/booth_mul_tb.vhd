@@ -22,8 +22,16 @@ BEGIN
 
 	test: process
 	begin 
+		A_tb <= x"00000008";
+		B_tb <= x"00000001";
+		wait for 10 ns;
+		
+		A_tb <= x"00000008";
+		B_tb <= x"00000003";
+		wait for 10 ns;
+	
 		A_tb <= x"000000C2";
-		B_tb <= x"00000203";
+		B_tb <= x"00FFFF00";
 		wait for 10 ns;
 		A_tb <= not A_tb;
 		wait for 10 ns;

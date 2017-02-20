@@ -51,25 +51,34 @@ COMPONENT lpm_clshift1
 END COMPONENT;
 
 COMPONENT lpm_clshift0
-	PORT(direction : IN STD_LOGIC;
-		 data : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-		 distance : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
-		 result : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
-	);
+PORT(
+	direction : IN STD_LOGIC;
+	data : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+	distance : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+	result : OUT STD_LOGIC_VECTOR(31 DOWNTO 0));
 END COMPONENT;
 
 COMPONENT rca32
 PORT(
-A, B 		:	IN 	STD_LOGIC_VECTOR(31 downto 0);
-Cin		:	IN 	STD_LOGIC;
-Sout		:	OUT STD_LOGIC_VECTOR(31 downto 0);
-Cout		:	OUT	STD_LOGIC);
+	A, B 		:	IN 	STD_LOGIC_VECTOR(31 downto 0);
+	Cin		:	IN 	STD_LOGIC;
+	Sout		:	OUT STD_LOGIC_VECTOR(31 downto 0);
+	Cout		:	OUT	STD_LOGIC);
 END COMPONENT;
 
 COMPONENT twos_comp
 PORT(
-input	:	IN STD_LOGIC_VECTOR(31 downto 0);
-output:	OUT STD_LOGIC_VECTOR(31 downto 0));
+	input	:	IN STD_LOGIC_VECTOR(31 downto 0);
+	output:	OUT STD_LOGIC_VECTOR(31 downto 0)
+);
+END COMPONENT;
+
+COMPONENT booth_mul
+PORT(
+		Ain :   IN STD_LOGIC_VECTOR(31 downto 0);
+		Bin :  IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+		output :  OUT  STD_LOGIC_VECTOR(63 DOWNTO 0)
+	);
 END COMPONENT;
 
 SIGNAL	div_quo,div_rem, rot_out, shift_out :  STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -77,6 +86,7 @@ SIGNAL	dist :  STD_LOGIC_VECTOR(4 DOWNTO 0);
 SIGNAL	lr_sel, rot_lr_sel :  STD_LOGIC;
 
 SIGNAL	RCA_out : STD_LOGIC_VECTOR(31 DOWNTO 0);
+SIGNAL	booth_out : STD_LOGIC_VECTOR(63 DOWNTO 0);
 SIGNAL	RCA_c_out, gnd : STD_LOGIC;
 TYPE state IS (add, sub, mul, div, and_op, or_op, shr, shl, rot_r, rot_l, inc_pc, neg, not_op, rc_add, other);
 SIGNAL op : state;
@@ -89,8 +99,7 @@ PORT MAP(denom => Bin,
 		 numer => Ain,
 		 quotient =>div_quo,
 		 remain=>div_rem);
-
-
+		 
 b2v_rotator : lpm_clshift1
 PORT MAP(direction => rot_lr_sel,
 		 data => Ain,
@@ -102,12 +111,18 @@ PORT MAP(direction => lr_sel,
 		 data => Ain,
 		 distance => dist,
 		 result => shift_out);
+		 
 RCA_inst : rca32
 PORT MAP(A => Ain,
 			B =>Bin,
 			Cin => '0',
 			Sout => RCA_out,
 			Cout => gnd);
+
+bMulInst : booth_mul			
+PORT MAP(Ain => Ain,
+			Bin => Bin,
+			output => booth_out);
 
 op_proc: process(opcode,Ain,Bin)
 begin
@@ -123,7 +138,8 @@ begin
 		when "01101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + Bin);			-- op<= add; --addi
 		when "01110" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain and Bin);			-- op<= and_op; --andi
 		when "01111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);	-- op<= or_op; --ori
-		when "10000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= x"00000000"; 	-- TEMP VALUE		-- op<= mul;
+		when "10000" =>	Zout(63 downto 32) <= booth_out(63 downto 32);
+								Zout(31 downto 0)  <= booth_out(31 downto 0); 	-- TEMP VALUE		-- op<= mul;
 		when "10001" =>	Zout(63 downto 32) <= div_rem;		Zout(31 downto 0) <= div_quo; 		-- op<= div;
 		when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain + x"00000001");  	 	-- op<= neg;
 		when "10011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain);		-- op<= not_op;

@@ -55,7 +55,9 @@ BEGIN
 	wait for 10 ns;
 	Ain_tb <= x"000000F1";
 	opcode_tb <= "10010";
+	
 	wait for 10 ns;
+	opcode_tb <= "10000";
 	wait;
 	end process test_proc;
 END;
