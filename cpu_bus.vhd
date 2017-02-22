@@ -48,10 +48,10 @@ SIGNAL s : std_logic_vector(4 downto 0);
 	
 	BM : busMux 
 		PORT MAP(
-		r00_in => R00In,		r01_in => R00In,		r02_in => R00In,		r03_in => R00In,
-		r04_in => R04In,		r05_in => R00In,		r06_in => R00In,		r07_in => R00In,
-		r08_in => R08In,		r09_in => R00In,		r10_in => R00In,		r11_in => R10In,
-		r12_in => R12In,		r13_in => R00In,		r14_in => R00In,		r15_in => R10In,
+		r00_in => R00In,		r01_in => R01In,		r02_in => R02In,		r03_in => R03In,
+		r04_in => R04In,		r05_in => R05In,		r06_in => R06In,		r07_in => R07In,
+		r08_in => R08In,		r09_in => R09In,		r10_in => R10In,		r11_in => R11In,
+		r12_in => R12In,		r13_in => R13In,		r14_in => R14In,		r15_in => R15In,
 		hi_in=> HIIn, 	lo_in=>LOIn, z_hi_in=> ZHIIn, z_lo_in=>ZLOIn,
 		PC_in=> PCin, MDR_in=> MDRin, Port_in=>PortIn, c_sign_extended=> CIn,
 		s_in => s,
@@ -60,7 +60,7 @@ SIGNAL s : std_logic_vector(4 downto 0);
 		);
 	BM_enc : busMux_encoder
 		PORT MAP(
-		r00_out => R00out,		r01_out => R00out,		r02_out => R02Out,		r03_out => R03out,
+		r00_out => R00out,		r01_out => R01out,		r02_out => R02Out,		r03_out => R03out,
 		r04_out => R04out,		r05_out => R05out,		r06_out => R06Out,		r07_out => R07out,
 		r08_out => R08out,		r09_out => R09out,		r10_out => R10Out,		r11_out => R11out,
 		r12_out => R12out,		r13_out => R13out,		r14_out => R14Out,		r15_out => R15out,

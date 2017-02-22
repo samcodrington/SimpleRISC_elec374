@@ -139,7 +139,7 @@ begin
 		when "01110" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain and Bin);			-- op<= and_op; --andi
 		when "01111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);	-- op<= or_op; --ori
 		when "10000" =>	Zout(63 downto 32) <= booth_out(63 downto 32);
-								Zout(31 downto 0)  <= booth_out(31 downto 0); 	-- TEMP VALUE		-- op<= mul;
+								Zout(31 downto 0)  <= booth_out(31 downto 0); 									-- op<= mul;
 		when "10001" =>	Zout(63 downto 32) <= div_rem;		Zout(31 downto 0) <= div_quo; 		-- op<= div;
 		when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain + x"00000001");  	 	-- op<= neg;
 		when "10011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain);		-- op<= not_op;

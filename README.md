@@ -18,9 +18,10 @@
 ## Bugs
 
 ## Sam's notebook
-### Sensitivity List Signals inside Processes
-NOT SURE HOW THIS REALLY WORKS ONLY KNOW IT CAN HAPPEN SOMETIMES
+### Signals inside Processes
+http://stackoverflow.com/questions/15485749/vhdl-variable-vs-signal
 The sequential statements inside a process operate on the values they are at immediately before the process begins 
+
 
 ie. If two signals val and clk change from 0 to 1 at 10ns and you have two different processes
 ```VHDL
@@ -48,7 +49,6 @@ end ex2_proc;
   * ALU
     * MUL
       * Array MUL
-      * Booth MUL
       * *BONUS* Booth w/Bit Pair Recoding
     
     
@@ -69,6 +69,7 @@ end ex2_proc;
 * 32 bit Register
 * MDR
 * ADD/SUB
+* Booth MUL
 ***
 
 ## OpCodes
