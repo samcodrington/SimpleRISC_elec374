@@ -18,6 +18,10 @@
 ## Bugs
 
 ## Sam's notebook
+
+ * **Idea**: Have a seperate port in the ALU specific to IncPC, ie. IR has wire going to incPC port in ALU
+
+
 ### Signals inside Processes
 http://stackoverflow.com/questions/15485749/vhdl-variable-vs-signal
 The sequential statements inside a process operate on the values they are at immediately before the process begins 
@@ -38,7 +42,6 @@ end ex2_proc;
 `output1 = 0` and `output2 = 1`
 
 ### To Do
-* need to make sure bus/ALU works inside of 1 clock cycle per norm
  
 
 ***
@@ -53,15 +56,10 @@ end ex2_proc;
     
     
 ### Macro Work
-* Connect Bus to ALU
 * Phase 1 Test Bench  
 
 ## Work in Progress
-* Connect Arithmetic Components within ALU (S)
-* Connect all registers to Bus & check that they are wired properly (S)
 ## Work to be Tested
-* Enclose BusMux with Encoder into CPU_Bus (S)
-* Connect MDR register to the bus (S)
 
 ## Work Completed
 * BusMux
@@ -70,6 +68,9 @@ end ex2_proc;
 * MDR
 * ADD/SUB
 * Booth MUL
+* MDR
+* ALU
+* CPU_bus
 ***
 
 ## OpCodes
@@ -87,7 +88,6 @@ end ex2_proc;
 10000   Multiply  
 10001   Divide  
 10010   Negate  
-11111   IncPC (add by 4)  
 
 Extras
 11000   Ripple Carry Adder (soon to be Carry Lookahead Adder)  

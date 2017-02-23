@@ -5,18 +5,19 @@ USE ieee.std_logic_1164.all;
 LIBRARY work;
 ENTITY cpu_codyale IS
 	PORT (
-		clk, 		clr,
+		clk, 		
 		--CONTROL PORTS
+		clr,		IncPC,
+		--Input Enables
 		R00In,	R01In,	R02In,	R03In,	R04In,	R05In,	R06In,	R07In,	
 		R08In,	R09In,	R10In,	R11In,	R12In,	R13In,	R14In,	R15In,
-		HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,		
+		HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
 		MARin,	MDRin, 	MDRRead,
+		--BusMuxSelects
 		R00Out,	R01Out,	R02Out,	R03Out,	R04Out,	R05Out,	R06Out,	R07Out,	
 		R08Out,	R09Out,	R10Out,	R11Out,	R12Out,	R13Out,	R14Out,	R15Out,
-		HIOut,	LOOut, 	PCOut,	ZHIOut,	ZLOOut,	
-		YOut,		MDROut	: IN STD_LOGIC;
-		Op						: IN STD_LOGIC_VECTOR (4 DOWNTO 0);
-		MDATAin				: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+		HIOut,	LOOut,	ZHIOut,	ZLOOut, 	PCOut, 	MDROut,	PortOut, Cout			: IN STD_LOGIC;
+		MDATAin,	PortIn,	Cin	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		--END CTL PORTS
 		
 		--DEMONSTRATION PORTS
@@ -85,7 +86,8 @@ ARCHITECTURE arch OF cpu_codyale IS
 	COMPONENT ALU
 	PORT(
 		Ain, Bin				:	IN std_logic_vector(31 downto 0);
-		op						:	IN std_logic_vector (4 downto 0);
+		opcode				:	IN std_logic_vector (4 downto 0);
+		IncPC					:  IN std_logic;
 		Zout					:	OUT std_logic_vector(63 downto 0)
 	);
 	END COMPONENT ALU;
@@ -119,8 +121,8 @@ BEGIN
 	ZHI : reg32	PORT MAP (input => w_z2zhi,		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZHI); -- FROM ALU to BUS
  	ZLO : reg32	PORT MAP (input => w_z2zlo,		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZLO); -- FROM ALU to BUS	
 	Y  : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> w_y2ALU); -- FROM BUS TO ALU
-	PC : reg32	PORT MAP (input => w_BusMuxOut, clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
-	IR : reg32  PORT MAP (input => w_BusMuxOut, clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> open); --from BUS to OUT??
+	PC : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
+	IR : reg32  PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> open); --from BUS to OUT??
 	
 	MDR_inst : MDR
 	PORT MAP(
@@ -140,20 +142,21 @@ BEGIN
 		R08out=>R08out, 	R09out=>R09out,	R10out=>R10out,	R11out=>R11out,
 		R12out=>R12out, 	R13out=>R13out,	R14out=>R14out,	R15out=>R15out,
 		hiout=>hiout,		loout=>loout,		zhiout=>zhiout,	zloout=>zloout,
-		pcout=>pcout, 		mdrout=>mdrout,	portout=>gnd, cOut=>gnd,
+		pcout=>pcout, 		mdrout=>mdrout,	portout=>PortOut, 	cOut=>Cout,
 		
 		r00in=>BusMuxInR00,	r01in=>BusMuxInR01,	r02in=>BusMuxInR02,	r03in=>BusMuxInR03,
 		r04in=>BusMuxInR04,	r05in=>BusMuxInR05,	r06in=>BusMuxInR06,	r07in=>BusMuxInR07, 
 		r08in=>BusMuxInR08,	r09in=>BusMuxInR09,	r10in=>BusMuxInR10,	r11in=>BusMuxInR11,
 		r12in=>BusMuxInR12,	r13in=>BusMuxInR13,	r14in=>BusMuxInR14,	r15in=>BusMuxInR15, 
 		HIin=>BusMuxInHI,		LOin=>BusMuxInLO,		ZHiIn=>BusMuxInZHI,	ZLoIn=>BusMuxInZLO,
-		PCin=>BusMuxInPC,		MDRin=>BusMuxInMDR,	portIn=>gnd32,		cIn=>gnd32,	
+		PCin=>BusMuxInPC,		MDRin=>BusMuxInMDR,	portIn=>PortIn,		cIn=>Cin,	
 		BusMuxOut=>w_BusMuxOut	
 	);
 	ALU_inst : ALU
 	PORT MAP(
 		Ain => w_y2alu, Bin =>w_BusMuxOut,
-		op => op,
+		opcode => MDataIn(31 downto 27),
+		IncPC => IncPC,
 		Zout => w_alu2z
 	);
 	
