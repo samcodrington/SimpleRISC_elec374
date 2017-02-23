@@ -7,7 +7,7 @@ END;
 ARCHITECTURE cpu_codyale_tb_arch OF cpu_codyale_tb IS
 --SIGNALS & COMPONENTS
 		SIGNAL clk_tb, clr_tb, IncPC_tb, MDRRead_tb : STD_LOGIC;
-		TYPE Operation IS (Default, Load1, Load2, Load3, Load4, Load5, Load6, Load7,
+		TYPE Operation IS (Default, LoadR2, LoadR3, Load4, Load5, Load6, Load7,
 		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp);
 		SIGNAL CurrentOp : Operation;
 		SIGNAL RegIn : STD_LOGIC_VECTOR(23 downto 0);--R##In Signals go to R## to store input (write)
@@ -143,25 +143,27 @@ BEGIN
 	--end process FSM_process;
 	
 	--Testing process
-	test_process : process (RISING_EDGE(clk_tb))
+	test_process : process
 	begin
 		--Default Inputs to Zeroes;
 		CurrentOp <= Default;
 		RegIn <= x"000000";
 		RegOut <= x"000000";
-		clr_tb <= '0';
+		clr_tb <= '1';
 		MDRRead_tb <= '0';
 		IncPC_tb <= '0';
 		MDataIn_tb <= x"00000000";
 		--Initializes Registers 2,3,4,5,6,7
 		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= Load1;
+		CurrentOp <= LoadR2;
+		MDRRead_tb <= '0';
+		MDatain_tb <= x"0000003C";
+		RegIn(23) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		
 		
 		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= Load2;
-		
-		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= Load3;
+		CurrentOp <= LoadR3;
 		
 		wait until RISING_EDGE(clk_tb);
 		CurrentOp <= Load4;
@@ -179,7 +181,7 @@ BEGIN
 		wait until RISING_EDGE(clk_tb);
 		CurrentOp <= Add;
 		
-		-- Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp 
+		-- Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp 
 		
 		--sub R0, R4, R5
 		
@@ -189,7 +191,7 @@ BEGIN
 		
 		--and  R2, R3, R6
 		
-		--or R2, R1, R3
+		--or R0, R1, R7
 		
 		--shr R2, R1, R3
 		
@@ -210,6 +212,7 @@ BEGIN
 		--demonstrate asynchronous clear
 		wait until RISING_EDGE(clk_tb);
 		
+		wait;
 	
 	end process test_process;
 END;

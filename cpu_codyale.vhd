@@ -160,6 +160,31 @@ BEGIN
 		Zout => w_alu2z
 	);
 	
+	process(clk)
+	begin
+		d_R00Out <= BusMuxInR00;
+		d_R01Out <= BusMuxInR01;
+		d_R02Out <= BusMuxInR02;
+		d_R03Out <= BusMuxInR03;
+		d_R04Out <= BusMuxInR04;
+		d_R05Out <= BusMuxInR05;
+		d_R06Out <= BusMuxInR06;
+		d_R07Out <= BusMuxInR07;
+		d_R08Out <= BusMuxInR08;
+		d_R09Out <= BusMuxInR09;
+		d_R10Out <= BusMuxInR10;
+		d_R11Out <= BusMuxInR11;
+		d_R12Out <= BusMuxInR12;
+		d_R13Out <= BusMuxInR13;
+		d_R14Out <= BusMuxInR14;
+		d_R15Out <= BusMuxInR15;
+		d_HIOut  <= BusMuxInHi;	
+		d_LOOut  <= BusMuxInLo;	
+		d_PCOut  <= BusMuxInPC;	
+		d_MDROut <= BusMuxInMDR;
+		d_BusMuxOut <= w_BusMuxOut; 
+		d_ZOut <= BusMuxInZHi & BusMuxInZLo;
+	end process;
 	
 		
 END;
