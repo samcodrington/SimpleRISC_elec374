@@ -8,7 +8,7 @@ PORT(
 	R08out, R09out, R10out, R11out,
 	R12out, R13out, R14out, R15out,
 	hiout, loout, zhiout, zloout,
-	pcout, mdrout, portout, cOut: IN std_logic;
+	pcout, MDROut, portout, cOut: IN std_logic;
 	r00in, r01in, r02in, r03in,
 	r04in, r05in, r06in, r07in, 
 	r08in, r09in, r10in, r11in, 

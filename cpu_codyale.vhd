@@ -94,8 +94,6 @@ ARCHITECTURE arch OF cpu_codyale IS
 		
 	
 BEGIN 
-	w_alu2z(63 downto 32)	<= w_z2zhi;
-	w_alu2z(31 downto 0)		<= w_z2zlo;
 	-- INSTANTIATION OF COMPONENTS
 	
 	--Registers
@@ -118,8 +116,8 @@ BEGIN
 
 	HI : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>HIin,	output=> BusMuxInHI);	-- to/from BUS
 	LO : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>LOin,	output=> BusMuxInLO); -- to/from BUS
-	ZHI : reg32	PORT MAP (input => w_z2zhi,		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZHI); -- FROM ALU to BUS
- 	ZLO : reg32	PORT MAP (input => w_z2zlo,		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZLO); -- FROM ALU to BUS	
+	ZHI : reg32	PORT MAP (input => w_alu2z(63 downto 32),		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZHI); -- FROM ALU to BUS
+ 	ZLO : reg32	PORT MAP (input => w_alu2z(63 downto 32),		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZLO); -- FROM ALU to BUS	
 	Y  : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> w_y2ALU); -- FROM BUS TO ALU
 	PC : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
 	IR : reg32  PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> open); --from BUS to OUT??
@@ -142,7 +140,7 @@ BEGIN
 		R08out=>R08out, 	R09out=>R09out,	R10out=>R10out,	R11out=>R11out,
 		R12out=>R12out, 	R13out=>R13out,	R14out=>R14out,	R15out=>R15out,
 		hiout=>hiout,		loout=>loout,		zhiout=>zhiout,	zloout=>zloout,
-		pcout=>pcout, 		mdrout=>mdrout,	portout=>PortOut, 	cOut=>Cout,
+		pcout=>pcout, 		mdrout=>MDROut,	portout=>PortOut, cOut=>Cout,
 		
 		r00in=>BusMuxInR00,	r01in=>BusMuxInR01,	r02in=>BusMuxInR02,	r03in=>BusMuxInR03,
 		r04in=>BusMuxInR04,	r05in=>BusMuxInR05,	r06in=>BusMuxInR06,	r07in=>BusMuxInR07, 
@@ -160,7 +158,7 @@ BEGIN
 		Zout => w_alu2z
 	);
 	
-	process(clk)
+	process(clk,clr)
 	begin
 		d_R00Out <= BusMuxInR00;
 		d_R01Out <= BusMuxInR01;
@@ -183,7 +181,7 @@ BEGIN
 		d_PCOut  <= BusMuxInPC;	
 		d_MDROut <= BusMuxInMDR;
 		d_BusMuxOut <= w_BusMuxOut; 
-		d_ZOut <= BusMuxInZHi & BusMuxInZLo;
+		d_ZOut <= w_alu2z;
 	end process;
 	
 		

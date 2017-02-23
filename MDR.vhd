@@ -32,7 +32,7 @@ ARCHITECTURE behavioural OF MDR IS
 		output 	=> output
 	);
 	
-	PROCESS(clk)
+	PROCESS(clk, BusMuxOut, MDataIn)
 	BEGIN
 		IF (MDRRead = '0') THEN
 			MDMuxOut <= busMuxOut;

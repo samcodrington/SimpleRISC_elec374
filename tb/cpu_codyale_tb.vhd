@@ -6,10 +6,11 @@ END;
 
 ARCHITECTURE cpu_codyale_tb_arch OF cpu_codyale_tb IS
 --SIGNALS & COMPONENTS
-		SIGNAL clk_tb, clr_tb, IncPC_tb, MDRRead_tb : STD_LOGIC;
 		TYPE Operation IS (Default, LoadR2, LoadR3, Load4, Load5, Load6, Load7,
 		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp);
 		SIGNAL CurrentOp : Operation;
+		SIGNAL clk_tb, clr_tb, IncPC_tb, MDRRead_tb : STD_LOGIC;
+
 		SIGNAL RegIn : STD_LOGIC_VECTOR(23 downto 0);--R##In Signals go to R## to store input (write)
 		SIGNAL RegOut : STD_LOGIC_VECTOR(23 downto 0);--R##Out signals go to BusMuxEncoder (read)
 		SIGNAL MDataIn_tb : STD_LOGIC_VECTOR(31 downto 0);
@@ -133,14 +134,9 @@ BEGIN
 	--processes
 	clk_process : process
 	begin
-		clk_tb <= '1', '0' after 10 ns;
-		Wait for 20 ns;
+		clk_tb <= '0', '1' after 5 ns;
+		Wait for 10 ns;
 	end process clk_process;
-	
-	--FSM_process : process
-	--begin
-	
-	--end process FSM_process;
 	
 	--Testing process
 	test_process : process
@@ -155,32 +151,48 @@ BEGIN
 		MDataIn_tb <= x"00000000";
 		--Initializes Registers 2,3,4,5,6,7
 		wait until RISING_EDGE(clk_tb);
+		clr_tb <= '0';
+		------------------------------------------
 		CurrentOp <= LoadR2;
-		MDRRead_tb <= '0';
+		MDRRead_tb <= '1';
 		MDatain_tb <= x"0000003C";
 		RegIn(23) <= '1';
-		wait until RISING_EDGE(clk_tb);
-		
 		
 		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= LoadR3;
-		
+		RegOut(21) <= '1';		
+
 		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= Load4;
-		
+		RegIn(23) <= '0';
+		RegOut(21) <= '0';
+		MDatain_tb <= x"00000000";
+		RegOut(2) <= '1';
 		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= Load5;
-		
-		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= Load6;
-		
-		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= Load7;
-		
-		--add R1, R2, R3
-		wait until RISING_EDGE(clk_tb);
-		CurrentOp <= Add;
-		
+		--RegOut(2) <= '0';	
+		------------------------------------------
+		--CurrentOp <= LoadR3;
+		--MDatain_tb <= x"00000014";
+		--RegOut(3) <= '1';
+		--
+		--wait until RISING_EDGE(clk_tb);
+		----RegOut(3) <= '0';
+		--
+		--------------------------------------------
+		--CurrentOp <= Load4;
+		--
+		--wait until RISING_EDGE(clk_tb);
+		--CurrentOp <= Load5;
+		--
+		--wait until RISING_EDGE(clk_tb);
+		--CurrentOp <= Load6;
+		--
+		--wait until RISING_EDGE(clk_tb);
+		--CurrentOp <= Load7;
+		--
+		----add R1, R2, R3
+		--wait until RISING_EDGE(clk_tb);
+		--------------------------------------------
+		--CurrentOp <= Add;
+		--
 		-- Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp 
 		
 		--sub R0, R4, R5

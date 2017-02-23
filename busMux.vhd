@@ -16,7 +16,12 @@ END busMux;
 
 ARCHITECTURE behavioural OF busMux IS
 BEGIN
-	BusMux: PROCESS(s_in)
+	BusMux: PROCESS(s_in, r00_in, r01_in, r02_in, r03_in,
+	r04_in, r05_in, r06_in, r07_in, 
+	r08_in, r09_in, r10_in, r11_in, 
+	r12_in, r13_in, r14_in, r15_in, 
+	hi_in, lo_in, z_hi_in, z_lo_in,
+	PC_in, MDR_in, port_in, c_sign_extended)
 	BEGIN
 		CASE s_in IS
 			when "00000"	=>	output <= r00_in;

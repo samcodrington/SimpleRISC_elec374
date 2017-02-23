@@ -131,6 +131,7 @@ begin
 		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + x"00000004");
 	else 
 		case opcode is
+			when "00000" =>
 			when "00101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + Bin); 		--op<= add;
 			when "00110" => 	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain - Bin);			--op<= sub;
 			when "00111" => 	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain and Bin);	--op<= and_op;
