@@ -163,9 +163,8 @@ BEGIN
 
 		wait until RISING_EDGE(clk_tb);
 		RegIn(23) <= '0';
-		RegOut(21) <= '0';
-		MDatain_tb <= x"00000000";
-		RegOut(2) <= '1';
+		MDatain_tb <= x"00000014";
+		RegIn(2) <= '1';
 		wait until RISING_EDGE(clk_tb);
 		--RegOut(2) <= '0';	
 		------------------------------------------

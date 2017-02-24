@@ -158,7 +158,12 @@ BEGIN
 		Zout => w_alu2z
 	);
 	
-	process(clk,clr)
+	process(clk,clr,BusMuxInR00,	BusMuxInR01,	BusMuxInR02,	BusMuxInR03,
+	BusMuxInR04,	BusMuxInR05,	BusMuxInR06,	BusMuxInR07,
+	BusMuxInR08,	BusMuxInR09,	BusMuxInR10,	BusMuxInR11,
+	BusMuxInR12,	BusMuxInR13,	BusMuxInR14,	BusMuxInR15,
+	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
+	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC)
 	begin
 		d_R00Out <= BusMuxInR00;
 		d_R01Out <= BusMuxInR01;
