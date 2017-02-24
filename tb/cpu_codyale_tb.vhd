@@ -6,7 +6,7 @@ END;
 
 ARCHITECTURE cpu_codyale_tb_arch OF cpu_codyale_tb IS
 --SIGNALS & COMPONENTS
-		TYPE Operation IS (Default, LoadR2, LoadR3, Load4, Load5, Load6, Load7,
+		TYPE Operation IS (Default, LoadR2, LoadR3, LoadR4, LoadR5, LoadR6, LoadR7,
 		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp);
 		SIGNAL CurrentOp : Operation;
 		SIGNAL clk_tb, clr_tb, IncPC_tb, MDRRead_tb : STD_LOGIC;
@@ -162,35 +162,79 @@ BEGIN
 		RegOut(21) <= '1';		
 
 		wait until RISING_EDGE(clk_tb);
-		RegIn(23) <= '0';
-		MDatain_tb <= x"00000014";
 		RegIn(2) <= '1';
 		wait until RISING_EDGE(clk_tb);
-		--RegOut(2) <= '0';	
+		RegIn(2) <= '0';
 		------------------------------------------
-		--CurrentOp <= LoadR3;
-		--MDatain_tb <= x"00000014";
-		--RegOut(3) <= '1';
-		--
-		--wait until RISING_EDGE(clk_tb);
-		----RegOut(3) <= '0';
-		--
-		--------------------------------------------
-		--CurrentOp <= Load4;
-		--
-		--wait until RISING_EDGE(clk_tb);
-		--CurrentOp <= Load5;
-		--
-		--wait until RISING_EDGE(clk_tb);
-		--CurrentOp <= Load6;
-		--
-		--wait until RISING_EDGE(clk_tb);
-		--CurrentOp <= Load7;
-		--
-		----add R1, R2, R3
-		--wait until RISING_EDGE(clk_tb);
-		--------------------------------------------
-		--CurrentOp <= Add;
+		CurrentOp <= LoadR3;
+		MDatain_tb <= x"00000014";
+		
+		wait until RISING_EDGE(clk_tb);
+		wait until RISING_EDGE(clk_tb);
+		RegIn(3) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegIn(3) <= '0';
+		------------------------------------------
+		CurrentOp <= LoadR4;
+		MDatain_tb <= x"FFFF0014";
+		
+		wait until RISING_EDGE(clk_tb);
+		wait until RISING_EDGE(clk_tb);
+		RegIn(4) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegIn(4) <= '0';		
+		------------------------------------------
+		CurrentOp <= LoadR5;
+		MDatain_tb <= x"FFFF0038";
+		
+		wait until RISING_EDGE(clk_tb);
+		wait until RISING_EDGE(clk_tb);
+		RegIn(5) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegIn(5) <= '0';
+		
+		------------------------------------------
+		CurrentOp <= LoadR6;
+		MDatain_tb <= x"FFFF0303";
+		
+		wait until RISING_EDGE(clk_tb);
+		wait until RISING_EDGE(clk_tb);
+		RegIn(6) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegIn(6) <= '0';
+		------------------------------------------
+		CurrentOp <= LoadR7;
+		MDatain_tb <= x"000003C3";
+		
+		wait until RISING_EDGE(clk_tb);
+		wait until RISING_EDGE(clk_tb);
+		RegIn(7) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegIn(7) <= '0';
+		------------------------------------------
+		-- Add R1, R2, R3
+		CurrentOp <= Add;
+		------------------------------------------
+		--T0 PCout, MARin, IncPC, Zin
+		RegOut(20) 	<= '1';
+		RegIn(22) 	<= '1';
+		IncPC_tb		<= '1';
+		RegIn(20) 	<= '1';
+		------------------------------------------
+		
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		------------------------------------------
+		
+		--T2 MDRout, IRin
+		------------------------------------------
+		
+		--T3 R2out, Yin
+		------------------------------------------
+		
+		--T4 R3out, ADD, Zin
+		------------------------------------------
+		
+		--T5 Zlowout, R1in
 		--
 		-- Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp 
 		
