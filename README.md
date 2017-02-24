@@ -20,6 +20,7 @@
 ## Sam's notebook
 
  * **Idea**: Have a seperate port in the ALU specific to IncPC, ie. IR has wire going to incPC port in ALU
+ * Total Compilation fails, but A & E and ModelSim works fine ... fixed for Phase 2
 
 
 ### Signals inside Processes
