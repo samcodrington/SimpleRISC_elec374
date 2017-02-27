@@ -23,7 +23,7 @@ ENTITY cpu_codyale IS
 		--DEMONSTRATION PORTS
 		d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
 		d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
-		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut 	: OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, d_YOut 	: OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 		d_ZOut																			: OUT STD_LOGIC_VECTOR(63 DOWNTO 0)	
 		--END DEMO PORTS
 	);
@@ -120,7 +120,7 @@ BEGIN
  	ZLO : reg32	PORT MAP (input => w_alu2z(31 downto 0),		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZLO); -- FROM ALU to BUS	
 	Y  : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> w_y2ALU); -- FROM BUS TO ALU
 	PC : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
-	IR : reg32  PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> open); --from BUS to OUT??
+	IR : reg32  PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> d_IROut); --from BUS to OUT??
 	
 	MDR_inst : MDR
 	PORT MAP(
@@ -163,7 +163,7 @@ BEGIN
 	BusMuxInR08,	BusMuxInR09,	BusMuxInR10,	BusMuxInR11,
 	BusMuxInR12,	BusMuxInR13,	BusMuxInR14,	BusMuxInR15,
 	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
-	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC)
+	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC )
 	begin
 		d_R00Out <= BusMuxInR00;
 		d_R01Out <= BusMuxInR01;
@@ -186,6 +186,7 @@ BEGIN
 		d_PCOut  <= BusMuxInPC;	
 		d_MDROut <= BusMuxInMDR;
 		d_BusMuxOut <= w_BusMuxOut; 
+		d_YOut	<= w_y2ALU;
 		d_ZOut <= BusMuxInZHi & BusMuxInZLo;
 	end process;
 	

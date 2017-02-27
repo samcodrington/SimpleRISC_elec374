@@ -48,6 +48,7 @@ BEGIN
 			when "10101"	=>	output <= MDR_in;
 			when "10110"	=>	output <= port_in;
 			when "10111"	=>	output <= c_sign_extended;
+			when "11110"	=>
 			when others		=> output <= (others => '1');
 		END CASE;
 	END PROCESS;

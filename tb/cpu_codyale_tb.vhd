@@ -17,10 +17,10 @@ ARCHITECTURE cpu_codyale_tb_arch OF cpu_codyale_tb IS
 		SIGNAL RegOut : STD_LOGIC_VECTOR(23 downto 0);--R##Out signals go to BusMuxEncoder (read)
 		SIGNAL MDataIn_tb : STD_LOGIC_VECTOR(31 downto 0);
 		SIGNAL --Outputs for Demonstration
-		BusMuxOut_tb, PCOut_tb,
+		BusMuxOut_tb, PCOut_tb, IRout_tb,
 		R00Out_tb,	R01Out_tb,	R02Out_tb,	R03Out_tb,	R04Out_tb,	R05Out_tb,	R06Out_tb,	R07Out_tb,
 		R08Out_tb,	R09Out_tb,	R10Out_tb,	R11Out_tb,	R12Out_tb,	R13Out_tb,	R14Out_tb,	R15Out_tb,
-		HIOut_tb,	LOOut_tb,	MDROut_tb	 	: STD_LOGIC_VECTOR(31 DOWNTO 0);
+		HIOut_tb,	LOOut_tb,	YOut_tb,	MDROut_tb	 	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 		SIGNAL ZOut_tb		: STD_LOGIC_VECTOR(63 DOWNTO 0);	
 				
 COMPONENT cpu_codyale IS
@@ -43,7 +43,7 @@ PORT(
 		--DEMONSTRATION PORTS
 		d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
 		d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
-		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut 	: OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, d_YOut 	: OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 		d_ZOut																			: OUT STD_LOGIC_VECTOR(63 DOWNTO 0)	
 		--END DEMO PORTS
 );
@@ -131,6 +131,8 @@ BEGIN
 		d_PCOut => PCOut_tb,
 		d_MDROut => MDROut_tb,
 		d_BusMuxOut => BusMuxOut_tb,
+		d_IROut => IRout_tb,
+		d_YOut => YOut_tb,
 		d_ZOut => ZOut_tb
 	);
 	--processes
@@ -231,28 +233,30 @@ BEGIN
 		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
 		CurrentStage <= T1;
 		RegOut(19) <= '1'; --ZLo
-		
-		
---		RegOut(19)	<= '1'; --ZLo
---		RegIn(18)	<= '1'; --PC		
---		MDataIn_tb	<= b"0010_1" & b"0001" & b"0010" & b"0011" & b"000" & x"000";
---		RegIn(23)	<= '1'; --MDR
---		wait until RISING_EDGE(clk_tb);
-		--RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"0010_1" & b"0001" & b"0010" & b"0011" & b"000" & x"000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
 		------------------------------------------
 		--T2 MDRout, IRin
-		--CurrentStage <= T2;
-		--RegOut(21) <= '1';
-		--RegIn(19) <= '1';
-		--wait until RISING_EDGE(clk_tb);
-		--RegOut(21) <= '0';
-		--RegIn(19) <= '0';
-		--T3 R2out, Yin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
 		------------------------------------------
-		
+		--T3 R2out, Yin
+		CurrentStage <= T3;
+		RegOut(2) <= '1'; --R2in
+		RegIn(21) <= '1'; --Yin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(2) <= '0';
+		RegIn(21) <= '0';
+		------------------------------------------
 		--T4 R3out, ADD, Zin
 		------------------------------------------
-		
 		--T5 Zlowout, R1in
 		--
 		-- Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp 
