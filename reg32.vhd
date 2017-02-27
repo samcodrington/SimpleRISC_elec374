@@ -12,7 +12,7 @@ END reg32;
 
 ARCHITECTURE behavioural OF reg32 IS
 BEGIN
-	Reg32: PROCESS(input, clk,clr)
+	Reg32: PROCESS(clk,clr)
 	BEGIN
 		IF (clr = '1') THEN
 				output <= b"0000_0000_0000_0000_0000_0000_0000_0000";

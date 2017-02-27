@@ -186,7 +186,7 @@ BEGIN
 		d_PCOut  <= BusMuxInPC;	
 		d_MDROut <= BusMuxInMDR;
 		d_BusMuxOut <= w_BusMuxOut; 
-		d_ZOut <= w_alu2z;
+		d_ZOut <= BusMuxInZHi & BusMuxInZLo;
 	end process;
 	
 		

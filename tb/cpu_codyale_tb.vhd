@@ -8,7 +8,9 @@ ARCHITECTURE cpu_codyale_tb_arch OF cpu_codyale_tb IS
 --SIGNALS & COMPONENTS
 		TYPE Operation IS (Default, LoadR2, LoadR3, LoadR4, LoadR5, LoadR6, LoadR7,
 		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp);
+		TYPE Stage IS (T0, T1, T2, T3, T4, T5, T6, T7, load);
 		SIGNAL CurrentOp : Operation;
+		SIGNAL CurrentStage : Stage;
 		SIGNAL clk_tb, clr_tb, IncPC_tb, MDRRead_tb : STD_LOGIC;
 
 		SIGNAL RegIn : STD_LOGIC_VECTOR(23 downto 0);--R##In Signals go to R## to store input (write)
@@ -143,16 +145,17 @@ BEGIN
 	begin
 		--Default Inputs to Zeroes;
 		CurrentOp <= Default;
+		CurrentStage <= load;
 		RegIn <= x"000000";
 		RegOut <= x"000000";
 		clr_tb <= '1';
 		MDRRead_tb <= '0';
 		IncPC_tb <= '0';
 		MDataIn_tb <= x"00000000";
-		--Initializes Registers 2,3,4,5,6,7
+		------------------------------------------
 		wait until RISING_EDGE(clk_tb);
 		clr_tb <= '0';
-		------------------------------------------
+		--Initializes Registers 2,3,4,5,6,7
 		CurrentOp <= LoadR2;
 		MDRRead_tb <= '1';
 		MDatain_tb <= x"0000003C";
@@ -205,29 +208,45 @@ BEGIN
 		------------------------------------------
 		CurrentOp <= LoadR7;
 		MDatain_tb <= x"000003C3";
-		
 		wait until RISING_EDGE(clk_tb);
 		wait until RISING_EDGE(clk_tb);
 		RegIn(7) <= '1';
 		wait until RISING_EDGE(clk_tb);
-		RegIn(7) <= '0';
+		RegIn(7) <= '0'; RegOut(21) <= '0';
+		MDataIn_tb <= x"00000000";
+		RegIn(23) <= '0';
 		------------------------------------------
 		-- Add R1, R2, R3
 		CurrentOp <= Add;
-		------------------------------------------
 		--T0 PCout, MARin, IncPC, Zin
-		RegOut(20) 	<= '1';
-		RegIn(22) 	<= '1';
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
 		IncPC_tb		<= '1';
-		RegIn(20) 	<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
 		------------------------------------------
-		
 		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
-		------------------------------------------
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
 		
+		
+--		RegOut(19)	<= '1'; --ZLo
+--		RegIn(18)	<= '1'; --PC		
+--		MDataIn_tb	<= b"0010_1" & b"0001" & b"0010" & b"0011" & b"000" & x"000";
+--		RegIn(23)	<= '1'; --MDR
+--		wait until RISING_EDGE(clk_tb);
+		--RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
 		--T2 MDRout, IRin
-		------------------------------------------
-		
+		--CurrentStage <= T2;
+		--RegOut(21) <= '1';
+		--RegIn(19) <= '1';
+		--wait until RISING_EDGE(clk_tb);
+		--RegOut(21) <= '0';
+		--RegIn(19) <= '0';
 		--T3 R2out, Yin
 		------------------------------------------
 		
