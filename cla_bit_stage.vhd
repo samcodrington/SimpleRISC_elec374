@@ -13,5 +13,5 @@ BEGIN
 	-- Bit Stage Cell VHDL code implementation
 	Gout <= A AND B;
 	Pout <= A XOR B;
-	Sout <= Pout XOR Cin;
+	Sout <= (A XOR B) XOR Cin;
 END behavioral;
