@@ -67,6 +67,9 @@ BEGIN
 			A <= "1111111111111111";
 			B <= "0000000000000001";
 			wait for clk_period;
+			A <= "1111111111111111";
+			B <= "1111111111111111";
+			wait for clk_period;
 		WAIT;
 	END PROCESS;
 END;
