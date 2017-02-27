@@ -9,7 +9,7 @@ ARCHITECTURE behaviour OF rca32_tb IS
 COMPONENT rca32
 PORT(
 	A, B 		:	IN		STD_LOGIC_VECTOR(31 downto 0);
-	Cin		:	IN		STD_LOGIC;
+	Cin			:	IN		STD_LOGIC;
 	Sout		:	OUT	STD_LOGIC_VECTOR(31 downto 0);
 	Cout		:	OUT	STD_LOGIC
 );
