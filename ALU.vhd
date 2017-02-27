@@ -92,7 +92,7 @@ SIGNAL	cla16_sum_out : STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL	cla16_filler :	STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 SIGNAL	booth_out : STD_LOGIC_VECTOR(63 DOWNTO 0);
 SIGNAL	RCA_c_out, gnd : STD_LOGIC;
-
+SIGNAL	Cout, GGout, PGout : STD_LOGIC;
 
 BEGIN 
 --COMPONENT INSTANTIATION
