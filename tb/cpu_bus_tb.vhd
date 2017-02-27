@@ -128,6 +128,10 @@ BEGIN
 		bus_out <= "100000000000000000000000";
 		wait for 10 ns;
 		bus_out <= "100000000000000000000001";
+		wait for 10 ns;
+		bus_out <= "000000000000000000000001";
+		wait for 10 ns;
+		tb_r00in <= x"00000FFF";
 		wait;
 	end process tb_proc;
 

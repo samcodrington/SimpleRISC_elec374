@@ -91,9 +91,7 @@ SIGNAL	lr_sel, rot_lr_sel :  STD_LOGIC;
 SIGNAL	cla16_sum_out : STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL	cla16_filler :	STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 SIGNAL	booth_out : STD_LOGIC_VECTOR(63 DOWNTO 0);
-SIGNAL	RCA_c_out, GGout, PGout, Cout	: STD_LOGIC;
-TYPE state IS (add, sub, mul, div, and_op, or_op, shr, shl, rot_r, rot_l, inc_pc, neg, not_op, rc_add, other);
-SIGNAL op : state;
+SIGNAL	RCA_c_out, gnd : STD_LOGIC;
 
 
 BEGIN 
@@ -143,9 +141,10 @@ PORT MAP(
 op_proc: process(incPC,opcode,Ain,Bin, cla16_sum_out, booth_out)
 begin
 	if incPC = '1' then
-		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + x"00000004");
+		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Bin + x"00000004");
 	else 
 		case opcode is
+
 			when "00101" =>	Zout(63 downto 32) <= x"00000000";
 									Zout(31 downto 0) <= (Ain + Bin); 		-- op<= add;
 			when "00110" => Zout(63 downto 32) <= x"00000000";
