@@ -249,20 +249,88 @@ BEGIN
 		------------------------------------------
 		--T3 R2out, Yin
 		CurrentStage <= T3;
-		RegOut(2) <= '1'; --R2in
-		RegIn(21) <= '1'; --Yin
+		RegOut(2) <= '1'; --R2
+		RegIn(21) <= '1'; --Y
 		wait until RISING_EDGE(clk_tb);
 		RegOut(2) <= '0';
 		RegIn(21) <= '0';
 		------------------------------------------
 		--T4 R3out, ADD, Zin
+		CurrentStage <= T4;
+
+		RegOut(3) <= '1'; --R3
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(3) <= '0';
+		RegIn(20) <= '0'; 
+		
 		------------------------------------------
 		--T5 Zlowout, R1in
-		--
+		CurrentStage <= T5;
+		RegOut(19) <= '1';
+		RegIn(1) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0';
+		RegIn(1) <= '0';
+		------------------------------------------
 		-- Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp 
 		
+		------------------------------------------
 		--sub R0, R4, R5
+		CurrentOp <= Sub;
+		--T0 PCout, MARin, IncPC, Zin
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
+		IncPC_tb		<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
+		------------------------------------------
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"0011_0" & b"0000" & b"0100" & b"0101" & b"000" & x"000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
+		--T2 MDRout, IRin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
+		------------------------------------------
+		--T3 R4out, Yin
+		CurrentStage <= T3;
+		RegOut(4) <= '1'; --R4
+		RegIn(21) <= '1'; --Y
+		wait until RISING_EDGE(clk_tb);
+		RegOut(4) <= '0';
+		RegIn(21) <= '0';
+		------------------------------------------
+		--T4 R5out, ADD, Zin
+		CurrentStage <= T4;
+
+		RegOut(5) <= '1'; --R5
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(5) <= '0';
+		RegIn(20) <= '0'; 
 		
+		------------------------------------------
+		--T5 Zlowout, R1in
+		CurrentStage <= T5;
+		RegOut(19) <= '1';
+		RegIn(0) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0';
+		RegIn(0) <= '0';
+		------------------------------------------
 		--mul R5, R7
 		
 		--div R3, R1
