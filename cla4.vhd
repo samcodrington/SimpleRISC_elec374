@@ -3,10 +3,10 @@ USE IEEE.STD_LOGIC_1164.ALL;
 
 ENTITY cla4 IS
 PORT(
-	A, B 			:	IN 	STD_LOGIC_VECTOR(3 downto 0);
-	Cin				:	IN 	STD_LOGIC;
-	GGout, PGout	:	OUT STD_LOGIC;
-	Cout			:	OUT	STD_LOGIC
+	A, B 				:	IN 	STD_LOGIC_VECTOR(3 downto 0);
+	Cin					:	IN 	STD_LOGIC;
+	GGout, PGout, Cout	:	OUT STD_LOGIC;
+	Sout				:	OUT STD_LOGIC_VECTOR(3 downto 0)
 	);
 END cla4;
 
@@ -36,8 +36,10 @@ BEGIN
 	cla_adder4	:	cla_bit_stage PORT MAP( A(3), B(3), C(3), G(3), P(3), S(3);
 	C(4) <= G(3) OR (P(3) AND C(3));
 	
+	-- Set output for the 4-bit CLA
 	GGout <= G(3) OR (P(3) AND G(2)) OR (P(3) AND P(2) AND G(1)) OR (P(3) AND P(2) AND P(1) AND G(0));
 	PGout <= P(3) AND P(2) AND P(1) AND P(0);
 	Cout <= C(4);
+	Sout <= S;
 	
 END behavioral;
