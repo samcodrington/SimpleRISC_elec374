@@ -123,7 +123,7 @@ PORT MAP(Ain => Ain,
 			Bin => Bin,
 			output => booth_out);
 
-op_proc: process(incPC,opcode,Ain,Bin)
+op_proc: process(incPC,opcode,Ain,Bin, booth_out, shift_out, rot_out)
 begin
 	if incPC = '1' then
 		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Bin + x"00000004");
