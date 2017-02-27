@@ -181,7 +181,7 @@ BEGIN
 		RegIn(3) <= '0';
 		------------------------------------------
 		CurrentOp <= LoadR4;
-		MDatain_tb <= x"FFFF0014";
+		MDatain_tb <= x"FFFFFFF4";
 		
 		wait until RISING_EDGE(clk_tb);
 		wait until RISING_EDGE(clk_tb);
@@ -190,7 +190,7 @@ BEGIN
 		RegIn(4) <= '0';		
 		------------------------------------------
 		CurrentOp <= LoadR5;
-		MDatain_tb <= x"FFFF0038";
+		MDatain_tb <= x"FFFFFFD8";
 		
 		wait until RISING_EDGE(clk_tb);
 		wait until RISING_EDGE(clk_tb);
