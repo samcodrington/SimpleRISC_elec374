@@ -89,8 +89,6 @@ SIGNAL	lr_sel, rot_lr_sel :  STD_LOGIC;
 SIGNAL	RCA_out : STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL	booth_out : STD_LOGIC_VECTOR(63 DOWNTO 0);
 SIGNAL	RCA_c_out, gnd : STD_LOGIC;
-TYPE state IS (add, sub, mul, div, and_op, or_op, shr, shl, rot_r, rot_l, inc_pc, neg, not_op, rc_add, other);
-SIGNAL op : state;
 
 
 BEGIN 
@@ -128,7 +126,7 @@ PORT MAP(Ain => Ain,
 op_proc: process(incPC,opcode,Ain,Bin)
 begin
 	if incPC = '1' then
-		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + x"00000004");
+		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Bin + x"00000004");
 	else 
 		case opcode is
 			when "00000" =>
@@ -143,11 +141,10 @@ begin
 			when "01101" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain + Bin);			-- op<= add; --addi
 			when "01110" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain and Bin);			-- op<= and_op; --andi
 			when "01111" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Ain or Bin);	-- op<= or_op; --ori
-			when "10000" =>	Zout(63 downto 32) <= booth_out(63 downto 32);
-									Zout(31 downto 0)  <= booth_out(31 downto 0); 									-- op<= mul;
+			when "10000" =>	Zout <= booth_out;								-- op<= mul;
 			when "10001" =>	Zout(63 downto 32) <= div_rem;		Zout(31 downto 0) <= div_quo; 		-- op<= div;
-			when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain + x"00000001");  	 	-- op<= neg;
-			when "10011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Ain);		-- op<= not_op;
+			when "10010" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Bin + x"00000001");  	 	-- op<= neg;
+			when "10011" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (not Bin);		-- op<= not_op;
 			when "11000" =>	Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= RCA_out;			-- op<= rc_add;
 			when others => 	Zout(63 downto 0)  <= x"0F0F0F0F0F0F0F0F";		--ERROR;
 		end case;
