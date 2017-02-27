@@ -396,7 +396,60 @@ BEGIN
 		--div R3, R1
 		
 		--and  R2, R3, R6
+		CurrentOp <= AndOp;
+		--T0 PCout, MARin, IncPC, Zin
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
+		IncPC_tb		<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
+		------------------------------------------
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"0011_1" & b"0010" & b"0011" & b"0110" & b"000" & x"000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
+		--T2 MDRout, IRin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
+		------------------------------------------
+		--T3 R3out, Yin
+		CurrentStage <= T3;
+		RegOut(3) <= '1'; --R3
+		RegIn(21) <= '1'; --Y
+		wait until RISING_EDGE(clk_tb);
+		RegOut(3) <= '0';
+		RegIn(21) <= '0';
+		------------------------------------------
+		--T4 R6out, AND, Zin
+		CurrentStage <= T4;
+
+		RegOut(6) <= '1'; --R6
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(6) <= '0';
+		RegIn(20) <= '0'; 
 		
+		------------------------------------------
+		--T5 Zlowout, R2in
+		CurrentStage <= T5;
+		RegOut(19) <= '1';
+		RegIn(2) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0';
+		RegIn(2) <= '0';
+		------------------------------------------
 		--or R0, R1, R7
 		
 		--shr R2, R1, R3
