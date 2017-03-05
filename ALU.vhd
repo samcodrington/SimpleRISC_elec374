@@ -139,7 +139,7 @@ PORT MAP(
 		);
 
 
-op_proc: process(incPC,opcode,Ain,Bin, booth_out, shift_out, rot_out, cla16_sum_out)
+op_proc: process(incPC,opcode,Ain,Bin, booth_out, shift_out, rot_out, div_quo, div_rem, cla16_sum_out)
 
 begin
 	if incPC = '1' then
@@ -166,11 +166,11 @@ begin
 			when "01011" =>	Zout(63 downto 32) <= x"00000000";
 									Zout(31 downto 0) <=rot_out; 		
 									dist <= Bin(4 downto 0); 
-									lr_sel <= '0';							-- op<= rot_r;
+									rot_lr_sel <= '0';							-- op<= rot_r;
 			when "01100" =>	Zout(63 downto 32) <= x"00000000";	
 									Zout(31 downto 0) <=rot_out;		
 									dist <= Bin(4 downto 0); 
-									lr_sel <= '1';							-- op<= rot_l;
+									rot_lr_sel <= '1';							-- op<= rot_l;
 			when "01101" =>	Zout(63 downto 32) <= x"00000000";
 									Zout(31 downto 0) <= (Ain + Bin);		-- op<= add; --addi
 			when "01110" =>	Zout(63 downto 32) <= x"00000000";	

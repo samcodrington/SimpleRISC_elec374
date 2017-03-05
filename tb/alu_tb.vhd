@@ -85,6 +85,7 @@ BEGIN
 	Bin_tb <= x"00000001";
 	
 	wait for 10 ns;
+	opcode_tb <= "01011";
 	wait;
 	
 	end process test_proc;

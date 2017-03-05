@@ -394,7 +394,7 @@ BEGIN
 		RegOut(18) <= '0';
 		RegIn(16) <= '0';
 		------------------------------------------
-		--div R3, R1
+		--div R1, R3
 		CurrentOp <= Div;
 		--T0 PCout, MARin, IncPC, Zin
 		CurrentStage <= T0;
@@ -410,7 +410,7 @@ BEGIN
 		CurrentStage <= T1;
 		RegOut(19) <= '1'; --ZLo
 		RegIn(18)	<= '1'; --PC		
-		MDataIn_tb	<= b"1000_0" & b"0101" & b"0111" & b"000" & x"0000";
+		MDataIn_tb	<= b"1000_1" & b"0011" & b"0001" & b"000" & x"0000";
 		RegIn(23)	<= '1'; --MDR
 		wait until RISING_EDGE(clk_tb);
 		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
@@ -423,21 +423,21 @@ BEGIN
 		RegOut(21) <= '0';
 		RegIn(19) <= '0';
 		------------------------------------------
-		--T3 R3out, Yin
+		--T3 R1out, Yin
 		CurrentStage <= T3;
-		RegOut(3) <= '1'; --R3
+		RegOut(1) <= '1'; --R1
 		RegIn(21) <= '1'; --Y
 		wait until RISING_EDGE(clk_tb);
-		RegOut(3) <= '0';
+		RegOut(1) <= '0';
 		RegIn(21) <= '0';
 		------------------------------------------
-		--T4 R1out, MUL, Zin
+		--T4 R3out, MUL, Zin
 		CurrentStage <= T4;
 
-		RegOut(1) <= '1'; --R1
+		RegOut(3) <= '1'; --R3
 		RegIn(20) <= '1'; --Z
 		wait until RISING_EDGE(clk_tb);
-		RegOut(1) <= '0';
+		RegOut(3) <= '0';
 		RegIn(20) <= '0'; 
 		
 		------------------------------------------
@@ -457,7 +457,7 @@ BEGIN
 		RegOut(18) <= '0';
 		RegIn(16) <= '0';
 		------------------------------------------
-		--and  R2, R3, R6
+		--and  R0, R1, R7
 		CurrentOp <= AndOp;
 		--T0 PCout, MARin, IncPC, Zin
 		CurrentStage <= T0;
@@ -473,7 +473,7 @@ BEGIN
 		CurrentStage <= T1;
 		RegOut(19) <= '1'; --ZLo
 		RegIn(18)	<= '1'; --PC		
-		MDataIn_tb	<= b"0011_1" & b"0010" & b"0011" & b"0110" & b"000" & x"000";
+		MDataIn_tb	<= b"0011_1" & b"0000" & b"0001" & b"0111" & b"000" & x"000";
 		RegIn(23)	<= '1'; --MDR
 		wait until RISING_EDGE(clk_tb);
 		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
@@ -486,23 +486,132 @@ BEGIN
 		RegOut(21) <= '0';
 		RegIn(19) <= '0';
 		------------------------------------------
-		--T3 R3out, Yin
+		--T3 R1out, Yin
 		CurrentStage <= T3;
-		RegOut(3) <= '1'; --R3
+		RegOut(1) <= '1'; --R1
 		RegIn(21) <= '1'; --Y
 		wait until RISING_EDGE(clk_tb);
-		RegOut(3) <= '0';
+		RegOut(1) <= '0';
 		RegIn(21) <= '0';
 		------------------------------------------
-		--T4 R6out, AND, Zin
+		--T4 R7out, AND, Zin
 		CurrentStage <= T4;
-
-		RegOut(6) <= '1'; --R6
+--
+		RegOut(7) <= '1'; --R7
 		RegIn(20) <= '1'; --Z
 		wait until RISING_EDGE(clk_tb);
-		RegOut(6) <= '0';
+		RegOut(7) <= '0';
 		RegIn(20) <= '0'; 
 		
+		------------------------------------------
+		--T5 Zlowout, R2in
+		CurrentStage <= T5;
+		RegOut(19) <= '1';
+		RegIn(0) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0';
+		RegIn(0) <= '0';
+		------------------------------------------
+		--or R0, R1, R7
+		CurrentOp <= OrOp;
+		--T0 PCout, MARin, IncPC, Zin
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
+		IncPC_tb		<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
+		------------------------------------------
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"0100_0" & b"0000" & b"0001" & b"0111" & b"000" & x"000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
+		--T2 MDRout, IRin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
+		------------------------------------------
+		--T3 R1out, Yin
+		CurrentStage <= T3;
+		RegOut(1) <= '1'; --R1
+		RegIn(21) <= '1'; --Y
+		wait until RISING_EDGE(clk_tb);
+		RegOut(1) <= '0';
+		RegIn(21) <= '0';
+		------------------------------------------
+		--T4 R7out, AND, Zin
+		CurrentStage <= T4;
+--
+		RegOut(7) <= '1'; --R7
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(7) <= '0';
+		RegIn(20) <= '0'; 
+		
+		------------------------------------------
+		--T5 Zlowout, R2in
+		CurrentStage <= T5;
+		RegOut(19) <= '1';
+		RegIn(0) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0';
+		RegIn(0) <= '0';
+		------------------------------------------
+		--shr R2, R1, R3
+		CurrentOp <= SHR;
+		--T0 PCout, MARin, IncPC, Zin
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
+		IncPC_tb		<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
+		------------------------------------------
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"0100_1" & b"0000" & b"0001" & b"0011" & b"000" & x"000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
+		--T2 MDRout, IRin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
+		------------------------------------------
+		--T3 R1out, Yin
+		CurrentStage <= T3;
+		RegOut(1) <= '1'; --R1
+		RegIn(21) <= '1'; --Y
+		wait until RISING_EDGE(clk_tb);
+		RegOut(1) <= '0';
+		RegIn(21) <= '0';
+		------------------------------------------
+		--T4 R3, SHR, Zin
+			-- Modified statement from T4 SHR, Zin -> R3, SHR, Zin
+		CurrentStage <= T4;
+		RegOut(3) <= '1'; --R3
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(3) <= '0';
+		RegIn(20) <= '0'; 
 		------------------------------------------
 		--T5 Zlowout, R2in
 		CurrentStage <= T5;
@@ -512,15 +621,171 @@ BEGIN
 		RegOut(19) <= '0';
 		RegIn(2) <= '0';
 		------------------------------------------
-		--or R0, R1, R7
-		
-		--shr R2, R1, R3
 		
 		--shl R3, R0, R5
+		CurrentOp <= SHL;
+		--T0 PCout, MARin, IncPC, Zin
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
+		IncPC_tb		<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
+		------------------------------------------
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"0101_0" & b"0011" & b"0000" & b"0101" & b"000" & x"000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
+		--T2 MDRout, IRin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
+		------------------------------------------
+		--T3 R0out, Yin
+		CurrentStage <= T3;
+		RegOut(0) <= '1'; --R0
+		RegIn(21) <= '1'; --Y
+		wait until RISING_EDGE(clk_tb);
+		RegOut(0) <= '0';
+		RegIn(21) <= '0';
+		------------------------------------------
+		--T4 R5, SHL, Zin
+			-- Modified statement from T4 SHL, Zin -> R5, SHL, Zin
+		CurrentStage <= T4;
+		RegOut(5) <= '1'; --R5
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(5) <= '0';
+		RegIn(20) <= '0'; 
+		------------------------------------------
+		--T5 Zlowout, R3in
+		CurrentStage <= T5;
+		RegOut(19) <= '1';
+		RegIn(3) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0';
+		RegIn(3) <= '0';
+		------------------------------------------
 		
 		--ror R1, R1, R2
+		CurrentOp <= RotRight;
+		--T0 PCout, MARin, IncPC, Zin
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
+		IncPC_tb		<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
+		------------------------------------------
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"0101_1" & b"0001" & b"0001" & b"0010" & b"000" & x"000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
+		--T2 MDRout, IRin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
+		------------------------------------------
+		--T3 R1out, Yin
+		CurrentStage <= T3;
+		RegOut(1) <= '1'; --R1
+		RegIn(21) <= '1'; --Y
+		wait until RISING_EDGE(clk_tb);
+		RegOut(1) <= '0';
+		RegIn(21) <= '0';
+		------------------------------------------
+		--T4 R2, ROR, Zin
+			-- Modified statement from T4 ROR, Zin -> R2, ROR, Zin
+		CurrentStage <= T4;
+		RegOut(2) <= '1'; --R2
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(2) <= '0';
+		RegIn(20) <= '0'; 
+		------------------------------------------
+		--T5 Zlowout, R1in
+		CurrentStage <= T5;
+		RegOut(19) <= '1';
+		RegIn(1) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0';
+		RegIn(1) <= '0';
+		------------------------------------------
 		
 		--rol R0, R0, R4
+		CurrentOp <= RotLeft;
+		--T0 PCout, MARin, IncPC, Zin
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
+		IncPC_tb		<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
+		------------------------------------------
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"0110_0" & b"0001" & b"0001" & b"0010" & b"000" & x"000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
+		--T2 MDRout, IRin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
+		------------------------------------------
+		--T3 R0out, Yin
+		CurrentStage <= T3;
+		RegOut(0) <= '1'; --R0
+		RegIn(21) <= '1'; --Y
+		wait until RISING_EDGE(clk_tb);
+		RegOut(0) <= '0';
+		RegIn(21) <= '0';
+		------------------------------------------
+		--T4 R4, ROL, Zin
+			-- Modified statement from T4 ROL, Zin -> R4, ROR, Zin
+		CurrentStage <= T4;
+		RegOut(4) <= '1'; --R4
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(4) <= '0';
+		RegIn(20) <= '0'; 
+		------------------------------------------
+		--T5 Zlowout, R0in
+		CurrentStage <= T5;
+		RegOut(19) <= '1';
+		RegIn(0) <= '1';
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0';
+		RegIn(0) <= '0';
+		-----------------------------------------
 		
 		--neg R1, R2
 		
