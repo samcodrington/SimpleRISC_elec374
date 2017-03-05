@@ -677,7 +677,7 @@ BEGIN
 		RegIn(3) <= '0';
 		------------------------------------------
 		
-		--ror R1, R1, R2
+		--ror R1, R1, R0
 		CurrentOp <= RotRight;
 		--T0 PCout, MARin, IncPC, Zin
 		CurrentStage <= T0;
@@ -693,7 +693,7 @@ BEGIN
 		CurrentStage <= T1;
 		RegOut(19) <= '1'; --ZLo
 		RegIn(18)	<= '1'; --PC		
-		MDataIn_tb	<= b"0101_1" & b"0001" & b"0001" & b"0010" & b"000" & x"000";
+		MDataIn_tb	<= b"0101_1" & b"0001" & b"0001" & b"0000" & b"000" & x"000";
 		RegIn(23)	<= '1'; --MDR
 		wait until RISING_EDGE(clk_tb);
 		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
@@ -714,13 +714,13 @@ BEGIN
 		RegOut(1) <= '0';
 		RegIn(21) <= '0';
 		------------------------------------------
-		--T4 R2, ROR, Zin
+		--T4 R0, ROR, Zin
 			-- Modified statement from T4 ROR, Zin -> R2, ROR, Zin
 		CurrentStage <= T4;
-		RegOut(2) <= '1'; --R2
+		RegOut(0) <= '1'; --R0
 		RegIn(20) <= '1'; --Z
 		wait until RISING_EDGE(clk_tb);
-		RegOut(2) <= '0';
+		RegOut(0) <= '0';
 		RegIn(20) <= '0'; 
 		------------------------------------------
 		--T5 Zlowout, R1in
@@ -783,11 +783,11 @@ BEGIN
 		RegOut(19) <= '1';
 		RegIn(0) <= '1';
 		wait until RISING_EDGE(clk_tb);
-		RegOut(19) <= '0';
-		RegIn(0) <= '0';
+		
 		-----------------------------------------
 		
 		--neg R1, R2
+		CurrentOp <= Neg;
 		
 		--not R1, R2
 		
@@ -797,7 +797,10 @@ BEGIN
 		
 		--demonstrate asynchronous clear
 		wait until RISING_EDGE(clk_tb);
-		
+		wait for 2 ns;
+		clr_tb <= '1';
+		wait until RISING_EDGE(clk_tb);
+		clr_tb <='0';		
 		wait;
 	
 	end process test_process;
