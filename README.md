@@ -47,31 +47,37 @@ end ex2_proc;
 
 ***
 ## Bulletin Board
-## Phase 1
+## Phase 2
 ## Work to Be Done
-### Components 
-  * ALU
-    * MUL
-      * Array MUL
-      * *BONUS* Booth w/Bit Pair Recoding
+* Memory Subsystem
+	* Add RAM ("use MegaFunction" Nick says)
+	* create MAR register
+	* connect MDR
+* Select and Encode
+	* configure Input Enables
+	* Configure BusMuxOutSelects
+	* Connect IR to C_sign_extended register (?)
+* Redesign Top Level
+	1. Reconfigure cpu_codyale
+		* Remove multibit regin & regout ports
+		* add Gra/b/c, BA (Base Address) inputs & Rin & Rout inputs
+	2. Reconfigure cpu_codyale_tb instructions & component
+		*  remove old ALU instructions & add new instructions
+* Revision to R0
+* CON FF Logic (used for branching, 
+* Input, Output Ports (let's use Strobe and get rid of Portin signals)
+
+
     
     
 ### Macro Work
-* Phase 1 Test Bench  
 
 ## Work in Progress
+
 ## Work to be Tested
 
 ## Work Completed
-* BusMux
-* Bus Encoder
-* 32 bit Register
-* MDR
-* ADD/SUB
-* Booth MUL
-* MDR
-* ALU
-* CPU_bus
+
 ***
 
 ## OpCodes
