@@ -821,28 +821,65 @@ BEGIN
 		RegOut(2) <= '1'; --R4
 		RegIn(20) <= '1'; --Z
 		wait until RISING_EDGE(clk_tb);
-		--RegOut(2) <= '0';
-		--RegIn(20) <= '0'; 
+		RegOut(2) <= '0';
+		RegIn(20) <= '0'; 
 		------------------------------------------
 		--T4   Zlowout, R1in
-		--CurrentStage <= T4;
-		--RegOut(19) <= '1';
-		--RegIn(1) <= '1';
-		--wait until RISING_EDGE(clk_tb);
+		CurrentStage <= T4;
+		RegOut(19) <= '1';
+		RegIn(1) <= '1';
+		wait until RISING_EDGE(clk_tb);
 		
 		-----------------------------------------
 		--not R1, R2
-		
-		--**CLA Adder**
-		
-		--??Booth with Bit Pair??
+		CurrentOp <= NotOp;
+		--T0 PCout, MARin, IncPC, Zin
+		CurrentStage <= T0;
+		RegOut(20) 	<= '1'; --PC
+		RegIn(22) 	<= '1'; --MARin
+		IncPC_tb		<= '1';
+		RegIn(20)	<= '1'; -- Zin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(20) <= '0'; RegIn(22) <= '0';
+		IncPC_tb <= '0'; RegIn(20) <= '0';
+		------------------------------------------
+		--T1 Zlowout, PCin, Read, Mdatain[31..0], MDRin
+		CurrentStage <= T1;
+		RegOut(19) <= '1'; --ZLo
+		RegIn(18)	<= '1'; --PC		
+		MDataIn_tb	<= b"1001_1" & b"0001" & b"0010" & b"000" & x"0000";
+		RegIn(23)	<= '1'; --MDR
+		wait until RISING_EDGE(clk_tb);
+		RegOut(19) <= '0'; RegIn(18) <= '0'; RegIn(23) <= '0';
+		------------------------------------------
+		--T2 MDRout, IRin
+		CurrentStage <= T2;
+		RegOut(21) <= '1';--MDR
+		RegIn(19) <= '1'; --IRin
+		wait until RISING_EDGE(clk_tb);
+		RegOut(21) <= '0';
+		RegIn(19) <= '0';
+		------------------------------------------
+		--T3 R2, NEG, Zin
+		CurrentStage <= T3;
+		RegOut(2) <= '1'; --R4
+		RegIn(20) <= '1'; --Z
+		wait until RISING_EDGE(clk_tb);
+		RegOut(2) <= '0';
+		RegIn(20) <= '0'; 
+		------------------------------------------
+		--T4   Zlowout, R1in
+		CurrentStage <= T4;
+		RegOut(19) <= '1';
+		RegIn(1) <= '1';
+		wait until RISING_EDGE(clk_tb);
 		
 		--demonstrate asynchronous clear
-		--wait until RISING_EDGE(clk_tb);
-		--wait for 2 ns;
-		--clr_tb <= '1';
-		--wait until RISING_EDGE(clk_tb);
-		--clr_tb <='0';		
+		wait until RISING_EDGE(clk_tb);
+		wait for 2 ns;
+		clr_tb <= '1';
+		wait until RISING_EDGE(clk_tb);
+		clr_tb <='0';		
 		wait;
 	
 	end process test_process;
