@@ -829,7 +829,8 @@ BEGIN
 		RegOut(19) <= '1';
 		RegIn(1) <= '1';
 		wait until RISING_EDGE(clk_tb);
-		
+		RegOut(19) <= '0';
+		RegIn(1) <= '0';
 		-----------------------------------------
 		--not R1, R2
 		CurrentOp <= NotOp;
