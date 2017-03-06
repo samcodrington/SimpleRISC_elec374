@@ -23,8 +23,8 @@ ENTITY cpu_codyale IS
 		--DEMONSTRATION PORTS
 		d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
 		d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
-		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, d_YOut 	: OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-		d_ZOut																			: OUT STD_LOGIC_VECTOR(63 DOWNTO 0)	
+		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,
+		d_ZLoOut, 	d_ZHiOut : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 		--END DEMO PORTS
 	);
 END cpu_codyale;
@@ -187,7 +187,8 @@ BEGIN
 		d_MDROut <= BusMuxInMDR;
 		d_BusMuxOut <= w_BusMuxOut; 
 		d_YOut	<= w_y2ALU;
-		d_ZOut <= BusMuxInZHi & BusMuxInZLo;
+		d_ZHiOut <= BusMuxInZHi;
+		d_ZLoOut <= BusMuxInZLo;
 	end process;
 	
 		

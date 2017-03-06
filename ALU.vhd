@@ -181,9 +181,9 @@ begin
 			when "10001" =>	Zout(63 downto 32) <= div_rem;		
 									Zout(31 downto 0) <= div_quo; 			-- op<= div;
 			when "10010" =>	Zout(63 downto 32) <= x"00000000";	
-							Zout(31 downto 0) <= (not Ain + x"00000001");  	 	-- op<= neg;
+									Zout(31 downto 0) <= (not Bin + x"00000001");  	 	-- op<= neg;
 			when "10011" =>	Zout(63 downto 32) <= x"00000000";	
-									Zout(31 downto 0) <= (not Ain);			-- op<= not_op;
+									Zout(31 downto 0) <= (not Bin);			-- op<= not_op;
 			when "11000" =>	Zout <= x"000000000000" & cla16_sum_out;			-- op<= rc_add;
 			when others => 	Zout(63 downto 0)  <= x"0F0F0F0F0F0F0F0F";		--ERROR;
 		end case;
