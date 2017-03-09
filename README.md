@@ -63,7 +63,6 @@ end ex2_proc;
 		* add Gra/b/c, BA (Base Address) inputs & Rin & Rout inputs
 	2. Reconfigure cpu_codyale_tb instructions & component
 		*  remove old ALU instructions & add new instructions
-* Revision to R0
 * CON FF Logic (used for branching, 
 * Input, Output Ports (let's use Strobe and get rid of Portin signals)
 
@@ -77,6 +76,7 @@ end ex2_proc;
 ## Work to be Tested
 
 ## Work Completed
+* Revision to R0 (S)
 
 ***
 
