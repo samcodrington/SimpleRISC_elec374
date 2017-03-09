@@ -7,7 +7,7 @@ ENTITY cpu_codyale IS
 	PORT (
 		clk, 		
 		--CONTROL PORTS
-		clr,		IncPC,
+		clr,		IncPC,	BAout,
 		--Input Enables
 		R00In,	R01In,	R02In,	R03In,	R04In,	R05In,	R06In,	R07In,	
 		R08In,	R09In,	R10In,	R11In,	R12In,	R13In,	R14In,	R15In,
@@ -97,7 +97,7 @@ BEGIN
 	-- INSTANTIATION OF COMPONENTS
 	
 	--Registers
-	R00 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R00in,	output=> BusMuxInR00);
+	R00 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R00in,	output=> BusMuxInR00 and not BAout);
 	R01 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R01in,	output=> BusMuxInR01);
 	R02 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R02in,	output=> BusMuxInR02);
 	R03 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R03in,	output=> BusMuxInR03);
