@@ -74,9 +74,9 @@ end ex2_proc;
 ## Work in Progress
 
 ## Work to be Tested
+* Revision to R0 (S)
 
 ## Work Completed
-* Revision to R0 (S)
 
 ***
 
