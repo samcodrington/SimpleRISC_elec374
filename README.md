@@ -54,9 +54,6 @@ end ex2_proc;
 ## Bulletin Board
 ## Phase 2
 ## Work to Be Done
-* Memory Subsystem
-	* create MAR register
-	* connect MDR
 * Select and Encode
 	* configure Input Enables
 	* Configure BusMuxOutSelects
@@ -79,9 +76,9 @@ end ex2_proc;
 
 ## Work to be Tested
 * Revision to R0 (S)
+* Memory Subsystem
 
 ## Work Completed
-* MAR (S)
 ***
 
 ## OpCodes
