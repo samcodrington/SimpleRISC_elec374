@@ -19,9 +19,8 @@
 
 ## Sam's notebook
 
- * **Idea**: Have a seperate port in the ALU specific to IncPC, ie. IR has wire going to incPC port in ALU
  * Total Compilation fails, but A & E and ModelSim works fine ... fixed for Phase 2
-
+ 
 
 ### Signals inside Processes
 http://stackoverflow.com/questions/15485749/vhdl-variable-vs-signal
@@ -44,13 +43,18 @@ end ex2_proc;
 
 ### To Do
  
-
+* Plan of Attack
+ 	(2017/03/15)
+ 	* connect RAM & rewire MAR to output to RAM
+	* rewire differing ports from Phase I
+		* Gra, Grb, Grc, Rin, Rout, BAout ports replacing RegIn/Regout (not ones going to bus)
+		* add CONin signal
+		* remove inport/outport, opcode ports?
 ***
 ## Bulletin Board
 ## Phase 2
 ## Work to Be Done
 * Memory Subsystem
-	* Add RAM ("use MegaFunction" Nick says)
 	* create MAR register
 	* connect MDR
 * Select and Encode
@@ -77,7 +81,7 @@ end ex2_proc;
 * Revision to R0 (S)
 
 ## Work Completed
-
+* MAR (S)
 ***
 
 ## OpCodes

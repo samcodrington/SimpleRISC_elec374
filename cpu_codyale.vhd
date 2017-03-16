@@ -12,12 +12,12 @@ ENTITY cpu_codyale IS
 		R00In,	R01In,	R02In,	R03In,	R04In,	R05In,	R06In,	R07In,	
 		R08In,	R09In,	R10In,	R11In,	R12In,	R13In,	R14In,	R15In,
 		HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
-		MARin,	MDRin, 	MDRRead,
+		MARin,	MDRin, 	MemRead, WriteSig,
 		--BusMuxSelects
 		R00Out,	R01Out,	R02Out,	R03Out,	R04Out,	R05Out,	R06Out,	R07Out,	
 		R08Out,	R09Out,	R10Out,	R11Out,	R12Out,	R13Out,	R14Out,	R15Out,
 		HIOut,	LOOut,	ZHIOut,	ZLOOut, 	PCOut, 	MDROut,	PortOut, Cout			: IN STD_LOGIC;
-		MDATAin,	PortIn,	Cin	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+		PortIn,	Cin	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		--END CTL PORTS
 		
 		--DEMONSTRATION PORTS
@@ -39,7 +39,7 @@ ARCHITECTURE arch OF cpu_codyale IS
 	BusMuxInR12,	BusMuxInR13,	BusMuxInR14,	BusMuxInR15,
 	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
 	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC,
-	MARout									: std_logic_vector(31 downto 0);
+	MARout, 			MDataIn			: std_logic_vector(31 downto 0);
 	
 	SIGNAL w_y2alu : std_logic_vector(31 downto 0);
 	SIGNAL w_alu2z : std_logic_vector(63 downto 0);
@@ -101,6 +101,18 @@ ARCHITECTURE arch OF cpu_codyale IS
 	);
 	END COMPONENT ALU;
 	
+	component ram
+	PORT
+	(
+		address		: IN STD_LOGIC_VECTOR (8 DOWNTO 0);
+		clock		: IN STD_LOGIC  := '1';
+		data		: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+		rden		: IN STD_LOGIC  := '1';
+		wren		: IN STD_LOGIC ;
+		q		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+	);
+end component;
+	
 		
 	
 BEGIN 
@@ -141,10 +153,18 @@ BEGIN
 		clr 		=> clr,
 		clk		=> clk,
 		mdr_in	=> MDRin,
-		MDRread	=> MDRread,
+		MDRread	=> MemRead,
 		output	=> BusMuxInMDR					
 	);
-	
+	RAM_inst : ram
+	PORT MAP (
+		address=> MAROut(8 downto 0),
+		clock	 => clk,
+		data	 => busMuxInMDR, 
+		rden	=> Memread,
+		wren	=> WriteSig,
+		q		=> MDataIn
+		);
 	cpu_bus_inst : cpu_bus
 	PORT MAP(
 		R00out=>R00out, 	R01out=>R01out,	R02out=>R02out,	R03out=>R03out,
