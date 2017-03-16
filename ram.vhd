@@ -45,6 +45,7 @@ ENTITY ram IS
 		address		: IN STD_LOGIC_VECTOR (8 DOWNTO 0);
 		clock		: IN STD_LOGIC  := '1';
 		data		: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+		rden		: IN STD_LOGIC  := '1';
 		wren		: IN STD_LOGIC ;
 		q		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
 	);
@@ -61,6 +62,7 @@ ARCHITECTURE SYN OF ram IS
 	GENERIC (
 		clock_enable_input_a		: STRING;
 		clock_enable_output_a		: STRING;
+		init_file		: STRING;
 		intended_device_family		: STRING;
 		lpm_hint		: STRING;
 		lpm_type		: STRING;
@@ -79,7 +81,8 @@ ARCHITECTURE SYN OF ram IS
 			clock0	: IN STD_LOGIC ;
 			data_a	: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
 			wren_a	: IN STD_LOGIC ;
-			q_a	: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+			q_a	: OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+			rden_a	: IN STD_LOGIC 
 	);
 	END COMPONENT;
 
@@ -90,6 +93,7 @@ BEGIN
 	GENERIC MAP (
 		clock_enable_input_a => "BYPASS",
 		clock_enable_output_a => "BYPASS",
+		init_file => "ram_contents.mif",
 		intended_device_family => "Cyclone IV GX",
 		lpm_hint => "ENABLE_RUNTIME_MOD=NO",
 		lpm_type => "altsyncram",
@@ -108,6 +112,7 @@ BEGIN
 		clock0 => clock,
 		data_a => data,
 		wren_a => wren,
+		rden_a => rden,
 		q_a => sub_wire0
 	);
 
@@ -125,7 +130,7 @@ END SYN;
 -- Retrieval info: PRIVATE: AclrOutput NUMERIC "0"
 -- Retrieval info: PRIVATE: BYTE_ENABLE NUMERIC "0"
 -- Retrieval info: PRIVATE: BYTE_SIZE NUMERIC "8"
--- Retrieval info: PRIVATE: BlankMemory NUMERIC "1"
+-- Retrieval info: PRIVATE: BlankMemory NUMERIC "0"
 -- Retrieval info: PRIVATE: CLOCK_ENABLE_INPUT_A NUMERIC "0"
 -- Retrieval info: PRIVATE: CLOCK_ENABLE_OUTPUT_A NUMERIC "0"
 -- Retrieval info: PRIVATE: Clken NUMERIC "0"
@@ -137,7 +142,7 @@ END SYN;
 -- Retrieval info: PRIVATE: JTAG_ENABLED NUMERIC "0"
 -- Retrieval info: PRIVATE: JTAG_ID STRING "NONE"
 -- Retrieval info: PRIVATE: MAXIMUM_DEPTH NUMERIC "0"
--- Retrieval info: PRIVATE: MIFfilename STRING ""
+-- Retrieval info: PRIVATE: MIFfilename STRING "ram_contents.mif"
 -- Retrieval info: PRIVATE: NUMWORDS_A NUMERIC "512"
 -- Retrieval info: PRIVATE: RAM_BLOCK_TYPE NUMERIC "0"
 -- Retrieval info: PRIVATE: READ_DURING_WRITE_MODE_PORT_A NUMERIC "3"
@@ -150,10 +155,11 @@ END SYN;
 -- Retrieval info: PRIVATE: WRCONTROL_ACLR_A NUMERIC "0"
 -- Retrieval info: PRIVATE: WidthAddr NUMERIC "9"
 -- Retrieval info: PRIVATE: WidthData NUMERIC "32"
--- Retrieval info: PRIVATE: rden NUMERIC "0"
+-- Retrieval info: PRIVATE: rden NUMERIC "1"
 -- Retrieval info: LIBRARY: altera_mf altera_mf.altera_mf_components.all
 -- Retrieval info: CONSTANT: CLOCK_ENABLE_INPUT_A STRING "BYPASS"
 -- Retrieval info: CONSTANT: CLOCK_ENABLE_OUTPUT_A STRING "BYPASS"
+-- Retrieval info: CONSTANT: INIT_FILE STRING "ram_contents.mif"
 -- Retrieval info: CONSTANT: INTENDED_DEVICE_FAMILY STRING "Cyclone IV GX"
 -- Retrieval info: CONSTANT: LPM_HINT STRING "ENABLE_RUNTIME_MOD=NO"
 -- Retrieval info: CONSTANT: LPM_TYPE STRING "altsyncram"
@@ -170,10 +176,12 @@ END SYN;
 -- Retrieval info: USED_PORT: clock 0 0 0 0 INPUT VCC "clock"
 -- Retrieval info: USED_PORT: data 0 0 32 0 INPUT NODEFVAL "data[31..0]"
 -- Retrieval info: USED_PORT: q 0 0 32 0 OUTPUT NODEFVAL "q[31..0]"
+-- Retrieval info: USED_PORT: rden 0 0 0 0 INPUT VCC "rden"
 -- Retrieval info: USED_PORT: wren 0 0 0 0 INPUT NODEFVAL "wren"
 -- Retrieval info: CONNECT: @address_a 0 0 9 0 address 0 0 9 0
 -- Retrieval info: CONNECT: @clock0 0 0 0 0 clock 0 0 0 0
 -- Retrieval info: CONNECT: @data_a 0 0 32 0 data 0 0 32 0
+-- Retrieval info: CONNECT: @rden_a 0 0 0 0 rden 0 0 0 0
 -- Retrieval info: CONNECT: @wren_a 0 0 0 0 wren 0 0 0 0
 -- Retrieval info: CONNECT: q 0 0 32 0 @q_a 0 0 32 0
 -- Retrieval info: GEN_FILE: TYPE_NORMAL ram.vhd TRUE
