@@ -7,15 +7,12 @@ ENTITY cpu_codyale IS
 	PORT (
 		clk, 		
 		--CONTROL PORTS
-		clr,		IncPC,	BAout,
+		clr,		IncPC,	BAout,	GRA,		GRB,		GRC,		Rin,		Rout,
 		--Input Enables
-		R00In,	R01In,	R02In,	R03In,	R04In,	R05In,	R06In,	R07In,	
-		R08In,	R09In,	R10In,	R11In,	R12In,	R13In,	R14In,	R15In,
 		HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
 		MARin,	MDRin, 	MemRead, WriteSig,
 		--BusMuxSelects
-		R00Out,	R01Out,	R02Out,	R03Out,	R04Out,	R05Out,	R06Out,	R07Out,	
-		R08Out,	R09Out,	R10Out,	R11Out,	R12Out,	R13Out,	R14Out,	R15Out,
+
 		HIOut,	LOOut,	ZHIOut,	ZLOOut, 	PCOut, 	MDROut,	PortOut, Cout			: IN STD_LOGIC;
 		PortIn,	Cin	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		--END CTL PORTS
@@ -40,6 +37,13 @@ ARCHITECTURE arch OF cpu_codyale IS
 	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
 	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC,
 	MARout, 			MDataIn			: std_logic_vector(31 downto 0);
+	
+	SIGNAL 
+	R00In,	R01In,	R02In,	R03In,	R04In,	R05In,	R06In,	R07In,	
+	R08In,	R09In,	R10In,	R11In,	R12In,	R13In,	R14In,	R15In,
+	R00Out,	R01Out,	R02Out,	R03Out,	R04Out,	R05Out,	R06Out,	R07Out,	
+	R08Out,	R09Out,	R10Out,	R11Out,	R12Out,	R13Out,	R14Out,	R15Out : std_logic; -- Select & Encode Outputs
+	
 	
 	SIGNAL w_y2alu : std_logic_vector(31 downto 0);
 	SIGNAL w_alu2z : std_logic_vector(63 downto 0);
