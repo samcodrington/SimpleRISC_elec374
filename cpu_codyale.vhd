@@ -38,7 +38,8 @@ ARCHITECTURE arch OF cpu_codyale IS
 	BusMuxInR08,	BusMuxInR09,	BusMuxInR10,	BusMuxInR11,
 	BusMuxInR12,	BusMuxInR13,	BusMuxInR14,	BusMuxInR15,
 	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
-	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC : std_logic_vector(31 downto 0);
+	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC,
+	MARout									: std_logic_vector(31 downto 0);
 	
 	SIGNAL w_y2alu : std_logic_vector(31 downto 0);
 	SIGNAL w_alu2z : std_logic_vector(63 downto 0);
@@ -130,6 +131,8 @@ BEGIN
 	Y  : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> w_y2ALU); -- FROM BUS TO ALU
 	PC : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
 	IR : reg32  PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> d_IROut); --from BUS to OUT??
+	
+	MAR : reg32 PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>MARin, output=> MARout); -- BUS to RAM
 	
 	MDR_inst : MDR
 	PORT MAP(
