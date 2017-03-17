@@ -18,6 +18,7 @@ ARCHITECTURE behavioural OF sel_encode IS
 	signal reg_sel : std_logic_vector(4 downto 0);
 	begin
 	c_sign_process : process(ir_in)
+		begin
 		for i in 31 downto 18 loop
 			c_sign_extended(i) <= ir_in(18);
 		end loop;
@@ -60,7 +61,10 @@ ARCHITECTURE behavioural OF sel_encode IS
 			end case;
 		elsif Rout = '1' then
 			case interim is
-				when "0000" => Rin_output <= b"0000_0000_0000_0001";
+				when "0000" => 
+					if BAout = '1' then
+						Rin_output <= b"0000_0000_0000_0001";
+					end if;
 				when "0001" => Rin_output <= b"0000_0000_0000_0010";
 				when "0010" => Rin_output <= b"0000_0000_0000_0100";
 				when "0011" => Rin_output <= b"0000_0000_0000_1000";
