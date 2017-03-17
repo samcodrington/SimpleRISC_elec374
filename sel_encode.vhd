@@ -17,6 +17,13 @@ ARCHITECTURE behavioural OF sel_encode IS
 	signal interim : std_logic_vector(4 downto 0);
 	signal reg_sel : std_logic_vector(4 downto 0);
 	begin
+	c_sign_process : process(ir_in)
+		for i in 31 downto 18 loop
+			c_sign_extended(i) <= ir_in(18);
+		end loop;
+		c_sign_extended(17 downto 0) <= ir_in(17 downto 0);
+	end process;
+	
 	init : process(ir_in, GRAin, GRBin, GRCin)
 	begin
 		if (GRAin ='1') then
