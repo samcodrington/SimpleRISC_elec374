@@ -16,21 +16,23 @@ END ENTITY;
 ARCHITECTURE behavioural OF sel_encode IS 
 	signal interim : std_logic_vector(4 downto 0);
 	signal reg_sel : std_logic_vector(4 downto 0);
-	
-	internal : process(ir_in, GRAin, GRBin, GRCin)
 	begin
-		if 	GRAin == '1' then
+	init : process(ir_in, GRAin, GRBin, GRCin)
+	begin
+		if (GRAin ='1') then
 			interim <= ir_in(26 downto 23);
-		elsif GRBin == '1' then 
+		elsif (GRBin = '1') then 
 			interim <= ir_in(22 downto 19);
-		elsif GRCin == '1' then
+		elsif GRCin = '1' then
 			interim <= ir_in(18 downto 15);
 		else 
 			--shouldn't get here!
 		end if;
-	end process internal;
-	external : process(interim, Rin, Rout, BAout)
-		if Rin == '1' then
+	end process init;
+	
+	result : process(interim, Rin, Rout, BAout)
+		begin
+		if Rin = '1' then
 			case interim is
 				when "0000" => Rin_output <= b"0000_0000_0000_0001";
 				when "0001" => Rin_output <= b"0000_0000_0000_0010";
@@ -47,9 +49,28 @@ ARCHITECTURE behavioural OF sel_encode IS
 				when "1100" => Rin_output <= b"0001_0000_0000_0000";
 				when "1101" => Rin_output <= b"0010_0000_0000_0000";
 				when "1110" => Rin_output <= b"0100_0000_0000_0000";
-				when "1111" => Rin_output <= b"1000_0000_0000_0000";		
-		else 
-		else if Rout == '1' then
-			if interim != "0000" then
+				when "1111" => Rin_output <= b"1000_0000_0000_0000";	
+			end case;
+		elsif Rout = '1' then
+			case interim is
+				when "0000" => Rin_output <= b"0000_0000_0000_0001";
+				when "0001" => Rin_output <= b"0000_0000_0000_0010";
+				when "0010" => Rin_output <= b"0000_0000_0000_0100";
+				when "0011" => Rin_output <= b"0000_0000_0000_1000";
+				when "0100" => Rin_output <= b"0000_0000_0001_0000";
+				when "0101" => Rin_output <= b"0000_0000_0010_0000";
+				when "0110" => Rin_output <= b"0000_0000_0100_0000";
+				when "0111" => Rin_output <= b"0000_0000_1000_0000";
+				when "1000" => Rin_output <= b"0000_0001_0000_0000";
+				when "1001" => Rin_output <= b"0000_0010_0000_0000";
+				when "1010" => Rin_output <= b"0000_0100_0000_0000";
+				when "1011" => Rin_output <= b"0000_1000_0000_0000";
+				when "1100" => Rin_output <= b"0001_0000_0000_0000";
+				when "1101" => Rin_output <= b"0010_0000_0000_0000";
+				when "1110" => Rin_output <= b"0100_0000_0000_0000";
+				when "1111" => Rin_output <= b"1000_0000_0000_0000";
+			end case;
+		end if;	
+	end process result;
 				
 END;
