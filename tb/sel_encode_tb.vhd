@@ -35,7 +35,7 @@ ARCHITECTURE behavioural OF sel_encode_tb IS
 		);
 	test_proc : process
 		begin
-		ir_in_tb <= b"00000_0100_0001_0110_0000000000000000";
+		ir_in_tb <= b"00000_0100_0001_0110_000000000000000";
 		wait for 5 ns;
 		Rin_tb <= '1';
 		GRAin_tb <= '1'; 
@@ -47,7 +47,7 @@ ARCHITECTURE behavioural OF sel_encode_tb IS
 		ir_in_tb(18 downto 15) <= "1111";
 		wait for 5 ns;
 		Rin_tb <= '0';
-		ir_in_tb <= b"00000_1001_0000_0101_0000000000000000";
+		ir_in_tb <= b"00000_1001_0000_0101_000000000000000";
 		wait for 5 ns;
 		Rout_tb <= '1';
 		GRAin_tb <= '1'; 
