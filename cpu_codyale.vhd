@@ -14,13 +14,13 @@ ENTITY cpu_codyale IS
 		--BusMuxSelects
 
 		HIOut,	LOOut,	ZHIOut,	ZLOOut, 	PCOut, 	MDROut,	PortOut, Cout			: IN STD_LOGIC;
-		PortIn,	Cin	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+		PortIn	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		--END CTL PORTS
 		
 		--DEMONSTRATION PORTS
 		d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
 		d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
-		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,
+		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,		d_C_sign_extended,
 		d_ZLoOut, 	d_ZHiOut : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 		--END DEMO PORTS
 	);
@@ -36,13 +36,10 @@ ARCHITECTURE arch OF cpu_codyale IS
 	BusMuxInR12,	BusMuxInR13,	BusMuxInR14,	BusMuxInR15,
 	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
 	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC,
+	w_IRout,
 	MARout, 			MDataIn			: std_logic_vector(31 downto 0);
 	
-	SIGNAL 
-	R00In,	R01In,	R02In,	R03In,	R04In,	R05In,	R06In,	R07In,	
-	R08In,	R09In,	R10In,	R11In,	R12In,	R13In,	R14In,	R15In,
-	R00Out,	R01Out,	R02Out,	R03Out,	R04Out,	R05Out,	R06Out,	R07Out,	
-	R08Out,	R09Out,	R10Out,	R11Out,	R12Out,	R13Out,	R14Out,	R15Out : std_logic; -- Select & Encode Outputs
+	SIGNAL 	Rin_sel, Rout_sel : std_logic_vector(15 downto 0); -- Select & Encode Outputs
 	
 	
 	SIGNAL w_y2alu : std_logic_vector(31 downto 0);
@@ -116,29 +113,50 @@ ARCHITECTURE arch OF cpu_codyale IS
 		q		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
 	);
 end component;
-	
+-- INSTANTIATION OF COMPONENTS
+	COMPONENT sel_encode 
+		PORT(
+			ir_in 							: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+			GRAin, GRBin, GRCin, 
+			Rin, Rout, BAout 				: IN STD_LOGIC;
+			
+			C_sign_extended 				: OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+			RIN_output, Rout_output 	: OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+		);
+	END COMPONENT;	
 		
 	
 BEGIN 
-	-- INSTANTIATION OF COMPONENTS
-	
+	sel_encode_inst : sel_encode
+	PORT MAP(
+		ir_in => w_IRout,						
+		GRAin => GRA,
+		GRBin => GRB,
+		GRCin => GRC,
+		Rin =>   Rin,
+		Rout =>  Rout,
+		BAout => BAout,		
+		C_sign_extended => BusMuxInC,				
+		RIN_output => RIn_sel,
+		Rout_output => Rout_sel		
+	);
 	--Registers
-	R00 : r0_reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R00in,	BAout => BAout, output=> BusMuxInR00);
-	R01 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R01in,	output=> BusMuxInR01);
-	R02 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R02in,	output=> BusMuxInR02);
-	R03 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R03in,	output=> BusMuxInR03);
-	R04 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R04in,	output=> BusMuxInR04);
-	R05 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R05in,	output=> BusMuxInR05);
-	R06 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R06in,	output=> BusMuxInR06);
-	R07 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R07in,	output=> BusMuxInR07);
-	R08 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R08in,	output=> BusMuxInR08);
-	R09 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R09in,	output=> BusMuxInR09);
-	R10 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R10in,	output=> BusMuxInR10);
-	R11 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R11in,	output=> BusMuxInR11);
-	R12 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R12in,	output=> BusMuxInR12);
-	R13 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R13in,	output=> BusMuxInR13);
-	R14 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R14in,	output=> BusMuxInR14);
-	R15 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>R15in,	output=> BusMuxInR15);
+	R00 : r0_reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(0),	BAout => BAout, output=> BusMuxInR00);
+	R01 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(1),		output=> BusMuxInR01);
+	R02 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(2),		output=> BusMuxInR02);
+	R03 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(3),		output=> BusMuxInR03);
+	R04 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(4),		output=> BusMuxInR04);
+	R05 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(5),		output=> BusMuxInR05);
+	R06 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(6),		output=> BusMuxInR06);
+	R07 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(7),		output=> BusMuxInR07);
+	R08 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(8),		output=> BusMuxInR08);
+	R09 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(9),		output=> BusMuxInR09);
+	R10 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(10),		output=> BusMuxInR10);
+	R11 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(11),		output=> BusMuxInR11);
+	R12 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(12),		output=> BusMuxInR12);
+	R13 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(13),		output=> BusMuxInR13);
+	R14 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(14),		output=> BusMuxInR14);
+	R15 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(15),		output=> BusMuxInR15);
 
 	HI : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>HIin,	output=> BusMuxInHI);	-- to/from BUS
 	LO : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>LOin,	output=> BusMuxInLO); -- to/from BUS
@@ -146,7 +164,7 @@ BEGIN
  	ZLO : reg32	PORT MAP (input => w_alu2z(31 downto 0),		clr=>clr,	clk=>clk,	reg_in=>	Zin,	output=> BusMuxInZLO); -- FROM ALU to BUS	
 	Y  : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> w_y2ALU); -- FROM BUS TO ALU
 	PC : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
-	IR : reg32  PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> d_IROut); --from BUS to OUT??
+	IR : reg32  PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> w_IRout); --from BUS to OUT??
 	
 	MAR : reg32 PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>MARin, output=> MARout); -- BUS to RAM
 	
@@ -171,10 +189,10 @@ BEGIN
 		);
 	cpu_bus_inst : cpu_bus
 	PORT MAP(
-		R00out=>R00out, 	R01out=>R01out,	R02out=>R02out,	R03out=>R03out,
-		R04out=>R04out, 	R05out=>R05out,	R06out=>R06out,	R07out=>R07out,
-		R08out=>R08out, 	R09out=>R09out,	R10out=>R10out,	R11out=>R11out,
-		R12out=>R12out, 	R13out=>R13out,	R14out=>R14out,	R15out=>R15out,
+		R00out=>Rout_sel(0),		R01out=>Rout_sel(1),		R02out=>Rout_sel(2),		R03out=>Rout_sel(3),
+		R04out=>Rout_sel(4), 	R05out=>Rout_sel(5),		R06out=>Rout_sel(6),		R07out=>Rout_sel(7),
+		R08out=>Rout_sel(8),		R09out=>Rout_sel(9),		R10out=>Rout_sel(10),	R11out=>Rout_sel(11),
+		R12out=>Rout_sel(12),	R13out=>Rout_sel(13),	R14out=>Rout_sel(14),	R15out=>Rout_sel(15),
 		hiout=>hiout,		loout=>loout,		zhiout=>zhiout,	zloout=>zloout,
 		pcout=>pcout, 		mdrout=>MDROut,	portout=>PortOut, cOut=>Cout,
 		
@@ -183,7 +201,7 @@ BEGIN
 		r08in=>BusMuxInR08,	r09in=>BusMuxInR09,	r10in=>BusMuxInR10,	r11in=>BusMuxInR11,
 		r12in=>BusMuxInR12,	r13in=>BusMuxInR13,	r14in=>BusMuxInR14,	r15in=>BusMuxInR15, 
 		HIin=>BusMuxInHI,		LOin=>BusMuxInLO,		ZHiIn=>BusMuxInZHI,	ZLoIn=>BusMuxInZLO,
-		PCin=>BusMuxInPC,		MDRin=>BusMuxInMDR,	portIn=>PortIn,		cIn=>Cin,	
+		PCin=>BusMuxInPC,		MDRin=>BusMuxInMDR,	portIn=>PortIn,		cIn=>BusMuxInC,	
 		BusMuxOut=>w_BusMuxOut	
 	);
 	ALU_inst : ALU
@@ -199,7 +217,7 @@ BEGIN
 	BusMuxInR08,	BusMuxInR09,	BusMuxInR10,	BusMuxInR11,
 	BusMuxInR12,	BusMuxInR13,	BusMuxInR14,	BusMuxInR15,
 	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
-	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC )
+	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC, w_IRout )
 	begin
 		d_R00Out <= BusMuxInR00;
 		d_R01Out <= BusMuxInR01;
@@ -225,6 +243,8 @@ BEGIN
 		d_YOut	<= w_y2ALU;
 		d_ZHiOut <= BusMuxInZHi;
 		d_ZLoOut <= BusMuxInZLo;
+		d_IRout <= w_IRout;
+		d_C_sign_extended <= BusMuxInC;
 	end process;
 	
 		
