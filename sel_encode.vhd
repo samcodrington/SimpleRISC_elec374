@@ -65,6 +65,8 @@ ARCHITECTURE behavioural OF sel_encode IS
 				when "0000" => 
 					if BAout = '1' then
 						Rout_output <= b"0000_0000_0000_0001";
+					else
+						Rout_output <= b"0000_0000_0000_0000";
 					end if;
 				when "0001" => Rout_output <= b"0000_0000_0000_0010";
 				when "0010" => Rout_output <= b"0000_0000_0000_0100";

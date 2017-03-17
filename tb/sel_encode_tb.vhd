@@ -51,6 +51,7 @@ ARCHITECTURE behavioural OF sel_encode_tb IS
 		wait for 5 ns;
 		ir_in_tb(18 downto 15) <= "1111";
 		wait for 5 ns;
+		GRCin_tb<='0';
 		Rin_tb <= '0';
 		ir_in_tb <= b"00000_1001_0000_0101_000000000000000";
 		wait for 5 ns;
@@ -63,8 +64,10 @@ ARCHITECTURE behavioural OF sel_encode_tb IS
 		wait for 5 ns;
 		GRBin_tb <= '0'; GRCin_tb<='1'; BAout_tb<='0';
 		wait for 5 ns;
+		GRCin_tb <='0';
 		ir_in_tb(18 downto 15) <= "1111";
 		wait for 5 ns;
 		Rout_tb <= '0';
+		wait;
 	end process;
 END;
