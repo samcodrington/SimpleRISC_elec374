@@ -55,19 +55,11 @@ end ex2_proc;
 ## Phase 2
 ## Work to Be Done
 * Select and Encode
-	* configure Input Enables
-	* Configure BusMuxOutSelects
 	* Connect IR to C_sign_extended register (?)
 * Redesign Top Level
-	1. Reconfigure cpu_codyale
-		* Remove multibit regin & regout ports
-		* add Gra/b/c, BA (Base Address) inputs & Rin & Rout inputs
 	2. Reconfigure cpu_codyale_tb instructions & component
 		*  remove old ALU instructions & add new instructions
-* CON FF Logic (used for branching, 
 * Input, Output Ports (let's use Strobe and get rid of Portin signals)
-
-
     
     
 ### Macro Work
@@ -77,6 +69,7 @@ end ex2_proc;
 ## Work to be Tested
 * Revision to R0 (S)
 * Memory Subsystem
+* CON FF Logic
 
 ## Work Completed
 ***
