@@ -5,9 +5,9 @@ USE ieee.std_logic_1164.all;
 LIBRARY work;
 ENTITY cpu_codyale IS
 	PORT (
-		clk, 		
+		 		
 		--CONTROL PORTS
-			clr,		IncPC,	MemRead, WriteSig,strobe,	OutPort_en,
+			clk,	clr,	IncPC,	MemRead, WriteSig,	strobe,	OutPort_en,
 			--REGISTER CONTROL PORTS
 			BAout,	GRA,		GRB,		GRC,		Rin,		Rout,
 			--NON-REGISTER CONTROL PORTS 
