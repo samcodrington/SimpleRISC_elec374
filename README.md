@@ -45,7 +45,10 @@ end ex2_proc;
  
 * Plan of Attack
  	(2017/03/19)
- 	* redo cpu_codyale test
+ 	* edit cpu_codyale_tb setup
+ 	* test RAM functionality using barebones cpu_codyale_tb
+ 	* add ld, immediate, etc... opcodes to ALU logic
+ 	* cpu_codyale_tb
  	* $$ ?
 ***
 ## Bulletin Board

@@ -6,22 +6,6 @@ END;
 
 ARCHITECTURE cpu_codyale_tb_arch OF cpu_codyale_tb IS
 --SIGNALS & COMPONENTS
-		TYPE Operation IS (Default, LoadR2, LoadR3, LoadR4, LoadR5, LoadR6, LoadR7,
-		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp);
-		TYPE Stage IS (T0, T1, T2, T3, T4, T5, T6, T7, load);
-		SIGNAL CurrentOp : Operation;
-		SIGNAL CurrentStage : Stage;
-		SIGNAL clk_tb, clr_tb, IncPC_tb, MDRRead_tb : STD_LOGIC;
-
-		SIGNAL RegIn : STD_LOGIC_VECTOR(23 downto 0);--R##In Signals go to R## to store input (write)
-		SIGNAL RegOut : STD_LOGIC_VECTOR(23 downto 0);--R##Out signals go to BusMuxEncoder (read)
-		SIGNAL MDataIn_tb : STD_LOGIC_VECTOR(31 downto 0);
-		SIGNAL --Outputs for Demonstration
-		BusMuxOut_tb, PCOut_tb, IRout_tb,
-		R00Out_tb,	R01Out_tb,	R02Out_tb,	R03Out_tb,	R04Out_tb,	R05Out_tb,	R06Out_tb,	R07Out_tb,
-		R08Out_tb,	R09Out_tb,	R10Out_tb,	R11Out_tb,	R12Out_tb,	R13Out_tb,	R14Out_tb,	R15Out_tb,
-		HIOut_tb,	LOOut_tb,	YOut_tb,	MDROut_tb,		ZHiOut_tb,	ZLoOut_tb 	: STD_LOGIC_VECTOR(31 DOWNTO 0);
-				
 COMPONENT cpu_codyale IS
 PORT(
 		--CONTROL PORTS
@@ -48,65 +32,66 @@ PORT(
 );
 END COMPONENT;
 
+		--Non Required Signals
+		TYPE Operation IS (Default, LoadR2, LoadR3, LoadR4, LoadR5, LoadR6, LoadR7,
+		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp
+		);
+		TYPE Stage IS (T0, T1, T2, T3, T4, T5, T6, T7, load);
+		SIGNAL CurrentOp : Operation;
+		SIGNAL CurrentStage : Stage;
+		
+		--Required Signals
+		--TestBench Signals
+		SIGNAL 	clk_tb, 	clr_tb, 	IncPC_tb,MemRd_tb,WriteSig_tb,	strobe_tb, Outport_en_tb, 
+		--Register TB Signals
+		BAout_tb,	GRA_tb,		GRB_tb,		GRC_tb,		Rin_tb,		Rout_tb,	
+		--Non-Register TB Signals
+		--Enable TB Signals
+		HIIn_tb,		LOIn_tb, 	PCIn_tb,		IRin_tb,		ZIn_tb,		Yin_tb,
+		MARin_tb,	MDRin_tb, 	Conin_tb,	
+		--BusMuxSelect TB Signals
+		HIOut_tb,	LOOut_tb,	ZHIOut_tb,	ZLOOut_tb, 	PCOut_tb, 	MDROut_tb,	
+		PortOut_tb, Cout_tb	: STD_LOGIC;
+		SIGNAL InPort_tb,		OutPort_tb : STD_LOGIC_VECTOR(31 downto 0);
+		SIGNAL --Outputs for Demonstration
+		BusMuxOut_tb, IRout_tb,d_PCOut_tb,
+		R00Out_tb,	R01Out_tb,	R02Out_tb,	R03Out_tb,	R04Out_tb,	R05Out_tb,	R06Out_tb,	R07Out_tb,
+		R08Out_tb,	R09Out_tb,	R10Out_tb,	R11Out_tb,	R12Out_tb,	R13Out_tb,	R14Out_tb,	R15Out_tb,
+		d_HIOut_tb,	d_LOOut_tb,	d_YOut_tb,	d_MDROut_tb,		d_ZHiOut_tb,	d_ZLoOut_tb, 	C_sign_extended_tb	: STD_LOGIC_VECTOR(31 DOWNTO 0);
+				
 BEGIN
 	--SIGNAL gnd32 STD_LOGIC_VECTOR(31 downto 0) := x"00000000";
 	--DUT inst
 	DUT : cpu_codyale
 	PORT MAP(
-		clk => clk_tb,	clr => clr_tb, IncPC => IncPC_tb,
 		--CONTROL PORTS
-		R00In => RegIn(0),
-		R01In => RegIn(1),
-		R02In => RegIn(2),
-		R03In => RegIn(3),
-		R04In => RegIn(4),
-		R05In => RegIn(5),
-		R06In => RegIn(6),
-		R07In => RegIn(7),	
-		R08In => RegIn(8),
-		R09In => RegIn(9),
-		R10In => RegIn(10),
-		R11In => RegIn(11),
-		R12In => RegIn(12),
-		R13In => RegIn(13),
-		R14In => RegIn(14),
-		R15In => RegIn(15),
-		HIIn => RegIn(16),
-		LOIn  => RegIn(17),
-		PCIn	=> RegIn(18), 
-		IRin	=> RegIn(19), 
-		ZIn	=> RegIn(20), 
-		Yin	=> RegIn(21), 	
-		MARin => RegIn(22),
-		MDRin => RegIn(23),
-		MDRRead => MDRRead_tb,
-		R00Out => RegOut(0), 
-		R01Out => RegOut(1),
-		R02Out => RegOut(2),
-		R03Out => RegOut(3),
-		R04Out => RegOut(4),
-		R05Out => RegOut(5),
-		R06Out => RegOut(6),
-		R07Out => RegOut(7),	
-		R08Out => RegOut(8),
-		R09Out => RegOut(9),
-		R10Out => RegOut(10),
-		R11Out => RegOut(11),
-		R12Out => RegOut(12),
-		R13Out => RegOut(13),
-		R14Out => RegOut(14),
-		R15Out => RegOut(15),
-		HIOut => RegOut(16),
-		LOOut  => RegOut(17),
-		ZHiOut => RegOut(18),
-		ZLOOut => RegOut(19),
-		PCOut => RegOut(20),	
-		MDROut => RegOut(21),
-		PortOut => RegOut(22),
-		COut=> RegOut(23),
-		PortIn => open,
-		Cin => open, 
-		MDATAin => MDataIn_tb, 				
+		clk => clk_tb,	clr => clr_tb, IncPC => IncPC_tb,
+		MemRead=>MemRd_tb, WriteSig=>WriteSig_tb, strobe=>strobe_tb, Outport_en=>Outport_en_tb,
+		
+		--REGISTER CONTROL PORTS
+		BAout=>BAout_tb,	GRA=>GRA_tb,	GRB=>GRB_tb,	GRC=>GRC_tb,	
+		Rin=>Rin_tb,	Rout=>Rout_tb,
+		--NON-REGISTER CONTROL PORTS 
+		-- Enables
+		HIIn => HIIn_tb,
+		LOIn  =>LOIn_tb,
+		PCIn	=>PCIn_tb,
+		IRin	=>IRin_tb,
+		ZIn	=>ZIn_tb,
+		Yin	=>Yin_tb,
+		MARin =>MARin_tb,
+		MDRin =>MDRin_tb,
+		CONin =>CONin_tb,
+		--BusMuxSelects
+		HIOut => HIOut_tb,
+		LOOut => LOOut_tb,
+		ZHiOut=> ZHiOut_tb,
+		ZLOOut=> ZLOOut_tb,
+		PCOut => PCOut_tb,	
+		MDROut=> MDROut_tb,
+		PortOut=>PortOut_tb,
+		COut	=> Cout_tb,
+		InPort=> InPort_tb,
 		--END CONTROL PORTS
 		--DEMONSTRATION PORTS
 		d_R00Out => R00Out_tb,
@@ -125,15 +110,16 @@ BEGIN
 		d_R13Out => R13Out_tb,
 		d_R14Out => R14Out_tb,
 		d_R15Out => R15Out_tb,
-		d_HIOut => HIOut_tb,
-		d_LOOut => LOOut_tb,
-		d_PCOut => PCOut_tb,
-		d_MDROut => MDROut_tb,
+		d_HIOut => d_HIOut_tb,
+		d_LOOut => d_LOOut_tb,
+		d_PCOut => d_PCOut_tb,
+		d_MDROut => d_MDROut_tb,
 		d_BusMuxOut => BusMuxOut_tb,
 		d_IROut => IRout_tb,
-		d_YOut => YOut_tb,
-		d_ZHiOut => ZHiOut_tb,
-		d_ZLoOut => ZLoOut_tb
+		d_YOut => d_YOut_tb,
+		d_ZHiOut => d_ZHiOut_tb,
+		d_ZLoOut => d_ZLoOut_tb,
+		OutPort => OutPort_tb
 	);
 	--processes
 	clk_process : process
