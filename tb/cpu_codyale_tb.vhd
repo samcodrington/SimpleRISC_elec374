@@ -24,26 +24,26 @@ ARCHITECTURE cpu_codyale_tb_arch OF cpu_codyale_tb IS
 				
 COMPONENT cpu_codyale IS
 PORT(
-		clk, 		
 		--CONTROL PORTS
-		clr,		IncPC,
-		--Input Enables
-		R00In,	R01In,	R02In,	R03In,	R04In,	R05In,	R06In,	R07In,	
-		R08In,	R09In,	R10In,	R11In,	R12In,	R13In,	R14In,	R15In,
-		HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
-		MARin,	MDRin, 	MDRRead,
-		--BusMuxSelects
-		R00Out,	R01Out,	R02Out,	R03Out,	R04Out,	R05Out,	R06Out,	R07Out,	
-		R08Out,	R09Out,	R10Out,	R11Out,	R12Out,	R13Out,	R14Out,	R15Out,
-		HIOut,	LOOut,	ZHIOut,	ZLOOut, 	PCOut, 	MDROut,	PortOut, Cout			: IN STD_LOGIC;
-		MDATAin,	PortIn,	Cin	: IN STD_LOGIC_VECTOR(31 DOWNTO 0) := x"00000000";
+			clk,	clr,	IncPC,	MemRead, WriteSig,	strobe,	OutPort_en,
+			--REGISTER CONTROL PORTS
+			BAout,	GRA,		GRB,		GRC,		Rin,		Rout,
+			--NON-REGISTER CONTROL PORTS 
+			-- Enables
+			HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
+			MARin,	MDRin, 	Conin,	
+			--BusMuxSelects
+			HIOut,	LOOut,	ZHIOut,	ZLOOut, 	PCOut, 	MDROut,	PortOut, Cout			: IN STD_LOGIC;
+			InPort	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		--END CTL PORTS
 		
 		--DEMONSTRATION PORTS
-		d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
-		d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
-		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut,d_IROut,		d_YOut,
-		d_ZLoOut, 	d_ZHiOut : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+			d_CON_FF_out	: OUT STD_LOGIC;
+			d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
+			d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
+			d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,		d_C_sign_extended,
+			d_ZLoOut, 	d_ZHiOut,
+			OutPort		: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 		--END DEMO PORTS
 );
 END COMPONENT;
