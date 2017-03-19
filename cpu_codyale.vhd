@@ -243,7 +243,8 @@ BEGIN
 	BusMuxInR08,	BusMuxInR09,	BusMuxInR10,	BusMuxInR11,
 	BusMuxInR12,	BusMuxInR13,	BusMuxInR14,	BusMuxInR15,
 	BusMuxInHI,		BusMuxInLO,		BusMuxInZHI,	BusMuxInZLO,
-	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC, w_IRout )
+	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC, 
+	w_IRout,	w_y2ALU )
 	begin
 		d_R00Out <= BusMuxInR00;
 		d_R01Out <= BusMuxInR01;
