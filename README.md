@@ -44,18 +44,13 @@ end ex2_proc;
 ### To Do
  
 * Plan of Attack
- 	(2017/03/15)
- 	* connect RAM & rewire MAR to output to RAM
-	* rewire differing ports from Phase I
-		* Gra, Grb, Grc, Rin, Rout, BAout ports replacing RegIn/Regout (not ones going to bus)
-		* add CONin signal
-		* remove inport/outport, opcode ports?
+ 	(2017/03/19)
+ 	* redo cpu_codyale test
+ 	* $$ ?
 ***
 ## Bulletin Board
 ## Phase 2
 ## Work to Be Done
-* Select and Encode
-	* Connect IR to C_sign_extended register (?)
 * Redesign Top Level
 	2. Reconfigure cpu_codyale_tb instructions & component
 		*  remove old ALU instructions & add new instructions

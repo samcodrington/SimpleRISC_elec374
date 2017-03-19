@@ -7,21 +7,23 @@ ENTITY cpu_codyale IS
 	PORT (
 		clk, 		
 		--CONTROL PORTS
-		clr,		IncPC,	BAout,	GRA,		GRB,		GRC,		Rin,		Rout,
-		--Input Enables
-		HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
-		MARin,	MDRin, 	MemRead, WriteSig,
-		--BusMuxSelects
-
-		HIOut,	LOOut,	ZHIOut,	ZLOOut, 	PCOut, 	MDROut,	PortOut, Cout			: IN STD_LOGIC;
-		PortIn	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+			clr,		IncPC,	MemRead, WriteSig,
+			--REGISTER CONTROL PORTS
+			BAout,	GRA,		GRB,		GRC,		Rin,		Rout,
+			--NON-REGISTER CONTROL PORTS 
+			-- Enables
+			HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
+			MARin,	MDRin, 	Conin,	
+			--BusMuxSelects
+			HIOut,	LOOut,	ZHIOut,	ZLOOut, 	PCOut, 	MDROut,	PortOut, Cout			: IN STD_LOGIC;
+			PortIn	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		--END CTL PORTS
 		
 		--DEMONSTRATION PORTS
-		d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
-		d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
-		d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,		d_C_sign_extended,
-		d_ZLoOut, 	d_ZHiOut : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+			d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
+			d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
+			d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,		d_C_sign_extended,
+			d_ZLoOut, 	d_ZHiOut : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 		--END DEMO PORTS
 	);
 END cpu_codyale;
@@ -40,6 +42,7 @@ ARCHITECTURE arch OF cpu_codyale IS
 	MARout, 			MDataIn			: std_logic_vector(31 downto 0);
 	
 	SIGNAL 	Rin_sel, Rout_sel : std_logic_vector(15 downto 0); -- Select & Encode Outputs
+	SIGNAL w_con_ff_out : std_logic; --CON-FF output (to Control unit?)
 	
 	
 	SIGNAL w_y2alu : std_logic_vector(31 downto 0);
@@ -112,8 +115,8 @@ ARCHITECTURE arch OF cpu_codyale IS
 		wren		: IN STD_LOGIC ;
 		q		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
 	);
-end component;
--- INSTANTIATION OF COMPONENTS
+	end component;
+
 	COMPONENT sel_encode 
 		PORT(
 			ir_in 							: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -124,9 +127,26 @@ end component;
 			RIN_output, Rout_output 	: OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
 		);
 	END COMPONENT;	
+	
+	COMPONENT con_ff
+		PORT(
+			busin	: IN STD_LOGIC_VECTOR(31 downto 0);
+			IRin	: IN STD_LOGIC_VECTOR(1 downto 0);
+			CONin : IN STD_LOGIC;
+			Q		: OUT STD_LOGIC
+		);
+	END COMPONENT;
 		
 	
 BEGIN 
+-- INSTANTIATION OF COMPONENTS
+	con_ff_inst : con_ff
+	PORT MAP(
+		busin	=>w_BusMuxOut,
+	   IRin	=>w_IRout(1 downto 0),
+	   CONin =>CONin,
+	   Q		=>w_con_ff_out
+	);
 	sel_encode_inst : sel_encode
 	PORT MAP(
 		ir_in => w_IRout,						
@@ -139,6 +159,27 @@ BEGIN
 		C_sign_extended => BusMuxInC,				
 		RIN_output => RIn_sel,
 		Rout_output => Rout_sel		
+	);
+	MAR : reg32 PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>MARin, output=> MARout); -- BUS to RAM
+	
+	MDR_inst : MDR
+	PORT MAP(
+		busMuxOut =>w_busMuxOut,
+		MDataIn	=> MDataIn,
+		clr 		=> clr,
+		clk		=> clk,
+		mdr_in	=> MDRin,
+		MDRread	=> MemRead,
+		output	=> BusMuxInMDR					
+	);
+	ram_inst : ram
+	PORT MAP(
+		address=> MARout(8 downto 0),
+		clock	=> clk,
+		data	=> BusMuxInMDR,
+		rden	=> MemRead,
+		wren	=> WriteSig,
+		q		 => MDataIn
 	);
 	--Registers
 	R00 : r0_reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(0),	BAout => BAout, output=> BusMuxInR00);
@@ -165,28 +206,7 @@ BEGIN
 	Y  : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=> Yin, 	output=> w_y2ALU); -- FROM BUS TO ALU
 	PC : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>	PCin,	output=> BusMuxInPC); --to/from BUS
 	IR : reg32  PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>	IRin,	output=> w_IRout); --from BUS to OUT??
-	
-	MAR : reg32 PORT MAP (input => w_BusMuxOut, 	clr=>clr,	clk=>clk,	reg_in=>MARin, output=> MARout); -- BUS to RAM
-	
-	MDR_inst : MDR
-	PORT MAP(
-		busMuxOut =>w_busMuxOut,
-		MDataIn	=> MDataIn,
-		clr 		=> clr,
-		clk		=> clk,
-		mdr_in	=> MDRin,
-		MDRread	=> MemRead,
-		output	=> BusMuxInMDR					
-	);
-	RAM_inst : ram
-	PORT MAP (
-		address=> MAROut(8 downto 0),
-		clock	 => clk,
-		data	 => busMuxInMDR, 
-		rden	=> Memread,
-		wren	=> WriteSig,
-		q		=> MDataIn
-		);
+
 	cpu_bus_inst : cpu_bus
 	PORT MAP(
 		R00out=>Rout_sel(0),		R01out=>Rout_sel(1),		R02out=>Rout_sel(2),		R03out=>Rout_sel(3),
