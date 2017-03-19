@@ -36,13 +36,13 @@ ARCHITECTURE tb of con_ff_tb IS
 		wait for 5 ns;
 		busin <=x"00000010";
 		wait for 5 ns;
-		busin <=x"11111110";
+		busin <=x"F1111110";
 		wait for 5 ns;
 		IRin <="11";
 		wait for 5 ns;
 		busin <=x"00000010";
 		wait for 5 ns;
-		busin <=x"11111110";
+		busin <=x"F1111110";
 		wait;
 	END PROCESS;
 		
