@@ -147,7 +147,8 @@ begin
 	else 
 		case opcode is
 
-			when "00101" =>	Zout(63 downto 32) <= x"00000000";
+			when "00000" | "00001" | "00010" | "00011" | "00100" | "00101"|"01101" => -- LD|LDI|STI|LDR|STR|ADD|ADDI
+									Zout(63 downto 32) <= x"00000000";
 									Zout(31 downto 0) <= (Ain + Bin); 		-- op<= add;
 			when "00110" => Zout(63 downto 32) <= x"00000000";
 									Zout(31 downto 0) <= (Ain - Bin);		-- op<= sub;
