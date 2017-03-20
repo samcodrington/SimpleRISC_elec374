@@ -32,12 +32,15 @@ ARCHITECTURE behavioural OF MDR IS
 		output 	=> output
 	);
 	
-	PROCESS(clk, BusMuxOut, MDataIn, MDRRead)
+	PROCESS(clk, BusMuxOut, MDataIn, MDRRead, mdr_in)
 	BEGIN
-		IF (MDRRead = '0') THEN
-			MDMuxOut <= busMuxOut;
-		ELSIF (MDRRead = '1') THEN
-			MDMuxOut <= MdataIn;
+		IF mdr_in <= '1' then
+			IF (MDRRead = '0') THEN
+				MDMuxOut <= busMuxOut;
+			ELSIF (MDRRead = '1') THEN
+				MDMuxOut <= MdataIn;
+			END IF;
+		ELSE
 		END IF;
 	END PROCESS;
 END;
