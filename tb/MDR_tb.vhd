@@ -40,20 +40,27 @@ BEGIN
 	
 	testProc : process
 	begin
-		wait for 5 ns;
+		wait until rising_edge(clk_tb);
 		MDRread_tb <= '0';
 		BMOut_tb <= x"F0F0_F0F0";
 		MDIn_tb <= x"FFFF_0000";
-		wait for 10 ns;
+		wait until rising_edge(clk_tb);
 		MDR_in_tb <= '1';
-		wait for 10 ns;
+		wait until rising_edge(clk_tb);
 		MDRread_tb <= '1';
-		wait for 10 ns;
+		wait until rising_edge(clk_tb);
 		MDR_in_tb <='0';
-		wait for 10 ns;
+		wait until rising_edge(clk_tb);
 		MDIn_tb <= x"0000_FFFF";
-		wait for 22 ns;
+		wait for 7 ns;
 		clr_tb <='1';
+		wait until rising_edge(clk_tb);
+		MDR_in_tb<='0';
+		clr_tb <='0';
+		wait until rising_edge(clk_tb);
+		MDin_tb <=x"0F0F0F0F";
+		MDR_in_tb <= '1';
+		MDRread_tb <= '0';
 		wait;
 	end process testProc;
 end;
