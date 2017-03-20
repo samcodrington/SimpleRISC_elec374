@@ -90,7 +90,7 @@ ARCHITECTURE behavioural OF sel_encode IS
 				when others => Rout_output <= b"0000_0000_0000_0000";
 			end case;
 		else
-			Rin_output <= b"0000_0000_0000_0000";
+			Rout_output <= b"0000_0000_0000_0000";
 		end if;	
 	end process result;
 				
