@@ -172,8 +172,6 @@ begin
 									Zout(31 downto 0) <=rot_out;		
 									dist <= Bin(4 downto 0); 
 									rot_lr_sel <= '1';							-- op<= rot_l;
-			when "01101" =>	Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <= (Ain + Bin);		-- op<= add; --addi
 			when "01110" =>	Zout(63 downto 32) <= x"00000000";	
 									Zout(31 downto 0) <= (Ain and Bin);		-- op<= and_op; --andi
 			when "01111" =>	Zout(63 downto 32) <= x"00000000";	
