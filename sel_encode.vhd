@@ -60,7 +60,11 @@ ARCHITECTURE behavioural OF sel_encode IS
 				when "1111" => Rin_output <= b"1000_0000_0000_0000";
 				when others => Rin_output <= b"0000_0000_0000_0000";	
 			end case;
-		elsif Rout = '1' then
+		else
+			Rin_output <= b"0000_0000_0000_0000";	
+		end if;
+		
+		if Rout = '1' then
 			case interim is
 				when "0000" => 
 					if BAout = '1' then
@@ -85,6 +89,8 @@ ARCHITECTURE behavioural OF sel_encode IS
 				when "1111" => Rout_output <= b"1000_0000_0000_0000";
 				when others => Rout_output <= b"0000_0000_0000_0000";
 			end case;
+		else
+			Rin_output <= b"0000_0000_0000_0000";
 		end if;	
 	end process result;
 				
