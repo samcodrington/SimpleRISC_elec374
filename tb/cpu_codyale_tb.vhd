@@ -34,7 +34,9 @@ END COMPONENT;
 
 		--Non Required Signals
 		TYPE Operation IS (Default, LoadR2, LoadR3, LoadR4, LoadR5, LoadR6, LoadR7,
-		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp
+		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp,
+		Load, LoadI, LoadR, Store, StoreR, AddI, BranchZero, BranchNZero, BranchPos, BranchNeg,
+		Jump, JumpR, Movefhi, Moveflo, Input, Output
 		);
 		TYPE Stage IS (T0, T1, T2, T3, T4, T5, T6, T7, load);
 		SIGNAL CurrentOp : Operation;
@@ -131,6 +133,8 @@ BEGIN
 	--Testing process
 	test_process : process
 		begin
+		CurrentOp <= default;
+		CurrentStage <= Load;
 		clr_tb <='1';	
 		IncPC_tb<='0';	MemRd_tb<='0';	WriteSig_tb<='0';	strobe_tb<='0'; 
 		GRA_tb<='0';	GRB_tb<='0';	GRC_tb<='0';		
@@ -143,10 +147,18 @@ BEGIN
 		ZLOOut_tb<='0'; 	PCOut_tb<='0'; 	MDROut_tb<='0';	
 		PortOut_tb<='0'; Cout_tb<='0';
 		wait until RISING_EDGE(clk_tb); 
-		
 		--LD Instruction
-		-- Memory Address 0
-		-- ld	R1, 15	(00000000100000000000000000001111)
+		-- ld	R1, 1
+		-- Memory Address 0 (00000000100000000000000000000001)
+
+		CurrentOp <= default;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
 		
 		
 	end process test_process;
