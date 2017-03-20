@@ -16,7 +16,7 @@
 
 ***
 ## Bugs
-
+* MDR takes 3 clock cycles to Load -> fix before proceeding
 ## Sam's notebook
 
  * Total Compilation fails, but A & E and ModelSim works fine ... fixed for Phase 2
@@ -42,22 +42,12 @@ end ex2_proc;
 `output1 = 0` and `output2 = 1`
 
 ### To Do
- 
-* Plan of Attack
- 	(2017/03/19)
- 	* edit cpu_codyale_tb setup
- 	* test RAM functionality using barebones cpu_codyale_tb
- 	* add ld, immediate, etc... opcodes to ALU logic
- 	* cpu_codyale_tb
- 	* $$ ?
+
 ***
 ## Bulletin Board
 ## Phase 2
 ## Work to Be Done
-* Redesign Top Level
-	2. Reconfigure cpu_codyale_tb instructions & component
-		*  remove old ALU instructions & add new instructions
-* Input, Output Ports (let's use Strobe and get rid of Portin signals)
+* testbench
     
     
 ### Macro Work

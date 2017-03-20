@@ -147,11 +147,12 @@ BEGIN
 		ZLOOut_tb<='0'; 	PCOut_tb<='0'; 	MDROut_tb<='0';	
 		PortOut_tb<='0'; Cout_tb<='0';
 		wait until RISING_EDGE(clk_tb); 
+		clr_tb <='0';
+		
 		--LD Instruction
 		-- ld	R1, 1
 		-- Memory Address 0 (00000000100000000000000000000001)
-
-		CurrentOp <= default;
+		CurrentOp <= Load;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
 		MARin_tb <='1';	
@@ -160,6 +161,13 @@ BEGIN
 		wait until RISING_EDGE(clk_tb); 
 		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
 		
-		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		--ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		wait;
 	end process test_process;
 END;
