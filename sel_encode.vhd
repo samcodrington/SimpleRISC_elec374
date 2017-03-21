@@ -70,7 +70,6 @@ ARCHITECTURE behavioural OF sel_encode IS
 		if Rout = '1' then 
 			case interim is
 				when "0000" =>	Rout_output <= b"0000_0000_0000_0001";
-					
 				when "0001" => Rout_output <= b"0000_0000_0000_0010";
 				when "0010" => Rout_output <= b"0000_0000_0000_0100";
 				when "0011" => Rout_output <= b"0000_0000_0000_1000";
@@ -89,7 +88,9 @@ ARCHITECTURE behavioural OF sel_encode IS
 				when others => Rout_output <= b"0000_0000_0000_0000";
 			end case;
 		else
-			Rout_output <= b"0000_0000_0000_0000";
+			if BAout = '0' then
+				Rout_output <= b"0000_0000_0000_0000";
+			end if;
 		end if;	
 	end process result;
 				
