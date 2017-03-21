@@ -15,7 +15,6 @@ PORT	(
 END ENTITY;
 ARCHITECTURE behavioural OF sel_encode IS 
 	signal interim : std_logic_vector(3 downto 0);
-	signal reg_sel : std_logic_vector(3 downto 0);
 	begin
 	c_sign_process : process(ir_in)
 		begin
