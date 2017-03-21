@@ -167,7 +167,53 @@ BEGIN
 		MemRd_tb	<='1';
 		MDRin_tb	<='1';
 		wait until RISING_EDGE(clk_tb); 
-		--ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		Grb_tb	<='1';
+		BAout_tb <='1';
+		Yin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		Grb_tb	<='0';	BAout_tb <='0';	Yin_tb<='0';
+		
+		CurrentStage <= T4;
+		Cout_tb 	<='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb);
+		Cout_tb 	<='0';	Zin_tb	<='0';
+		
+		CurrentStage <= T5;
+		ZLoOut_tb<= '1';
+		MARin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		ZLoOut_tb<= '0';	MARin_tb	<= '0';
+		
+		CurrentStage <= T6;
+		MemRd_tb <= '1';	
+		MDRin_tb <= '1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		MemRd_tb <= '0';	MDRin_tb <='0';
+		
+		CurrentStage <= T7;
+		MDROut_tb<= '1';
+		GRA_tb	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	GRA_tb	<= '0';	Rin_tb	<= '0';
+		
+		
 		wait;
+		
+
 	end process test_process;
 END;

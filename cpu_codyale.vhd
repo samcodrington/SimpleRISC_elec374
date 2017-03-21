@@ -23,7 +23,7 @@ ENTITY cpu_codyale IS
 			d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
 			d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
 			d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,		d_C_sign_extended,
-			d_ZLoOut, 	d_ZHiOut,
+			d_ZLoOut, 	d_ZHiOut,	d_MARout,
 			OutPort		: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 		--END DEMO PORTS
 	);
