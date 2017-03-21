@@ -26,7 +26,7 @@ PORT(
 			d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
 			d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
 			d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,		d_C_sign_extended,
-			d_ZLoOut, 	d_ZHiOut,
+			d_ZLoOut, 	d_ZHiOut,	d_MARout,
 			OutPort		: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 		--END DEMO PORTS
 );
@@ -59,7 +59,7 @@ END COMPONENT;
 		BusMuxOut_tb, IRout_tb,d_PCOut_tb,
 		R00Out_tb,	R01Out_tb,	R02Out_tb,	R03Out_tb,	R04Out_tb,	R05Out_tb,	R06Out_tb,	R07Out_tb,
 		R08Out_tb,	R09Out_tb,	R10Out_tb,	R11Out_tb,	R12Out_tb,	R13Out_tb,	R14Out_tb,	R15Out_tb,
-		d_HIOut_tb,	d_LOOut_tb,	d_YOut_tb,	d_MDROut_tb,		d_ZHiOut_tb,	d_ZLoOut_tb, 	C_sign_extended_tb	: STD_LOGIC_VECTOR(31 DOWNTO 0);
+		d_HIOut_tb,	d_LOOut_tb,	d_YOut_tb,	d_MDROut_tb,MarOut_tb,	d_ZHiOut_tb,	d_ZLoOut_tb, 	C_sign_extended_tb	: STD_LOGIC_VECTOR(31 DOWNTO 0);
 				
 BEGIN
 	--SIGNAL gnd32 STD_LOGIC_VECTOR(31 downto 0) := x"00000000";
@@ -121,6 +121,7 @@ BEGIN
 		d_YOut => d_YOut_tb,
 		d_ZHiOut => d_ZHiOut_tb,
 		d_ZLoOut => d_ZLoOut_tb,
+		d_MARout => MarOut_tb,
 		OutPort => OutPort_tb
 	);
 	--processes

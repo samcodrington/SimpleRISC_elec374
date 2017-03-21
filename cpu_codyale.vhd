@@ -272,6 +272,7 @@ BEGIN
 		d_IRout <= w_IRout;
 		d_C_sign_extended <= BusMuxInC;
 		d_CON_FF_OUT <= w_con_ff_out;
+		d_MARout <= Marout;
 	end process;
 	
 		
