@@ -151,7 +151,7 @@ BEGIN
 		clr_tb <='0';
 		
 		--LD Instruction
-		-- ld	R1, 1
+		-- ld	R1, M[1] (contains 1984 in binary)
 		-- Memory Address 0 (00000000100000000000000000000001)
 		CurrentOp <= Load;
 		CurrentStage <= T0;
@@ -211,6 +211,56 @@ BEGIN
 		Rin_tb	<= '1';
 		wait until RISING_EDGE(clk_tb); 
 		MDROut_tb<= '0';	GRA_tb	<= '0';	Rin_tb	<= '0';
+		
+		
+		
+		--LD Instruction
+		-- ldi	R2, 2017
+		-- Memory Address 4 (00000001000000000000111111000001)
+		CurrentOp <= LoadI;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		GRb_tb	<= '1';
+		BAout_tb <= '1';
+		Yin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		GRb_tb	<= '0';	BAout_tb <= '0';	Yin_tb	<= '0';
+		
+		CurrentStage <= T4;
+		Cout_tb	<= '1';
+		Zin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		Cout_tb	<= '0';	Zin_tb	<= '0';
+		
+		CurrentStage <= T5;
+		ZLoOut_tb<= '1';
+		Gra_tb	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
 		
 		
 		wait;
