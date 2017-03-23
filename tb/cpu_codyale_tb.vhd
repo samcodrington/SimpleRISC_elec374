@@ -305,8 +305,9 @@ BEGIN
 		GRb_tb	<= '1';
 		BAout_tb <= '1';
 		Yin_tb	<= '1';
+		Rout_tb	<= '1';
 		wait until RISING_EDGE(clk_tb); 
-		GRb_tb	<= '0';	BAout_tb <= '0';	Yin_tb	<= '0';
+		GRb_tb	<= '0';	BAout_tb <= '0';	Yin_tb	<= '0';	Rout_tb	<= '0';
 		
 		CurrentStage <= T4;
 		Cout_tb	<= '1';
@@ -321,7 +322,7 @@ BEGIN
 		wait until RISING_EDGE(clk_tb); 
 		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
 		
-		-- ldi	R1, $55(R1) --> loads from Address 110 (55 + 65 (in R1)) (contains 2017 in binary)
+		-- ldi	R1, $55(R1) --> loads 120 (55 + 65 (in R1)) 
 		-- Memory Address 12	(00001000100010000000000000110111)
 		CurrentOp <= LoadI;
 		CurrentStage <= T0;
@@ -350,10 +351,10 @@ BEGIN
 		
 		CurrentStage <= T3;
 		GRb_tb	<= '1';
-		BAout_tb <= '1';
 		Yin_tb	<= '1';
+		Rout_tb	<= '1'; --not BAout because loading from R1 not R0
 		wait until RISING_EDGE(clk_tb); 
-		GRb_tb	<= '0';	BAout_tb <= '0';	Yin_tb	<= '0';
+		GRb_tb	<= '0';	Yin_tb	<= '0'; Rout_tb	<= '0';
 		
 		CurrentStage <= T4;
 		Cout_tb	<= '1';
@@ -368,8 +369,8 @@ BEGIN
 		wait until RISING_EDGE(clk_tb); 
 		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
 		
-		-- ldr	R0, $65 --> loads from Address 81 (65 + 16 (in PC)) (contains 1995 in binary)
-		-- Memory Address 16	(00011001100000000000000001000001)
+		-- ldr	R0, $65 --> loads from Address 85 (65 + 20 (in PC)) (contains 1995 in binary)
+		-- Memory Address 16	(00011000100000000000000001000001)
 		CurrentOp <= LoadR;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
