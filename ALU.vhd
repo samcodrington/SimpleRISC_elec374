@@ -143,7 +143,7 @@ op_proc: process(incPC,opcode,Ain,Bin, booth_out, shift_out, rot_out, div_quo, d
 
 begin
 	if incPC = '1' then
-		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Bin + x"00000004");
+		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Bin + x"00000001");
 	else 
 		case opcode is
 
