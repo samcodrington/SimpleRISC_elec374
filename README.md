@@ -16,9 +16,10 @@
 
 ***
 ## Bugs
-* MDR takes 3 clock cycles to Load -> fix before proceeding
+* RAM takes 3 clk cycles to read from memory (unfixable)
+* 
 ## Sam's notebook
-
+ * When switching test benches, need to swtich test bench AND ram's mif initializer
  * Total Compilation fails, but A & E and ModelSim works fine ... fixed for Phase 2
  
 

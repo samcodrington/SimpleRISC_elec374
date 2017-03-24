@@ -1,0 +1,7 @@
+# Store
+ldi R4, $67		#load R4 with 0x67
+st $90, R4		#store 0x67 in $90
+ld R5, $90		#load R5 with 0x67 = M($90)
+st $90(R4), R4	#store 0x67 in $F7 (=0x90 + 0x67)
+ld R6, $F7		#load R5 with 0x43 = M($D3)
+str $90, R4		#store 0x67 in $97 (=0x90 + 0x7) 

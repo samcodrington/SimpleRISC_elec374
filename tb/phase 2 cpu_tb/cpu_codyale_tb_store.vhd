@@ -149,10 +149,93 @@ BEGIN
 		PortOut_tb<='0'; Cout_tb<='0';
 		wait until RISING_EDGE(clk_tb); 
 		clr_tb <='0';
+--STORE INSTRUCTIONS
+		--preparing for Store instruCTIONS
+		--ldi R4, $43
+		--Memory Address 20 (00001010000000000000000000101011)
+		CurrentOp <= LoadI;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
 		
-		--LOAD INSTRUCTIONS
-		-- ld	R1, $65 (contains 2 in binary)
-		-- Memory Address 0 (00000000100000000000000001000001)
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		GRb_tb	<= '1';
+		BAout_tb <= '1';
+		Yin_tb	<= '1';
+		Rout_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		GRb_tb	<= '0';	BAout_tb <= '0';	Yin_tb	<= '0';	Rout_tb	<= '0';
+		
+		CurrentStage <= T4;
+		Cout_tb	<= '1';
+		Zin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		Cout_tb	<= '0';	Zin_tb	<= '0';
+		
+		CurrentStage <= T5;
+		ZLoOut_tb<= '1';
+		Gra_tb	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
+		
+		--st $90, R4
+		--Memory Address 24 (00010010000000000000000001011010)
+		CurrentOp <= Store;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		MARin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';	MARin_tb	<= '1';
+		
+		CurrentStage <= T3;
+		Rout_tb <= '1';
+		GRA_tb  <= '1';
+		writeSig_tb <= '1';
+		wait until RISING_EDGE(clk_tb); 
+		Rout_tb <= '0';	GRA_tb  <= '0';	writeSig_tb <= '0';
+		
+		--ld R5, $90 --initialized with 1s, but should contain 42
+		--Memory Address 28 (00000_0101_0000_0000000000001011010)
 		CurrentOp <= Load;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
@@ -210,222 +293,11 @@ BEGIN
 		GRA_tb	<= '1';
 		Rin_tb	<= '1';
 		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	GRA_tb	<= '0';	Rin_tb	<= '0';
+		--MDROut_tb<= '0';	GRA_tb	<= '0';	Rin_tb	<= '0';
+		--st $90(R4), R4 --stored in 133 (90+43)
+		--Memory Address 32
 		
-		-- ld	R0, $55(R1) -> Loads from $57 (=$55 + 2)(contains 1984 in binary)
-		-- Memory Address 4 (00000000000010000000000000110111)
-		CurrentOp <= Load;
-		CurrentStage <= T0;
-		PCOut_tb	<='1';	
-		MARin_tb <='1';	
-		IncPC_tb <='1';
-		Zin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
 		
-		CurrentStage<=T1;
-		ZLoOut_tb<='1';
-		PCin_tb	<='1';
-		MemRd_tb	<='1';
-		MDRin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		--ld R6, $132 --initialized with 1s, but should contain 42
+		--Memory Address 36 (00000_0110_0000_0000000000001011010)
 		
-		CurrentStage <= T2;
-		MDROut_tb<= '1';
-		IRin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	IRin_tb	<= '0';
-		
-		CurrentStage <= T3;
-		Grb_tb	<='1';
-		BAout_tb <='1';
-		Yin_tb	<='1';
-		Rout_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		Grb_tb	<='0';	BAout_tb <='0';	Yin_tb<='0'; Rout_tb <='0';
-		
-		CurrentStage <= T4;
-		Cout_tb 	<='1';
-		Zin_tb	<='1';
-		wait until RISING_EDGE(clk_tb);
-		Cout_tb 	<='0';	Zin_tb	<='0';
-		
-		CurrentStage <= T5;
-		ZLoOut_tb<= '1';
-		MARin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb);
-		ZLoOut_tb<= '0';	MARin_tb	<= '0';
-		
-		CurrentStage <= T6;
-		MemRd_tb <= '1';	
-		MDRin_tb <= '1';
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		MemRd_tb <= '0';	MDRin_tb <='0';
-		
-		CurrentStage <= T7;
-		MDROut_tb<= '1';
-		GRA_tb	<= '1';
-		Rin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	GRA_tb	<= '0';	Rin_tb	<= '0';
-		
-		-- ldi	R1, $65
-		-- Memory Address 8 (00001000100000000000000001000001)
-		CurrentOp <= LoadI;
-		CurrentStage <= T0;
-		PCOut_tb	<='1';	
-		MARin_tb <='1';	
-		IncPC_tb <='1';
-		Zin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
-		
-		CurrentStage<=T1;
-		ZLoOut_tb<='1';
-		PCin_tb	<='1';
-		MemRd_tb	<='1';
-		MDRin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
-		
-		CurrentStage <= T2;
-		MDROut_tb<= '1';
-		IRin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	IRin_tb	<= '0';
-		
-		CurrentStage <= T3;
-		GRb_tb	<= '1';
-		BAout_tb <= '1';
-		Yin_tb	<= '1';
-		Rout_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		GRb_tb	<= '0';	BAout_tb <= '0';	Yin_tb	<= '0';	Rout_tb	<= '0';
-		
-		CurrentStage <= T4;
-		Cout_tb	<= '1';
-		Zin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		Cout_tb	<= '0';	Zin_tb	<= '0';
-		
-		CurrentStage <= T5;
-		ZLoOut_tb<= '1';
-		Gra_tb	<= '1';
-		Rin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
-		
-		-- ldi	R1, $55(R1) --> loads 120 (55 + 65 (in R1)) 
-		-- Memory Address 12	(00001000100010000000000000110111)
-		CurrentOp <= LoadI;
-		CurrentStage <= T0;
-		PCOut_tb	<='1';	
-		MARin_tb <='1';	
-		IncPC_tb <='1';
-		Zin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
-		
-		CurrentStage<=T1;
-		ZLoOut_tb<='1';
-		PCin_tb	<='1';
-		MemRd_tb	<='1';
-		MDRin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
-		
-		CurrentStage <= T2;
-		MDROut_tb<= '1';
-		IRin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	IRin_tb	<= '0';
-		
-		CurrentStage <= T3;
-		GRb_tb	<= '1';
-		Yin_tb	<= '1';
-		Rout_tb	<= '1'; --not BAout because loading from R1 not R0
-		wait until RISING_EDGE(clk_tb); 
-		GRb_tb	<= '0';	Yin_tb	<= '0'; Rout_tb	<= '0';
-		
-		CurrentStage <= T4;
-		Cout_tb	<= '1';
-		Zin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		Cout_tb	<= '0';	Zin_tb	<= '0';
-		
-		CurrentStage <= T5;
-		ZLoOut_tb<= '1';
-		Gra_tb	<= '1';
-		Rin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
-		
-		-- ldr	R0, $65 --> loads from Address 85 (65 + 20 (in PC)) (contains 1995 in binary)
-		-- Memory Address 16	(00011000100000000000000001000001)
-		CurrentOp <= LoadR;
-		CurrentStage <= T0;
-		PCOut_tb	<='1';	
-		MARin_tb <='1';	
-		IncPC_tb <='1';
-		Zin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
-		
-		CurrentStage<=T1;
-		ZLoOut_tb<='1';
-		PCin_tb	<='1';
-		Yin_tb	<='1';
-		MemRd_tb	<='1';
-		MDRin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		ZLoOut_tb<='0';	PCin_tb	<='0';	Yin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
-		
-		CurrentStage <= T2;
-		MDROut_tb<= '1';
-		IRin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	IRin_tb	<= '0';
-		
-		CurrentStage <= T3;
-		Cout_tb 	<='1';
-		Zin_tb	<='1';
-		wait until RISING_EDGE(clk_tb);
-		Cout_tb 	<='0';	Zin_tb	<='0';
-		
-		CurrentStage <= T4;
-		ZLoOut_tb<= '1';
-		MARin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb);
-		ZLoOut_tb<= '0';	MARin_tb	<= '0';
-		
-		CurrentStage <= T5;
-		MemRd_tb <= '1';	
-		MDRin_tb <= '1';
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		MemRd_tb <= '0';	MDRin_tb <='0';
-		
-		CurrentStage <= T6;
-		MDROut_tb<= '1';
-		GRA_tb	<= '1';
-		Rin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	GRA_tb	<= '0';	Rin_tb	<= '0';
-		
-		wait;
-		
-
-	end process test_process;
-END;
