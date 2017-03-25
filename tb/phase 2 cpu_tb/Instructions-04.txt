@@ -1,0 +1,15 @@
+#Branch Instructions
+ldi R5, 0x7		#loads R5 with $7 the location of  ldi address
+ldi R6, 0x5		#loads R6 with 0x5 (not equal to 0)
+brzr R6, R5		#should not branch because R6 != 0
+brnz R6, R5		#should branch to $7 because R6 != 0
+nop					#(shouldn't load these)
+nop					#(shouldn't load these)
+nop					#(shouldn't load these)
+ldi R5, 0x0		#loads R5 with $0 the location of 1st instruction	
+ldi R6, 0x35	#loads R6 with 0x5 (not equal to 0)
+brmi R6, R5		#should not branch because R6 >= 0
+brpl R6, R5		#should branch to $0 because R6 >= 0
+nop					#(shouldn't load these)
+nop					#(shouldn't load these)
+nop					#(shouldn't load these)
