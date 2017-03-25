@@ -44,6 +44,7 @@ ARCHITECTURE arch OF cpu_codyale IS
 	
 	SIGNAL 	Rin_sel, Rout_sel : std_logic_vector(15 downto 0); -- Select & Encode Outputs
 	SIGNAL w_con_ff_out : std_logic; --CON-FF output (to Control unit?)
+	SIGNAL w_R14_en : std_logic; 
 	
 	
 	SIGNAL w_y2alu : std_logic_vector(31 downto 0);
@@ -200,7 +201,7 @@ BEGIN
 	R11 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(11),		output=> BusMuxInR11);
 	R12 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(12),		output=> BusMuxInR12);
 	R13 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(13),		output=> BusMuxInR13);
-	R14 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>RA_en,				output=> BusMuxInR14);
+	R14 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>w_R14_en,				output=> BusMuxInR14);
 	R15 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(15),		output=> BusMuxInR15);
 
 	HI : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>HIin,	output=> BusMuxInHI);	-- to/from BUS
@@ -236,7 +237,7 @@ BEGIN
 		Zout => w_alu2z
 	);
 	
-	process(clk,clr,w_BusMuxOut,w_con_ff_out,
+	process(clk,clr,w_BusMuxOut,w_con_ff_out,		RA_en,
 	BusMuxInR00,	BusMuxInR01,	BusMuxInR02,	BusMuxInR03,
 	BusMuxInR04,	BusMuxInR05,	BusMuxInR06,	BusMuxInR07,
 	BusMuxInR08,	BusMuxInR09,	BusMuxInR10,	BusMuxInR11,
@@ -245,6 +246,7 @@ BEGIN
 	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC, 
 	w_IRout,	w_y2ALU )
 	begin
+		w_R14_en <= (Rin_sel(14) or RA_en);
 		d_R00Out <= BusMuxInR00;
 		d_R01Out <= BusMuxInR01;
 		d_R02Out <= BusMuxInR02;

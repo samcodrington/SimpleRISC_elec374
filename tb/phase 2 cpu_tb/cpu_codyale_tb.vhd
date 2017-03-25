@@ -72,7 +72,7 @@ BEGIN
 		
 		--REGISTER CONTROL PORTS
 		BAout=>BAout_tb,	GRA=>GRA_tb,	GRB=>GRB_tb,	GRC=>GRC_tb,	
-		Rin=>Rin_tb,	Rout=>Rout_tb,
+		Rin=>Rin_tb,	Rout=>Rout_tb,		RA_en=> RA_en_tb,
 		--NON-REGISTER CONTROL PORTS 
 		-- Enables
 		HIIn => HIIn_tb,
@@ -140,7 +140,7 @@ BEGIN
 		clr_tb <='1';	
 		IncPC_tb<='0';	MemRd_tb<='0';	WriteSig_tb<='0';	strobe_tb<='0'; 
 		GRA_tb<='0';	GRB_tb<='0';	GRC_tb<='0';		
-		BAout_tb<='0';	Rin_tb<='0';	Rout_tb<='0';	
+		BAout_tb<='0';	Rin_tb<='0';	Rout_tb<='0';	RA_en_tb <= '0';
 		Outport_en_tb<='0';	
 		HIin_tb<='0';	LOin_tb<='0'; 	PCin_tb<='0';	IRin_tb<='0';	
 		Zin_tb<='0';	Yin_tb<='0';	MARin_tb<='0';	MDRin_tb<='0';	Conin_tb<='0';
