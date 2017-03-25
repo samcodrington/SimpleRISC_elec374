@@ -7,7 +7,7 @@ END;
 ARCHITECTURE cpu_codyale_tb_arch OF cpu_codyale_tb IS
 --SIGNALS & COMPONENTS
 COMPONENT cpu_codyale IS
-PORT ( 		
+PORT(
 		--CONTROL PORTS
 			clk,	clr,	IncPC,	MemRead, WriteSig,	strobe,	OutPort_en,
 			--REGISTER CONTROL PORTS
@@ -29,7 +29,7 @@ PORT (
 			d_ZLoOut, 	d_ZHiOut,	d_MARout,
 			OutPort		: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 		--END DEMO PORTS
-	);
+);
 END COMPONENT;
 
 		--Non Required Signals
@@ -72,7 +72,7 @@ BEGIN
 		
 		--REGISTER CONTROL PORTS
 		BAout=>BAout_tb,	GRA=>GRA_tb,	GRB=>GRB_tb,	GRC=>GRC_tb,	
-		Rin=>Rin_tb,	Rout=>Rout_tb,		RA_en => RA_en_tb,
+		Rin=>Rin_tb,	Rout=>Rout_tb,		RA_en=> RA_en_tb,
 		--NON-REGISTER CONTROL PORTS 
 		-- Enables
 		HIIn => HIIn_tb,

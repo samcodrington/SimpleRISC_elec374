@@ -11,7 +11,7 @@ PORT(
 		--CONTROL PORTS
 			clk,	clr,	IncPC,	MemRead, WriteSig,	strobe,	OutPort_en,
 			--REGISTER CONTROL PORTS
-			BAout,	GRA,		GRB,		GRC,		Rin,		Rout,
+			BAout,	GRA,		GRB,		GRC,		Rin,		Rout,		RA_en,
 			--NON-REGISTER CONTROL PORTS 
 			-- Enables
 			HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
@@ -35,8 +35,8 @@ END COMPONENT;
 		--Non Required Signals
 		TYPE Operation IS (Default, LoadR2, LoadR3, LoadR4, LoadR5, LoadR6, LoadR7,
 		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp,
-		Load, LoadI, LoadR, Store, StoreR, AddI, BranchZero, BranchNZero, BranchPos, BranchNeg,
-		Jump, JumpR, Movefhi, Moveflo, Input, Output
+		Load, LoadI, LoadR, Store, StoreR, AddI, AndI, OrI, BranchZero, BranchNZero, BranchPos, BranchNeg,
+		Jump, JumpAL, Movefhi, Moveflo, Input, Output
 		);
 		TYPE Stage IS (T0, T1, T2, T3, T4, T5, T6, T7, load);
 		SIGNAL CurrentOp : Operation;
@@ -46,7 +46,7 @@ END COMPONENT;
 		--TestBench Signals
 		SIGNAL 	clk_tb, 	clr_tb, 	IncPC_tb,MemRd_tb,WriteSig_tb,	strobe_tb, Outport_en_tb, 
 		--Register TB Signals
-		BAout_tb,	GRA_tb,		GRB_tb,		GRC_tb,		Rin_tb,		Rout_tb,	
+		BAout_tb,	GRA_tb,		GRB_tb,		GRC_tb,		Rin_tb,		Rout_tb,	RA_en_tb,
 		--Non-Register TB Signals
 		--Enable TB Signals
 		HIIn_tb,		LOIn_tb, 	PCIn_tb,		IRin_tb,		ZIn_tb,		Yin_tb,
@@ -72,7 +72,7 @@ BEGIN
 		
 		--REGISTER CONTROL PORTS
 		BAout=>BAout_tb,	GRA=>GRA_tb,	GRB=>GRB_tb,	GRC=>GRC_tb,	
-		Rin=>Rin_tb,	Rout=>Rout_tb,
+		Rin=>Rin_tb,	Rout=>Rout_tb,		RA_en=> RA_en_tb,
 		--NON-REGISTER CONTROL PORTS 
 		-- Enables
 		HIIn => HIIn_tb,
