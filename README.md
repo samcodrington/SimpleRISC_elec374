@@ -54,11 +54,11 @@ end ex2_proc;
 
 ## Work in Progress
 * Testbench
-** ALU
-** Branch
-** Jump
-** MFHI/LO
-** I/O
+  * ALU
+  * Branch
+  * Jump
+  * MFHI/LO
+  * I/O
 
 ## Work to be Tested
 
