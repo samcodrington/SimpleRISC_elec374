@@ -1,0 +1,8 @@
+#Jump Instructions
+ldi R2, $5	#Load R2 with 0x5
+jr	R2		#Jump to adresss $5
+nop				#should not get here
+nop				#should not get here
+nop				#should not get here
+ldi R2, $10 #Load R2 with 0x10
+jal R2		#Jump to address $10, saving PC+1 in R14
