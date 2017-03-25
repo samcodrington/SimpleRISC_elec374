@@ -53,16 +53,11 @@ end ex2_proc;
 ### Macro Work
 
 ## Work in Progress
-* Testbench
-  * ALU
-  * Branch
-  * Jump
-  * MFHI/LO
-  * I/O
 
 ## Work to be Tested
 
 ## Work Completed
+* Phase II
 ***
 
 ## OpCodes
