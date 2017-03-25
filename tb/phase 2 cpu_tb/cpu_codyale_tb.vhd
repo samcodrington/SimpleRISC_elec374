@@ -122,6 +122,7 @@ BEGIN
 		d_ZHiOut => d_ZHiOut_tb,
 		d_ZLoOut => d_ZLoOut_tb,
 		d_MARout => MarOut_tb,
+		d_c_sign_extended => C_sign_extended_tb,
 		OutPort => OutPort_tb
 	);
 	--processes
