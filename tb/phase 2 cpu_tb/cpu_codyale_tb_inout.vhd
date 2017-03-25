@@ -203,7 +203,7 @@ BEGIN
 		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
 		
 		--out R2			#send 0x64 out
-		CurrentOp <= LoadI;
+		CurrentOp <= Output;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
 		MARin_tb <='1';	
@@ -236,7 +236,7 @@ BEGIN
 		GRA_tb	<= '0';	Rout_tb	<= '0';	OutPort_en_tb	<= '0';
 
 		--in R3			#load R3 with whatever's in the Inport
-		CurrentOp <= LoadI;
+		CurrentOp <= Input;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
 		MARin_tb <='1';	
