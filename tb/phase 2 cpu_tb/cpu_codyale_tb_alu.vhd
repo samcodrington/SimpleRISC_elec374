@@ -35,7 +35,7 @@ END COMPONENT;
 		--Non Required Signals
 		TYPE Operation IS (Default, LoadR2, LoadR3, LoadR4, LoadR5, LoadR6, LoadR7,
 		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp,
-		Load, LoadI, LoadR, Store, StoreR, AddI, BranchZero, BranchNZero, BranchPos, BranchNeg,
+		Load, LoadI, LoadR, Store, StoreR, AddI, AndI, OrI, BranchZero, BranchNZero, BranchPos, BranchNeg,
 		Jump, JumpR, Movefhi, Moveflo, Input, Output
 		);
 		TYPE Stage IS (T0, T1, T2, T3, T4, T5, T6, T7, load);
@@ -122,6 +122,7 @@ BEGIN
 		d_ZHiOut => d_ZHiOut_tb,
 		d_ZLoOut => d_ZLoOut_tb,
 		d_MARout => MarOut_tb,
+		d_c_sign_extended => C_sign_extended_tb,
 		OutPort => OutPort_tb
 	);
 	--processes
@@ -199,7 +200,7 @@ BEGIN
 		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
 		
 		--addi R2, R3, $25	#Load R2 with 0x44 
-		CurrentOp <= LoadI;
+		CurrentOp <= AddI;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
 		MARin_tb <='1';	
@@ -224,9 +225,119 @@ BEGIN
 		wait until RISING_EDGE(clk_tb); 
 		MDROut_tb<= '0';	IRin_tb	<= '0';
 		
-		--andi R2, R3, $25	#Load R2 with 0x05 
-		--ori R2, R3, $25		#Load R2 with 0x3F 
+		CurrentStage <= T3;
+		GRB_tb 	<= '1';
+		Rout_tb 	<= '1';
+		Yin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		GRB_tb 	<= '0';	Rout_tb 	<= '0';	Yin_tb	<= '0';
 		
+		CurrentStage <= T4;
+		Cout_tb	<= '1';
+		Zin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		Cout_tb	<= '0';	Zin_tb	<= '0';
+		
+		CurrentStage <= T5;
+		ZloOut_tb<= '1';
+		GRA_tb 	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		ZloOut_tb<= '0';	GRA_tb 	<= '0';	Rin_tb	<= '0';
+		
+		
+		--andi R2, R3, $25	#Load R2 with 0x05 
+		
+		CurrentOp <= AndI;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		GRB_tb 	<= '1';
+		Rout_tb 	<= '1';
+		Yin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		GRB_tb 	<= '0';	Rout_tb 	<= '0';	Yin_tb	<= '0';
+		
+		CurrentStage <= T4;
+		Cout_tb	<= '1';
+		Zin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		Cout_tb	<= '0';	Zin_tb	<= '0';
+		
+		CurrentStage <= T5;
+		ZloOut_tb<= '1';
+		GRA_tb 	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		ZloOut_tb<= '0';	GRA_tb 	<= '0';	Rin_tb	<= '0';
+		
+		--ori R2, R3, $25		#Load R2 with 0x3F 
+		CurrentOp <= OrI;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		GRB_tb 	<= '1';
+		Rout_tb 	<= '1';
+		Yin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		GRB_tb 	<= '0';	Rout_tb 	<= '0';	Yin_tb	<= '0';
+		
+		CurrentStage <= T4;
+		Cout_tb	<= '1';
+		Zin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		Cout_tb	<= '0';	Zin_tb	<= '0';
+		
+		CurrentStage <= T5;
+		ZloOut_tb<= '1';
+		GRA_tb 	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		ZloOut_tb<= '0';	GRA_tb 	<= '0';	Rin_tb	<= '0';
 		
 		wait;
 		
