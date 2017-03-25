@@ -151,8 +151,7 @@ BEGIN
 		clr_tb <='0';
 --STORE INSTRUCTIONS
 		--preparing for Store instruCTIONS
-		--ldi R4, $43
-		--Memory Address 20 (00001010000000000000000000101011)
+		--ldi R4, $67
 		CurrentOp <= LoadI;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
@@ -197,10 +196,9 @@ BEGIN
 		Gra_tb	<= '1';
 		Rin_tb	<= '1';
 		wait until RISING_EDGE(clk_tb); 
-		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
-		
-		--st $90, R4
-		--Memory Address 24 (00010010000000000000000001011010)
+		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';		
+
+		--st $90, R4		#store 0x67 in $90
 		CurrentOp <= Store;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
@@ -223,81 +221,31 @@ BEGIN
 		CurrentStage <= T2;
 		MDROut_tb<= '1';
 		IRin_tb	<= '1';
-		MARin_tb	<= '1';
+		MARin_tb <= '1';
 		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	IRin_tb	<= '0';	MARin_tb	<= '1';
+		MDROut_tb<= '0';	IRin_tb	<= '0';	MARin_tb <= '0';
 		
 		CurrentStage <= T3;
-		Rout_tb <= '1';
-		GRA_tb  <= '1';
-		writeSig_tb <= '1';
-		wait until RISING_EDGE(clk_tb); 
-		Rout_tb <= '0';	GRA_tb  <= '0';	writeSig_tb <= '0';
-		
-		--ld R5, $90 --initialized with 1s, but should contain 42
-		--Memory Address 28 (00000_0101_0000_0000000000001011010)
-		CurrentOp <= Load;
-		CurrentStage <= T0;
-		PCOut_tb	<='1';	
-		MARin_tb <='1';	
-		IncPC_tb <='1';
-		Zin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
-		
-		CurrentStage<=T1;
-		ZLoOut_tb<='1';
-		PCin_tb	<='1';
-		MemRd_tb	<='1';
-		MDRin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
-		
-		CurrentStage <= T2;
-		MDROut_tb<= '1';
-		IRin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		MDROut_tb<= '0';	IRin_tb	<= '0';
-		
-		CurrentStage <= T3;
-		Grb_tb	<='1';
-		BAout_tb <='1';
-		Yin_tb	<='1';
-		wait until RISING_EDGE(clk_tb); 
-		Grb_tb	<='0';	BAout_tb <='0';	Yin_tb<='0';
+		Gra_tb 	<= '1';
+		Rout_tb	<= '1';
+		MDRin_tb <= '1';
+		wait until RISING_EDGE(clk_tb);
+		Gra_tb 	<= '0';		Rout_tb	<= '0';		MDRin_tb <= '0';
 		
 		CurrentStage <= T4;
-		Cout_tb 	<='1';
-		Zin_tb	<='1';
-		wait until RISING_EDGE(clk_tb);
-		Cout_tb 	<='0';	Zin_tb	<='0';
-		
-		CurrentStage <= T5;
-		ZLoOut_tb<= '1';
-		MARin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb);
-		ZLoOut_tb<= '0';	MARin_tb	<= '0';
-		
-		CurrentStage <= T6;
-		MemRd_tb <= '1';	
-		MDRin_tb <= '1';
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		wait until RISING_EDGE(clk_tb); 
-		MemRd_tb <= '0';	MDRin_tb <='0';
-		
-		CurrentStage <= T7;
 		MDROut_tb<= '1';
-		GRA_tb	<= '1';
-		Rin_tb	<= '1';
-		wait until RISING_EDGE(clk_tb); 
-		--MDROut_tb<= '0';	GRA_tb	<= '0';	Rin_tb	<= '0';
-		--st $90(R4), R4 --stored in 133 (90+43)
-		--Memory Address 32
+		WriteSig_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		MDROut_tb<= '0';	WriteSig_tb	<= '0';
+		--ld R2, $90		#load R2 with 0x67 = M($90)
 		
+		--st $90(R4), R4	#store 0x67 in $F7 (=0x90 + 0x67)
 		
-		--ld R6, $132 --initialized with 1s, but should contain 42
-		--Memory Address 36 (00000_0110_0000_0000000000001011010)
+		--ld R3, 0xF7		#load R3 with 0x67 = M($D3)
 		
+		--str $90, R4		#store 0x67 in $96 (=0x90 + 0x6) 
+		
+		--ld R1, $96		#load R1 with 0x67 = M($96) 
+		wait;
+	END process;
+END;
