@@ -1,0 +1,6 @@
+#Load
+ld R1, $65 		#load R1 with 2 = M($65)
+ld R0, $55(R1) 	#load R0 with 0x1984 = M($57) 
+ldi R1, $65		#load R1 with 0x65
+ldi R1, $55(R1) #load R1 with 0xBA (= 0x55 + 0x65) 
+ldr R0, $65 	#load R0 with 0x1995 = M($6A = 0x65 + 0x6)

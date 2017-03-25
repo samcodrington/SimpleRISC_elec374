@@ -92,7 +92,7 @@ SIGNAL	cla16_sum_out : STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL	cla16_filler :	STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 SIGNAL	booth_out : STD_LOGIC_VECTOR(63 DOWNTO 0);
 SIGNAL	RCA_c_out, gnd : STD_LOGIC;
-
+SIGNAL	Cout, GGout, PGout : STD_LOGIC;
 
 BEGIN 
 --COMPONENT INSTANTIATION
@@ -138,14 +138,17 @@ PORT MAP(
 			output => booth_out
 		);
 
-op_proc: process(incPC,opcode,Ain,Bin, cla16_sum_out, booth_out)
+
+op_proc: process(incPC,opcode,Ain,Bin, booth_out, shift_out, rot_out, div_quo, div_rem, cla16_sum_out)
+
 begin
 	if incPC = '1' then
-		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Bin + x"00000004");
+		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Bin + x"00000001");
 	else 
 		case opcode is
 
-			when "00101" =>	Zout(63 downto 32) <= x"00000000";
+			when "00000" | "00001" | "00010" | "00011" | "00100" | "00101"|"01101" => -- LD|LDI|STI|LDR|STR|ADD|ADDI
+									Zout(63 downto 32) <= x"00000000";
 									Zout(31 downto 0) <= (Ain + Bin); 		-- op<= add;
 			when "00110" => Zout(63 downto 32) <= x"00000000";
 									Zout(31 downto 0) <= (Ain - Bin);		-- op<= sub;
@@ -164,13 +167,11 @@ begin
 			when "01011" =>	Zout(63 downto 32) <= x"00000000";
 									Zout(31 downto 0) <=rot_out; 		
 									dist <= Bin(4 downto 0); 
-									lr_sel <= '0';							-- op<= rot_r;
+									rot_lr_sel <= '0';							-- op<= rot_r;
 			when "01100" =>	Zout(63 downto 32) <= x"00000000";	
 									Zout(31 downto 0) <=rot_out;		
 									dist <= Bin(4 downto 0); 
-									lr_sel <= '1';							-- op<= rot_l;
-			when "01101" =>	Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <= (Ain + Bin);		-- op<= add; --addi
+									rot_lr_sel <= '1';							-- op<= rot_l;
 			when "01110" =>	Zout(63 downto 32) <= x"00000000";	
 									Zout(31 downto 0) <= (Ain and Bin);		-- op<= and_op; --andi
 			when "01111" =>	Zout(63 downto 32) <= x"00000000";	
@@ -179,9 +180,9 @@ begin
 			when "10001" =>	Zout(63 downto 32) <= div_rem;		
 									Zout(31 downto 0) <= div_quo; 			-- op<= div;
 			when "10010" =>	Zout(63 downto 32) <= x"00000000";	
-							Zout(31 downto 0) <= (not Ain + x"00000001");  	 	-- op<= neg;
+									Zout(31 downto 0) <= (not Bin + x"00000001");  	 	-- op<= neg;
 			when "10011" =>	Zout(63 downto 32) <= x"00000000";	
-									Zout(31 downto 0) <= (not Ain);			-- op<= not_op;
+									Zout(31 downto 0) <= (not Bin);			-- op<= not_op;
 			when "11000" =>	Zout <= x"000000000000" & cla16_sum_out;			-- op<= rc_add;
 			when others => 	Zout(63 downto 0)  <= x"0F0F0F0F0F0F0F0F";		--ERROR;
 		end case;

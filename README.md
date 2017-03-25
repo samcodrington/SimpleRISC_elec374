@@ -17,11 +17,12 @@
 ***
 ## Bugs
 
+* 
 ## Sam's notebook
-
- * **Idea**: Have a seperate port in the ALU specific to IncPC, ie. IR has wire going to incPC port in ALU
+ * When switching test benches, need to swtich test bench AND ram's mif initializer
  * Total Compilation fails, but A & E and ModelSim works fine ... fixed for Phase 2
-
+ * RAM takes 1 clock cycle to write to memory BUT 3 clock cycles to read. THis is an unavoidable feature of the megafunction used, and does not need to be fixed.
+ 
 
 ### Signals inside Processes
 http://stackoverflow.com/questions/15485749/vhdl-variable-vs-signal
@@ -43,35 +44,25 @@ end ex2_proc;
 `output1 = 0` and `output2 = 1`
 
 ### To Do
- 
 
 ***
 ## Bulletin Board
-## Phase 1
+## Phase 2
 ## Work to Be Done
-### Components 
-  * ALU
-    * MUL
-      * Array MUL
-      * *BONUS* Booth w/Bit Pair Recoding
-    
-    
+   
 ### Macro Work
-* Phase 1 Test Bench  
 
 ## Work in Progress
+* Testbench
+** ALU
+** Branch
+** Jump
+** MFHI/LO
+** I/O
+
 ## Work to be Tested
 
 ## Work Completed
-* BusMux
-* Bus Encoder
-* 32 bit Register
-* MDR
-* ADD/SUB
-* Booth MUL
-* MDR
-* ALU
-* CPU_bus
 ***
 
 ## OpCodes
