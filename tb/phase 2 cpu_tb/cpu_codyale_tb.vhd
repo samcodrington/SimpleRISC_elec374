@@ -36,7 +36,7 @@ END COMPONENT;
 		TYPE Operation IS (Default, LoadR2, LoadR3, LoadR4, LoadR5, LoadR6, LoadR7,
 		Add, Sub, Mul, Div, AndOp, OrOp, SHR, SHL, RotRight, RotLeft, Neg, NotOp,
 		Load, LoadI, LoadR, Store, StoreR, AddI, AndI, OrI, BranchZero, BranchNZero, BranchPos, BranchNeg,
-		Jump, JumpR, Movefhi, Moveflo, Input, Output
+		Jump, JumpAL, Movefhi, Moveflo, Input, Output
 		);
 		TYPE Stage IS (T0, T1, T2, T3, T4, T5, T6, T7, load);
 		SIGNAL CurrentOp : Operation;
