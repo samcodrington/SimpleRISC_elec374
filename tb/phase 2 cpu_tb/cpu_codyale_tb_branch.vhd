@@ -292,7 +292,7 @@ BEGIN
 		
 		--brnz R6, R5		#should branch to $7 because R6 != 0
 		
-		CurrentOp <= BranchZero;
+		CurrentOp <= BranchNZero;
 		CurrentStage <= T0;
 		PCOut_tb	<='1';	
 		MARin_tb <='1';	
@@ -323,13 +323,198 @@ BEGIN
 		Conin_tb <= '1';
 		wait until RISING_EDGE(clk_tb);
 		Gra_tb	<= '0';	Rout_tb	<= '0';	Conin_tb <= '0';
+		
+		if (CON_FF_tb = '1') then
+			CurrentStage <= T4;
+			Grb_tb <= '1';
+			Rout_tb<= '1';
+			PCin_tb<= '1';
+			wait until RISING_EDGE(clk_tb);
+			Grb_tb <= '0';		Rout_tb<= '0';		PCin_tb<= '0';
+		end if;
+		
 		--nop					#(shouldn't load these)
 		--nop					#(shouldn't load these)
 		--nop					#(shouldn't load these)
-		--ldi R5, 0x0		#loads R5 with $0 the location of 1st instruction	
+		--ldi R5, 0x0		#loads R5 with $0 the location of 1st instruction
+		CurrentOp <= LoadI;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		GRb_tb	<= '1';
+		BAout_tb <= '1';
+		Yin_tb	<= '1';
+		Rout_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		GRb_tb	<= '0';	BAout_tb <= '0';	Yin_tb	<= '0';	Rout_tb	<= '0';
+		
+		CurrentStage <= T4;
+		Cout_tb	<= '1';
+		Zin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		Cout_tb	<= '0';	Zin_tb	<= '0';
+		
+		CurrentStage <= T5;
+		ZLoOut_tb<= '1';
+		Gra_tb	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
+		
 		--ldi R6, 0x35	#loads R6 with 0x5 (not equal to 0)
+		
+		CurrentOp <= LoadI;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		GRb_tb	<= '1';
+		BAout_tb <= '1';
+		Yin_tb	<= '1';
+		Rout_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		GRb_tb	<= '0';	BAout_tb <= '0';	Yin_tb	<= '0';	Rout_tb	<= '0';
+		
+		CurrentStage <= T4;
+		Cout_tb	<= '1';
+		Zin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		Cout_tb	<= '0';	Zin_tb	<= '0';
+		
+		CurrentStage <= T5;
+		ZLoOut_tb<= '1';
+		Gra_tb	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<= '0';	Gra_tb	<= '0';	Rin_tb	<= '0';
+		
 		--brmi R6, R5		#should not branch because R6 >= 0
+		CurrentOp <= BranchNeg;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		Gra_tb	<= '1';
+		Rout_tb	<= '1';
+		Conin_tb <= '1';
+		wait until RISING_EDGE(clk_tb);
+		Gra_tb	<= '0';	Rout_tb	<= '0';	Conin_tb <= '0';
+		
+		if (CON_FF_tb = '1') then
+			CurrentStage <= T4;
+			Grb_tb <= '1';
+			Rout_tb<= '1';
+			PCin_tb<= '1';
+			wait until RISING_EDGE(clk_tb);
+			Grb_tb <= '0';		Rout_tb<= '0';		PCin_tb<= '0';
+		end if;
+		
 		--brpl R6, R5		#should branch to $0 because R6 >= 0
+		CurrentOp <= BranchPos;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		Gra_tb	<= '1';
+		Rout_tb	<= '1';
+		Conin_tb <= '1';
+		wait until RISING_EDGE(clk_tb);
+		Gra_tb	<= '0';	Rout_tb	<= '0';	Conin_tb <= '0';
+		
+		if (CON_FF_tb = '1') then
+			CurrentStage <= T4;
+			Grb_tb <= '1';
+			Rout_tb<= '1';
+			PCin_tb<= '1';
+			wait until RISING_EDGE(clk_tb);
+			Grb_tb <= '0';		Rout_tb<= '0';		PCin_tb<= '0';
+		end if;
+		
 		--nop					#(shouldn't load these)
 		--nop					#(shouldn't load these)
 		--nop					#(shouldn't load these)
