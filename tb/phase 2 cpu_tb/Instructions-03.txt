@@ -1,4 +1,4 @@
-#Add Instructions
+#ALU Immediate Instructions
 ldi R3, 0x1F		#Load R3 with 0x1F
 addi R2, R3, $25	#Load R2 with 0x44 
 andi R2, R3, $25	#Load R2 with 0x05 
