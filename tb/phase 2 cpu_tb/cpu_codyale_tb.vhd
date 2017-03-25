@@ -11,7 +11,7 @@ PORT(
 		--CONTROL PORTS
 			clk,	clr,	IncPC,	MemRead, WriteSig,	strobe,	OutPort_en,
 			--REGISTER CONTROL PORTS
-			BAout,	GRA,		GRB,		GRC,		Rin,		Rout,
+			BAout,	GRA,		GRB,		GRC,		Rin,		Rout,		RA_en,
 			--NON-REGISTER CONTROL PORTS 
 			-- Enables
 			HIIn,		LOIn, 	PCIn,		IRin,		ZIn,		Yin,
@@ -46,7 +46,7 @@ END COMPONENT;
 		--TestBench Signals
 		SIGNAL 	clk_tb, 	clr_tb, 	IncPC_tb,MemRd_tb,WriteSig_tb,	strobe_tb, Outport_en_tb, 
 		--Register TB Signals
-		BAout_tb,	GRA_tb,		GRB_tb,		GRC_tb,		Rin_tb,		Rout_tb,	
+		BAout_tb,	GRA_tb,		GRB_tb,		GRC_tb,		Rin_tb,		Rout_tb,	RA_en_tb,
 		--Non-Register TB Signals
 		--Enable TB Signals
 		HIIn_tb,		LOIn_tb, 	PCIn_tb,		IRin_tb,		ZIn_tb,		Yin_tb,
