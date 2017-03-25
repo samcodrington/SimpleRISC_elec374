@@ -200,7 +200,7 @@ BEGIN
 	R11 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(11),		output=> BusMuxInR11);
 	R12 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(12),		output=> BusMuxInR12);
 	R13 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(13),		output=> BusMuxInR13);
-	R14 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(14) or RA_en,		output=> BusMuxInR14);
+	R14 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>RA_en,				output=> BusMuxInR14);
 	R15 : reg32	PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>Rin_sel(15),		output=> BusMuxInR15);
 
 	HI : reg32  PORT MAP (input => w_BusMuxOut,	clr=>clr,	clk=>clk,	reg_in=>HIin,	output=> BusMuxInHI);	-- to/from BUS
