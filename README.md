@@ -16,11 +16,12 @@
 
 ***
 ## Bugs
-* RAM takes 3 clk cycles to read from memory (unfixable)
+
 * 
 ## Sam's notebook
  * When switching test benches, need to swtich test bench AND ram's mif initializer
  * Total Compilation fails, but A & E and ModelSim works fine ... fixed for Phase 2
+ * RAM takes 1 clock cycle to write to memory BUT 3 clock cycles to read. THis is an unavoidable feature of the megafunction used, and does not need to be fixed.
  
 
 ### Signals inside Processes
@@ -48,17 +49,18 @@ end ex2_proc;
 ## Bulletin Board
 ## Phase 2
 ## Work to Be Done
-* testbench
-    
-    
+   
 ### Macro Work
 
 ## Work in Progress
+* Testbench
+** ALU
+** Branch
+** Jump
+** MFHI/LO
+** I/O
 
 ## Work to be Tested
-* Revision to R0 (S)
-* Memory Subsystem
-* CON FF Logic
 
 ## Work Completed
 ***
