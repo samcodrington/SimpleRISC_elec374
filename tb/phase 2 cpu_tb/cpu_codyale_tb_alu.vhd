@@ -151,7 +151,7 @@ BEGIN
 		wait until RISING_EDGE(clk_tb); 
 		clr_tb <='0';
 		
-		--Add Instructions
+		--ALU Immediate Instructions
 		--ldi R3, 0x1F		#Load R3 with 0x1F
 		CurrentOp <= LoadI;
 		CurrentStage <= T0;
