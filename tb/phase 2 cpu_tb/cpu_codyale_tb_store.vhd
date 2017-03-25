@@ -238,6 +238,64 @@ BEGIN
 		wait until RISING_EDGE(clk_tb);
 		MDROut_tb<= '0';	WriteSig_tb	<= '0';
 		--ld R2, $90		#load R2 with 0x67 = M($90)
+		CurrentOp <= Load;
+		CurrentStage <= T0;
+		PCOut_tb	<='1';	
+		MARin_tb <='1';	
+		IncPC_tb <='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		PCOut_tb	<='0';	MARin_tb <='0';	IncPC_tb <='0';	Zin_tb	<='0';
+		
+		CurrentStage<=T1;
+		ZLoOut_tb<='1';
+		PCin_tb	<='1';
+		MemRd_tb	<='1';
+		MDRin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		ZLoOut_tb<='0';	PCin_tb	<='0';	MemRd_tb	<='0';	MDRin_tb	<='0';	
+		
+		CurrentStage <= T2;
+		MDROut_tb<= '1';
+		IRin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	IRin_tb	<= '0';
+		
+		CurrentStage <= T3;
+		Grb_tb	<='1';
+		BAout_tb <='1';
+		Yin_tb	<='1';
+		wait until RISING_EDGE(clk_tb); 
+		Grb_tb	<='0';	BAout_tb <='0';	Yin_tb<='0';
+		
+		CurrentStage <= T4;
+		Cout_tb 	<='1';
+		Zin_tb	<='1';
+		wait until RISING_EDGE(clk_tb);
+		Cout_tb 	<='0';	Zin_tb	<='0';
+		
+		CurrentStage <= T5;
+		ZLoOut_tb<= '1';
+		MARin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb);
+		ZLoOut_tb<= '0';	MARin_tb	<= '0';
+		
+		CurrentStage <= T6;
+		MemRd_tb <= '1';	
+		MDRin_tb <= '1';
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		wait until RISING_EDGE(clk_tb); 
+		MemRd_tb <= '0';	MDRin_tb <='0';
+		
+		CurrentStage <= T7;
+		MDROut_tb<= '1';
+		GRA_tb	<= '1';
+		Rin_tb	<= '1';
+		wait until RISING_EDGE(clk_tb); 
+		MDROut_tb<= '0';	GRA_tb	<= '0';	Rin_tb	<= '0';
 		
 		--st $90(R4), R4	#store 0x67 in $F7 (=0x90 + 0x67)
 		
