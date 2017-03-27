@@ -28,10 +28,11 @@ ENTITY ctl_unit IS
 END ctl_unit;
 
 ARCHITECTURE behavioural OF ctl_unit IS
-	TYPE State IS (Fetch0, Fetch1, Fetch2,
+	TYPE State IS (Fetch0, Fetch11, fetch12, fetch13, Fetch2,
 						load3, load4, load5, load6, load7,
 						loadi3, loadi4, loadi5,
 						loadr3, loadr4, loadr5, loadr6, loadr7,
+						store3, store4, store5,
 						Add3, Add4, Add5, Add6,
 						Reset_State);
 	SIGNAL Present_State		: State;
@@ -45,10 +46,14 @@ BEGIN
 				when Reset_State =>
 					Present_state <= fetch0;
 				when fetch0 =>
-					Present_State <= fetch1;
-				when fetch1 =>
+					Present_State <= fetch11;
+				when fetch11 =>
+					Present_State <= fetch12;
+				when fetch12 =>
+					Present_State <= fetch13;
+				when fetch13 =>
 					Present_State <= fetch2;
-				
+				-------------------------------------------
 				when load3 =>
 					Present_State <= load4;
 				when load4 =>
@@ -59,20 +64,39 @@ BEGIN
 					Present_State <= load7;
 				when load7 =>
 					Present_State <= fetch0;
-				
+				-------------------------------------------
 				when loadi3 =>
 					Present_State <= loadi4;
 				when loadi4 =>
 					Present_State <= loadi5;
 				when loadi5 =>
 					Present_State <= fetch0;
-				
+				-------------------------------------------
+				when store3 =>
+					Present_State <= store4;
+				when store4 =>
+					Present_State <= store5;
+				when store5 =>
+					Present_State <= fetch0;
+				-------------------------------------------
+				when loadr3 =>
+					Present_State <= loadr4;
+				when loadr4 =>
+					Present_State <= loadr5;
+				when loadr5 =>
+					Present_State <= fetch0;
+				-------------------------------------------
+				-------------------------------------------
 				when fetch2 =>
 					Case IR(31 downto 27) is
 						when "00000" =>
 							Present_State <= load3;
 						when "00001" =>
 							Present_State <= loadi3;
+						when "00010" =>
+							Present_State <= store3;
+						when "00011" =>
+							Present_State <= loadr3;
 						when "00101" =>
 							Present_State <= add3;
 						when others =>
@@ -108,8 +132,10 @@ BEGIN
 				clr <= '1';
 			when fetch0 =>
 				PCout <= '1'; MARin <= '1'; IncPC <= '1'; Zin<= '1';
-			when fetch1 =>
+			when fetch11 =>
 				ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
+			when fetch12 =>
+			when fetch13 =>
 			when fetch2 =>
 				MDRout <= '1'; IRin <= '1';
 			-------------------------------------------	
@@ -137,8 +163,16 @@ BEGIN
 			when loadi5 =>
 				ZLoOut <= '1'; GRA <= '1'; Rin <= '1'; 
 			-------------------------------------------	
-			
-			
+			when store3 =>
+				MDRout <= '1'; MARin <= '1'; 
+			when store4 =>
+				GRA <= '1'; Rout <= '1'; Yin <= '1'; 
+				if IR(22 downto 19) <= "0000" then
+					BAout <= '1'; 
+				end if;
+			when store5 =>
+				MDRout <= '1'; WriteSig  <= '1'; 
+			-------------------------------------------	
 			when others =>
 		end CASE;
 	END PROCESS;
