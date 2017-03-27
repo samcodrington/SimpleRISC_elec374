@@ -30,6 +30,8 @@ ARCHITECTURE structural OF ctl_unit_tb IS
 			ReadSig, WriteSig 	: OUT STD_LOGIC
 		);
 	END COMPONENT;
+	alias Present_State is
+		<<signal DUT.Present_state : State>>;
 	SIGNAL IR_tb								: STD_LOGIC_VECTOR(31 DOWNTO 0);
 	SIGNAL clk_tb, reset_tb, stop_tb, con_ff_tb,
 			--Indicators
@@ -120,12 +122,12 @@ BEGIN
 	PROCESS
 		BEGIN
 		wait for 3 ns;
-		reset_tb <= '1'; stop_tb <= '1'; con_ff <= '0'; IRin <= "0x00000000";
+		reset_tb <= '1'; stop_tb <= '1'; con_ff_tb <= '0'; IR_tb <= x"00000000";
 		wait until rising_edge(clk_tb);
 		reset_tb <= '0';
 		wait until rising_edge(clk_tb);
 		stop_tb <= '0';
-		IRin_tb <= "00800065";
+		IR_tb <= x"00800065";
 		wait;
 		
 	END PROCESS;
