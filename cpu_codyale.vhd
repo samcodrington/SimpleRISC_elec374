@@ -237,7 +237,7 @@ BEGIN
 		Zout => w_alu2z
 	);
 	
-	process(clk,clr,w_BusMuxOut,w_con_ff_out,		RA_en,
+	process(clk,clr,w_BusMuxOut,w_con_ff_out,		Rin_sel,		MARout,		RA_en,
 	BusMuxInR00,	BusMuxInR01,	BusMuxInR02,	BusMuxInR03,
 	BusMuxInR04,	BusMuxInR05,	BusMuxInR06,	BusMuxInR07,
 	BusMuxInR08,	BusMuxInR09,	BusMuxInR10,	BusMuxInR11,
