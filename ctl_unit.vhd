@@ -31,6 +31,7 @@ ARCHITECTURE behavioural OF ctl_unit IS
 	TYPE State IS (Fetch0, Fetch1, Fetch2,
 						load3, load4, load5, load6, load7,
 						loadi3, loadi4, loadi5,
+						loadr3, loadr4, loadr5, loadr6, loadr7,
 						Add3, Add4, Add5, Add6,
 						Reset_State);
 	SIGNAL Present_State		: State;
@@ -133,7 +134,7 @@ BEGIN
 			when loadi5 =>
 				ZLoOut <= '1'; GRA <= '1'; Rin <= '1'; 
 			-------------------------------------------	
-
+			
 			
 			when others =>
 		end CASE;

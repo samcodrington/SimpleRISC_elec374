@@ -22,6 +22,7 @@
  * When switching test benches, need to swtich test bench AND ram's mif initializer
  * Total Compilation fails, but A & E and ModelSim works fine ... fixed for Phase 2
  * RAM takes 1 clock cycle to write to memory BUT 3 clock cycles to read. THis is an unavoidable feature of the megafunction used, and does not need to be fixed.
+ * Load Relative takes 7 clock cycles not 6 as in phase ii because the standard fetch instructions are modified in specification & that extra cycle is added in.
  
 
 ### Signals inside Processes
