@@ -93,7 +93,7 @@ BEGIN
 		--Memory Signals
 		ReadSig<= '0'; WriteSig <= '0';
 		CASE Present_State IS
-			when Reset_State =>
+			when Reset_State =>E
 				clr <= '1';
 			when fetch0 =>
 				PCout <= '1'; MARin <= '1'; IncPC <= '1'; Zin<= '1';
@@ -102,17 +102,19 @@ BEGIN
 			when fetch2 =>
 				MDRout <= '1'; IRin <= '1';
 			when load3 =>
+				GRB <= '1'; Rout <= '1'; Yin <= '1';
+				if IRin(22 downto 19)<= "0000" then
+					 BAout <= '1';
+				end if;				
 			when load4 =>
+				Cout <= '1'; Zin <= '1'; 
 			when load5 =>
+				ZLoOut <= '1'; MARin <= '1'; 
 			when load6 =>
+				ReadSig <= '1'; MDRin <= '1'; 
 			when load7 =>
-			
+				MDRout <= '1'; GRA <= '1'; Rin <= '1'; 
 			when others =>
-			
-				
-			
-		
+		end CASE;
 	END PROCESS;
-	
-	
 END;
