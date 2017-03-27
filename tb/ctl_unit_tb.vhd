@@ -30,8 +30,7 @@ ARCHITECTURE structural OF ctl_unit_tb IS
 			ReadSig, WriteSig 	: OUT STD_LOGIC
 		);
 	END COMPONENT;
-	alias Present_State is
-		<<signal DUT.Present_state : State>>;
+
 	SIGNAL IR_tb								: STD_LOGIC_VECTOR(31 DOWNTO 0);
 	SIGNAL clk_tb, reset_tb, stop_tb, con_ff_tb,
 			--Indicators

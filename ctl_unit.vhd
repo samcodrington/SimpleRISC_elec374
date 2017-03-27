@@ -128,7 +128,10 @@ BEGIN
 				MDRout <= '1'; GRA <= '1'; Rin <= '1'; 
 			-------------------------------------------					
 			when loadi3 =>
-				GRB <= '1'; BAout <= '1'; Yin <= '1'; 
+				GRB <= '1'; Rout <= '1'; Yin <= '1'; 
+				if IR(22 downto 19) <= "0000" then
+					BAout <= '1'; 
+				end if;
 			when loadi4 =>
 				Cout <= '1'; ADD <= '1'; Zin <= '1'; 
 			when loadi5 =>
