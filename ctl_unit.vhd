@@ -340,9 +340,9 @@ BEGIN
 	worker : PROCESS(Present_State)
 		BEGIN
 		--always set signals to 0 then set them to 1 as req'd
-		clr <= '0';
+		clr <= '0';	Run <= '1';
 		--- Register Control Ports
-		Rin<= '0'; Rout<= '0'; Gra<= '0'; Grb<= '0'; Grc<= '0';
+		Rin<= '0'; Rout<= '0'; Gra<= '0'; Grb<= '0'; Grc<= '0'; RA_en <= '0';
 		
 		PCout<= '0'; MDRout<= '0'; ZHiOut<= '0'; ZLoOut<= '0'; HiOut<= '0'; LoOut<= '0'; 
 		InportOut<= '0';
