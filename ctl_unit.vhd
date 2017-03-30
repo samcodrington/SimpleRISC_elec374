@@ -35,9 +35,7 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						loadr3, loadr4, loadr5, 
 						loadr61, loadr62, loadr63, loadr7,
 						storer3, storer4, storer5, storer6, storer7,
-						
-
-						Add3, Add4, Add5, Add6,
+						Add3, Add4, Add5,
 						Reset_State);
 	SIGNAL Present_State		: State;
 BEGIN
@@ -109,6 +107,13 @@ BEGIN
 				when storer7 =>
 					Present_State <= fetch0;
 				-------------------------------------------
+				when add3 =>
+					Present_State <= add4;
+				when add4 =>
+					Present_State <= add5;
+				when add5 =>
+					Present_State <= fetch0;					
+				-------------------------------------------
 				-------------------------------------------
 				when fetch2 =>
 					Case IR(31 downto 27) is
@@ -120,10 +125,10 @@ BEGIN
 							Present_State <= store3;
 						when "00011" =>
 							Present_State <= loadr3;
-						when "00101" =>
-							Present_State <= add3;
 						when "00100" =>
 							Present_State <= storer3;
+						when "00101" =>
+							Present_State <= add3;
 						when others =>
 					end case;
 				when others =>
@@ -219,6 +224,13 @@ BEGIN
 				GRA <= '1'; Rout <= '1'; MDRin <= '1'; 
 			when storer7 =>
 				MDROut <= '1'; WriteSig <= '1'; 
+			-------------------------------------------
+			when add3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when add4 =>
+				Rout <= '1'; GRC <= '1'; ADD <= '1'; Zin <= '1'; 
+			when add5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
 			-------------------------------------------
 			-------------------------------------------
 			when others =>
