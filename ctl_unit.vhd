@@ -8,7 +8,7 @@ ENTITY ctl_unit IS
 		--Indicators
 		run, clr,
 		--- Register Control Ports
-		Rin, Rout, Gra, Grb, Grc,
+		Rin, Rout, Gra, Grb, Grc, RA_en,
 		
 		PCout, MDRout, ZHiOut, ZLoOut, HiOut, LoOut, 
 		InportOut,
@@ -50,9 +50,9 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						div3, div4, div5, div6,
 						neg3, neg4,
 						not3, not4,
-						br3,
+						br3, br4,
 						jr3,
-						jal3,
+						jal3, jal4, jal5,
 						in3,
 						out3,
 						mfhi3,
@@ -236,14 +236,27 @@ BEGIN
 					Present_State <= fetch0;
 				-------------------------------------------	
 				when br3 =>
+					if (con_ff = '1') then
+						Present_State <= br4;
+					else
+						Present_State <= fetch0;
+					end if;	
 				-------------------------------------------	
 				when jr3 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
 				when jal3 =>
+					Present_State <= jal4;
+				when jal4 =>
+					Present_State <= jal5;
+				when jal5 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
 				when in3 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
 				when out3 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
 				when mfhi3 =>
 				-------------------------------------------	
@@ -514,6 +527,27 @@ BEGIN
 				Rout <= '1'; GRB <= '1'; Zin <= '1';  NOTop <= '1';
 			when not4 =>
 				ZLoOut <= '1'; GRA <= '1'; Rin <= '1';
+			-------------------------------------------
+			when br3 =>
+				Rout <= '1'; GRA <= '1'; CONin <= '1';
+			when br4 =>
+				Rout <= '1'; GRB <= '1'; PCin <= '1';
+			-------------------------------------------
+			when jr3 =>
+				Rout <= '1'; GRA <= '1'; PCin <= '1';
+			-------------------------------------------
+			when jal3 =>
+				PCout <= '1'; IncPC <= '1'; Zin <= '1'; 
+			when jal4 =>
+				ZLoOut <= '1'; RA_en <= '1'; 
+			when jal5 =>
+				Rout <= '1'; GRA <= '1'; PCin <= '1'; 
+			-------------------------------------------
+			when in3 =>
+				Rout <= '1'; GRA <= '1'; Outport_en <= '1';
+			-------------------------------------------
+			when out3 =>
+				InportOut <= '1'; Rin <= '1'; GRA <= '1';
 			-------------------------------------------
 			when nop => --do nothing
 			-------------------------------------------
