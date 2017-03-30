@@ -39,7 +39,10 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						Sub3, Sub4, Sub5,
 						And3, And4, And5,
 						Or3, Or4, Or5,
-
+						SHR3, SHR4, SHR5,
+						SHL3, SHL4, SHL5,
+						RotR3, RotR4, RotR5,
+						RotL3, RotL4, RotL5,
 						Reset_State);
 	SIGNAL Present_State		: State;
 BEGIN
@@ -137,7 +140,36 @@ BEGIN
 				when or4 =>
 					Present_State <= or5;
 				when or5 =>
-					Present_State <= fetch0;					
+					Present_State <= fetch0;	
+				-------------------------------------------
+				when SHR3 =>
+					Present_State <= SHR4;
+				when SHR4 =>
+					Present_State <= SHR5;
+				when SHR5 =>
+					Present_State <= fetch0;	
+				-------------------------------------------
+				when SHL3 =>
+					Present_State <= SHL4;
+				when SHL4 =>
+					Present_State <= SHL5;
+				when SHL5 =>
+					Present_State <= fetch0;
+				-------------------------------------------
+				when ROTR3 =>
+					Present_State <= ROTR4;
+				when ROTR4 =>
+					Present_State <= ROTR5;
+				when ROTR5 =>
+					Present_State <= fetch0;	
+				-------------------------------------------
+				when ROTL3 =>
+					Present_State <= ROTL4;
+				when ROTL4 =>
+					Present_State <= ROTL5;
+				when ROTL5 =>
+					Present_State <= fetch0;	
+				-------------------------------------------	
 				-------------------------------------------
 				-------------------------------------------
 				when fetch2 =>
@@ -156,6 +188,18 @@ BEGIN
 							Present_State <= add3;
 						when "00110" =>
 							Present_State <= sub3;
+						when "00111" =>
+							Present_State <= and3;
+						when "01000" =>
+							Present_State <= or3;
+						when "01001" =>
+							Present_State <= shr3;
+						when "01010" =>
+							Present_State <= shl3;
+						when "01011" =>
+							Present_State <= rotr3;
+						when "01100" =>
+							Present_State <= rotl3;
 						when others =>
 					end case;
 				when others =>
@@ -278,6 +322,34 @@ BEGIN
 			when or4 =>
 				Rout <= '1'; GRC <= '1'; ORop <= '1'; Zin <= '1'; 
 			when or5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when shr3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when shr4 =>
+				Rout <= '1'; GRC <= '1'; SHR <= '1'; Zin <= '1'; 
+			when shr5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when shl3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when shl4 =>
+				Rout <= '1'; GRC <= '1'; SHL <= '1'; Zin <= '1'; 
+			when shl5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when rotr3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when rotr4 =>
+				Rout <= '1'; GRC <= '1'; ROTR <= '1'; Zin <= '1'; 
+			when rotr5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when rotl3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when rotl4 =>
+				Rout <= '1'; GRC <= '1'; ROTL <= '1'; Zin <= '1'; 
+			when rotl5 =>
 				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
 			-------------------------------------------
 			-------------------------------------------
