@@ -31,8 +31,12 @@ ARCHITECTURE behavioural OF ctl_unit IS
 	TYPE State IS (Fetch0, Fetch11, fetch12, fetch13, Fetch2,
 						load3, load4, load5, load6, load7,
 						loadi3, loadi4, loadi5,
-						loadr3, loadr4, loadr5, loadr6, loadr7,
 						store3, store4, store5,
+						loadr3, loadr4, loadr5, 
+						loadr61, loadr62, loadr63, loadr7,
+						storer3, storer4, storer5, storer6, storer7,
+						
+
 						Add3, Add4, Add5, Add6,
 						Reset_State);
 	SIGNAL Present_State		: State;
@@ -84,6 +88,25 @@ BEGIN
 				when loadr4 =>
 					Present_State <= loadr5;
 				when loadr5 =>
+					Present_State <= loadr61;
+				when loadr61 =>
+					Present_State <= loadr61;
+				when loadr62 =>
+					Present_State <= loadr62;
+				when loadr63 =>
+					Present_State <= loadr7;
+				when loadr7 =>
+					Present_State <= fetch0;
+				-------------------------------------------
+				when storer3 =>
+					Present_State <= storer4;
+				when storer4 =>
+					Present_State <= storer5;
+				when storer5 =>
+					Present_State <= storer6;
+				when storer6 =>
+					Present_State <= storer7;
+				when storer7 =>
 					Present_State <= fetch0;
 				-------------------------------------------
 				-------------------------------------------
@@ -99,6 +122,8 @@ BEGIN
 							Present_State <= loadr3;
 						when "00101" =>
 							Present_State <= add3;
+						when "00100" =>
+							Present_State <= storer3;
 						when others =>
 					end case;
 				when others =>
@@ -132,10 +157,9 @@ BEGIN
 				clr <= '1';
 			when fetch0 =>
 				PCout <= '1'; MARin <= '1'; IncPC <= '1'; Zin<= '1';
-			when fetch11 =>
-				ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
-			when fetch12 =>
-			when fetch13 =>
+			when fetch11 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
+			when fetch12 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
+			when fetch13 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
 			when fetch2 =>
 				MDRout <= '1'; IRin <= '1';
 			-------------------------------------------	
@@ -173,6 +197,30 @@ BEGIN
 			when store5 =>
 				MDRout <= '1'; WriteSig  <= '1'; 
 			-------------------------------------------	
+			when loadr3 =>
+				ZloOut <= '1'; Yin <= '1'; 
+			when loadr4 =>	
+				Cout <= '1'; ADD <= '1'; Zin <= '1'; 
+			when loadr5 =>
+				ZloOut <= '1'; MARin <= '1'; 
+			when loadr61 =>	MDRin <= '1'; ReadSig  <= '1'; 
+			when loadr62 =>	MDRin <= '1'; ReadSig  <= '1'; 
+			when loadr63 =>	MDRin <= '1'; ReadSig  <= '1'; 
+			when loadr7 =>
+				MDRout <= '1'; GRA <= '1'; Rin <= '1';  
+			-------------------------------------------
+			when storer3 =>
+				Cout <= '1'; Yin <= '1'; 
+			when storer4 =>
+				PCout <= '1'; Zin <= '1'; ADD  <= '1'; 
+			when storer5 =>
+				ZLoOut <= '1'; MARin <= '1'; 
+			when storer6 =>
+				GRA <= '1'; Rout <= '1'; MDRin <= '1'; 
+			when storer7 =>
+				MDROut <= '1'; WriteSig <= '1'; 
+			-------------------------------------------
+			-------------------------------------------
 			when others =>
 		end CASE;
 	END PROCESS;
