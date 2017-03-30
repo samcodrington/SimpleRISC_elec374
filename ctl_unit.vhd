@@ -36,6 +36,10 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						loadr61, loadr62, loadr63, loadr7,
 						storer3, storer4, storer5, storer6, storer7,
 						Add3, Add4, Add5,
+						Sub3, Sub4, Sub5,
+						And3, And4, And5,
+						Or3, Or4, Or5,
+
 						Reset_State);
 	SIGNAL Present_State		: State;
 BEGIN
@@ -114,6 +118,27 @@ BEGIN
 				when add5 =>
 					Present_State <= fetch0;					
 				-------------------------------------------
+				when sub3 =>
+					Present_State <= sub4;
+				when sub4 =>
+					Present_State <= sub5;
+				when sub5 =>
+					Present_State <= fetch0;					
+				-------------------------------------------
+				when and3 =>
+					Present_State <= and4;
+				when and4 =>
+					Present_State <= and5;
+				when and5 =>
+					Present_State <= fetch0;					
+				-------------------------------------------
+				when or3 =>
+					Present_State <= or4;
+				when or4 =>
+					Present_State <= or5;
+				when or5 =>
+					Present_State <= fetch0;					
+				-------------------------------------------
 				-------------------------------------------
 				when fetch2 =>
 					Case IR(31 downto 27) is
@@ -129,6 +154,8 @@ BEGIN
 							Present_State <= storer3;
 						when "00101" =>
 							Present_State <= add3;
+						when "00110" =>
+							Present_State <= sub3;
 						when others =>
 					end case;
 				when others =>
@@ -230,6 +257,27 @@ BEGIN
 			when add4 =>
 				Rout <= '1'; GRC <= '1'; ADD <= '1'; Zin <= '1'; 
 			when add5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when sub3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when sub4 =>
+				Rout <= '1'; GRC <= '1'; SUB <= '1'; Zin <= '1'; 
+			when sub5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when and3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when and4 =>
+				Rout <= '1'; GRC <= '1'; ANDop <= '1'; Zin <= '1'; 
+			when and5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when or3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when or4 =>
+				Rout <= '1'; GRC <= '1'; ORop <= '1'; Zin <= '1'; 
+			when or5 =>
 				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
 			-------------------------------------------
 			-------------------------------------------
