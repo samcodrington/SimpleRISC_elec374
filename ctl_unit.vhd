@@ -6,8 +6,9 @@ ENTITY ctl_unit IS
 		clk, reset, stop, con_ff	:	IN STD_LOGIC;
 		IR									:	IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 		--Indicators
-		run, clr,
+		run, 
 		--- Register Control Ports
+		clr,
 		Rin, Rout, Gra, Grb, Grc, RA_en,
 		
 		PCout, MDRout, ZHiOut, ZLoOut, HiOut, LoOut, 
