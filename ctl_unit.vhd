@@ -43,9 +43,9 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						SHL3, SHL4, SHL5,
 						RotR3, RotR4, RotR5,
 						RotL3, RotL4, RotL5,
-						addi3,
-						andi3,
-						ori3,
+						addi3, addi4, addi5,
+						andi3, andi4, andi5,
+						ori3, ori4, ori5,
 						mul3,
 						div3,
 						neg3,
@@ -185,7 +185,53 @@ BEGIN
 					Present_State <= ROTL5;
 				when ROTL5 =>
 					Present_State <= fetch0;	
+				-------------------------------------------
+				when addi3 =>
+					Present_State <= addi4;
+				when addi4 =>
+					Present_State <= addi5;
+				when addi5 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
+				when andi3 =>
+					Present_State <= andi4;
+				when andi4 =>
+					Present_State <= andi5;
+				when andi5 =>
+					Present_State <= fetch0;
+				-------------------------------------------	
+				when ori3 =>
+					Present_State <= ori4;
+				when ori4 =>
+					Present_State <= ori5;
+				when ori5 =>
+					Present_State <= fetch0;
+				-------------------------------------------	
+				when mul3 =>
+				-------------------------------------------	
+				when div3 =>
+				-------------------------------------------	
+				when neg3 =>
+				-------------------------------------------	
+				when not3 =>
+				-------------------------------------------	
+				when br3 =>
+				-------------------------------------------	
+				when jr3 =>
+				-------------------------------------------	
+				when jal3 =>
+				-------------------------------------------	
+				when in3 =>
+				-------------------------------------------	
+				when out3 =>
+				-------------------------------------------	
+				when mfhi3 =>
+				-------------------------------------------	
+				when mflo3 =>
+				-------------------------------------------	
+				when nop =>
+					Present_State <= fetch0;
+				when halt => -- do nothing, remain halted
 				-------------------------------------------
 				-------------------------------------------
 				when fetch2 =>
@@ -258,7 +304,7 @@ BEGIN
 	worker : PROCESS(Present_State)
 		BEGIN
 		--always set signals to 0 then set them to 1 as req'd
-		run<= '0'; clr <= '0';
+		clr <= '0';
 		--- Register Control Ports
 		Rin<= '0'; Rout<= '0'; Gra<= '0'; Grb<= '0'; Grc<= '0';
 		
@@ -278,9 +324,9 @@ BEGIN
 		ReadSig<= '0'; WriteSig <= '0';
 		CASE Present_State IS
 			when Reset_State =>
-				clr <= '1';
+				clr <= '1';  Run <= '0';
 			when fetch0 =>
-				PCout <= '1'; MARin <= '1'; IncPC <= '1'; Zin<= '1';
+				PCout <= '1'; MARin <= '1'; IncPC <= '1'; Zin<= '1'; Run <= '1';
 			when fetch11 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
 			when fetch12 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
 			when fetch13 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
@@ -399,6 +445,32 @@ BEGIN
 				Rout <= '1'; GRC <= '1'; ROTL <= '1'; Zin <= '1'; 
 			when rotl5 =>
 				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when addi3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when addi4 =>
+				Cout <= '1'; ADD <= '1'; Zin <= '1'; 
+			when addi5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when andi3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when andi4 =>
+				Cout <= '1'; ANDop <= '1'; Zin <= '1'; 
+			when andi5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when ori3 =>
+				Rout <= '1'; GRB <= '1'; Yin <= '1'; 
+			when ori4 =>
+				Cout <= '1'; ORop <= '1'; Zin <= '1'; 
+			when ori5 =>
+				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when nop => --do nothing
+			-------------------------------------------
+			when halt =>
+				Run <= '0';
 			-------------------------------------------
 			-------------------------------------------
 			when others =>
