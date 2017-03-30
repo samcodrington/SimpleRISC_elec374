@@ -57,7 +57,8 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						out3,
 						mfhi3,
 						mflo3,
-						nop3,
+						nop,
+						halt,
 						Reset_State);
 	SIGNAL Present_State		: State;
 BEGIN
@@ -215,6 +216,38 @@ BEGIN
 							Present_State <= rotr3;
 						when "01100" =>
 							Present_State <= rotl3;
+						when "01101" =>
+							Present_State <= addi3;
+						when "01110" =>
+							Present_State <= andi3;
+						when "01111" =>
+							Present_State <= ori3;
+						when "10000" =>
+							Present_State <= mul3;
+						when "10001" =>
+							Present_State <= div3;
+						when "10010" =>
+							Present_State <= neg3;
+						when "10011" =>
+							Present_State <= not3;
+						when "10100" =>
+							Present_State <= br3;	
+						when "10101" =>
+							Present_State <= jr3;
+						when "10110" =>
+							Present_State <= jal3;
+						when "10111" =>
+							Present_State <= in3;
+						when "11000" =>
+							Present_State <= out3;
+						when "11001" =>
+							Present_State <= mfhi3;
+						when "11010" =>
+							Present_State <= mflo3;
+						when "11011" =>
+							Present_State <= nop;
+						when "11100" =>
+							Present_State <= halt;
 						when others =>
 					end case;
 				when others =>
