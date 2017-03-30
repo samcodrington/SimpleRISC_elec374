@@ -46,10 +46,10 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						addi3, addi4, addi5,
 						andi3, andi4, andi5,
 						ori3, ori4, ori5,
-						mul3,
-						div3,
-						neg3,
-						not3,
+						mul3, mul4, mul5, mul6,
+						div3, div4, div5, div6,
+						neg3, neg4,
+						not3, not4,
 						br3,
 						jr3,
 						jal3,
@@ -208,12 +208,32 @@ BEGIN
 					Present_State <= fetch0;
 				-------------------------------------------	
 				when mul3 =>
+					Present_State <= mul4;
+				when mul4 =>
+					Present_State <= mul5;
+				when mul5 =>
+					Present_State <= mul6;
+				when mul6 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
 				when div3 =>
+					Present_State <= div4;
+				when div4 =>
+					Present_State <= div5;
+				when div5 =>
+					Present_State <= div6;
+				when div6 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
 				when neg3 =>
+					Present_State <= neg4;
+				when neg4 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
 				when not3 =>
+					Present_State <= not4;
+				when not4 =>
+					Present_State <= fetch0;
 				-------------------------------------------	
 				when br3 =>
 				-------------------------------------------	
@@ -466,6 +486,34 @@ BEGIN
 				Cout <= '1'; ORop <= '1'; Zin <= '1'; 
 			when ori5 =>
 				ZLoOut <= '1'; Rin <= '1'; GRA <= '1'; 
+			-------------------------------------------
+			when mul3 =>
+				Rout <= '1'; GRA <= '1'; Yin <= '1';  
+			when mul4 =>
+				Rout <= '1'; GRB <= '1'; Zin <= '1'; MUL <= '1'; 
+			when mul5 =>
+				ZLoOut <= '1'; LoIn <= '1'; 
+			when mul6 =>
+				ZHiOut <= '1'; HiIn <= '1'; 
+			-------------------------------------------
+			when div3 =>
+				Rout <= '1'; GRA <= '1'; Yin <= '1';  
+			when div4 =>
+				Rout <= '1'; GRB <= '1'; Zin <= '1'; DIV <= '1'; 
+			when div5 =>
+				ZLoOut <= '1'; LoIn <= '1'; 
+			when div6 =>
+				ZHiOut <= '1'; HiIn <= '1'; 
+			-------------------------------------------
+			when neg3 =>
+				Rout <= '1'; GRB <= '1'; Zin <= '1';  NEG <= '1';
+			when neg4 =>
+				ZLoOut <= '1'; GRA <= '1'; Rin <= '1';
+			-------------------------------------------
+			when not3 =>
+				Rout <= '1'; GRB <= '1'; Zin <= '1';  NOTop <= '1';
+			when not4 =>
+				ZLoOut <= '1'; GRA <= '1'; Rin <= '1';
 			-------------------------------------------
 			when nop => --do nothing
 			-------------------------------------------
