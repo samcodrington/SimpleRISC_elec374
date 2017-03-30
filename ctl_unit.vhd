@@ -43,6 +43,21 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						SHL3, SHL4, SHL5,
 						RotR3, RotR4, RotR5,
 						RotL3, RotL4, RotL5,
+						addi3,
+						andi3,
+						ori3,
+						mul3,
+						div3,
+						neg3,
+						not3,
+						br3,
+						jr3,
+						jal3,
+						in3,
+						out3,
+						mfhi3,
+						mflo3,
+						nop3,
 						Reset_State);
 	SIGNAL Present_State		: State;
 BEGIN
