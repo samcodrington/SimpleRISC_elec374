@@ -27,8 +27,10 @@ ENTITY ALU IS
 	(
 		Ain :  IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
 		Bin :  IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
-		opcode :  IN  STD_LOGIC_VECTOR(4 DOWNTO 0);
-		IncPC : IN STD_LOGIC;
+		ADD, SUB, ANDop, ORop, 
+		SHR, SHL, ROTR, ROTL,
+		MUL, DIV, NEG, NOTop, 
+		IncPC, claADD	: IN STD_LOGIC;
 		Zout :  OUT  STD_LOGIC_VECTOR(63 DOWNTO 0)
 	);
 END ALU;
@@ -139,53 +141,57 @@ PORT MAP(
 		);
 
 
-op_proc: process(incPC,opcode,Ain,Bin, booth_out, shift_out, rot_out, div_quo, div_rem, cla16_sum_out)
-
+op_proc: process(Ain, Bin, ADD, SUB, ANDop, ORop, 
+		SHR, SHL, ROTR, ROTL, MUL, DIV, NEG, NOTop, 
+		IncPC, claADD, booth_out, shift_out, rot_out, div_quo, div_rem, cla16_sum_out)
 begin
 	if incPC = '1' then
 		Zout(63 downto 32) <= x"00000000";	Zout(31 downto 0) <= (Bin + x"00000001");
-	else 
-		case opcode is
-
-			when "00000" | "00001" | "00010" | "00011" | "00100" | "00101"|"01101" => -- LD|LDI|STI|LDR|STR|ADD|ADDI
-									Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <= (Ain + Bin); 		-- op<= add;
-			when "00110" => Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <= (Ain - Bin);		-- op<= sub;
-			when "00111" => Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <= (Ain and Bin);		-- op<= and_op;
-			when "01000" =>	Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <= (Ain or Bin);  	--op<= or_op;
-			when "01001" =>	Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <= shift_out;	
-									dist <= Bin(4 downto 0); 
-									lr_sel <= '0';							-- op<= shr;
-			when "01010" =>	Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <= shift_out;
-									dist <= Bin(4 downto 0); 
-									lr_sel <= '1';							-- op<= shl;
-			when "01011" =>	Zout(63 downto 32) <= x"00000000";
-									Zout(31 downto 0) <=rot_out; 		
-									dist <= Bin(4 downto 0); 
-									rot_lr_sel <= '0';							-- op<= rot_r;
-			when "01100" =>	Zout(63 downto 32) <= x"00000000";	
-									Zout(31 downto 0) <=rot_out;		
-									dist <= Bin(4 downto 0); 
-									rot_lr_sel <= '1';							-- op<= rot_l;
-			when "01110" =>	Zout(63 downto 32) <= x"00000000";	
-									Zout(31 downto 0) <= (Ain and Bin);		-- op<= and_op; --andi
-			when "01111" =>	Zout(63 downto 32) <= x"00000000";	
-									Zout(31 downto 0) <= (Ain or Bin);		-- op<= or_op; --ori
-			when "10000" =>	Zout <= booth_out; 						-- op<= mul;
-			when "10001" =>	Zout(63 downto 32) <= div_rem;		
-									Zout(31 downto 0) <= div_quo; 			-- op<= div;
-			when "10010" =>	Zout(63 downto 32) <= x"00000000";	
-									Zout(31 downto 0) <= (not Bin + x"00000001");  	 	-- op<= neg;
-			when "10011" =>	Zout(63 downto 32) <= x"00000000";	
-									Zout(31 downto 0) <= (not Bin);			-- op<= not_op;
-			when "11000" =>	Zout <= x"000000000000" & cla16_sum_out;			-- op<= rc_add;
-			when others => 	Zout(63 downto 0)  <= x"0F0F0F0F0F0F0F0F";		--ERROR;
-		end case;
+	elsif ADD  = '1' then 
+		Zout(63 downto 32) <= x"00000000";
+		Zout(31 downto 0) <= (Ain + Bin);
+	elsif SUB = '1' then
+		Zout(63 downto 32) <= x"00000000";
+		Zout(31 downto 0) <= (Ain - Bin);
+	elsif ANDop  = '1' then
+		Zout(63 downto 32) <= x"00000000";
+		Zout(31 downto 0) <= (Ain and Bin);
+	elsif ORop = '1' then
+		Zout(63 downto 32) <= x"00000000";
+		Zout(31 downto 0) <= (Ain or Bin);	
+	elsif SHR = '1' then
+		Zout(63 downto 32) <= x"00000000";
+		Zout(31 downto 0) <= shift_out;	
+		dist <= Bin(4 downto 0); 
+		lr_sel <= '0';		
+	elsif SHL = '1' then
+		Zout(63 downto 32) <= x"00000000";
+		Zout(31 downto 0) <= shift_out;
+		dist <= Bin(4 downto 0); 
+		lr_sel <= '1';		
+	elsif ROTR = '1' then
+		Zout(63 downto 32) <= x"00000000";
+		Zout(31 downto 0) <=rot_out; 		
+		dist <= Bin(4 downto 0); 
+		rot_lr_sel <= '0';
+	elsif ROTL = '1' then
+		Zout(63 downto 32) <= x"00000000";	
+		Zout(31 downto 0) <=rot_out;		
+		dist <= Bin(4 downto 0); 
+		rot_lr_sel <= '1';	
+	elsif MUL  = '1' then
+		Zout <= booth_out;
+	elsif DIV  = '1' then
+		Zout(63 downto 32) <= div_rem;		
+		Zout(31 downto 0) <= div_quo; 
+	elsif NEG  = '1' then
+		Zout(63 downto 32) <= x"00000000";	
+		Zout(31 downto 0) <= (not Bin + x"00000001");
+	elsif NOTop  = '1' then
+		Zout(63 downto 32) <= x"00000000";	
+		Zout(31 downto 0) <= (not Bin);
+	elsif claADD = '1' then
+		Zout <= x"000000000000" & cla16_sum_out;
 	end if;
 end process;
 END bdf_type;

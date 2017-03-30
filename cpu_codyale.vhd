@@ -111,11 +111,15 @@ ARCHITECTURE arch OF cpu_codyale IS
 	END COMPONENT cpu_bus;
 	
 	COMPONENT ALU
-	PORT(
-		Ain, Bin				:	IN std_logic_vector(31 downto 0);
-		opcode				:	IN std_logic_vector (4 downto 0);
-		IncPC					:  IN std_logic;
-		Zout					:	OUT std_logic_vector(63 downto 0)
+	PORT
+	(
+		Ain :  IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+		Bin :  IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
+		ADD, SUB, ANDop, ORop, 
+		SHR, SHL, ROTR, ROTL,
+		MUL, DIV, NEG, NOTop, 
+		IncPC, claADD	: IN STD_LOGIC;
+		Zout :  OUT  STD_LOGIC_VECTOR(63 DOWNTO 0)
 	);
 	END COMPONENT ALU;
 	
@@ -300,8 +304,20 @@ BEGIN
 	ALU_inst : ALU
 	PORT MAP(
 		Ain => w_y2alu, Bin =>w_BusMuxOut,
-		opcode => MDataIn(31 downto 27),
-		IncPC => w_IncPC,
+		ADD  	=> w_ADD,  
+		SUB	=> w_SUB,  
+		ANDop => w_ANDop ,
+		ORop	=> w_ORop, 
+		SHR	=> w_SHR,  
+		SHL	=> w_SHL,  
+		ROTR	=> w_ROTR, 
+		ROTL	=> w_ROTL, 
+		MUL	=> w_MUL,  
+		DIV	=> w_DIV,  
+		NEG	=> w_NEG,  
+		NOTop => w_NOTop ,
+		IncPC => w_IncPC ,
+		claADD=> w_claADD,
 		Zout => w_alu2z
 	);
 	
