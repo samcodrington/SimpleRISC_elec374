@@ -1,35 +1,5 @@
-LIBRARY IEEE;
-USE ieee.std_logic_1164.all;
-
-ENTITY ctl_unit IS
-	PORT(
-		clk, reset, stop, con_ff	:	IN STD_LOGIC;
-		IR									:	IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-		--Indicators
-		run, 
-		--- Register Control Ports
-		clr,
-		Rin, Rout, Gra, Grb, Grc, RA_en,
-		
-		PCout, MDRout, ZHiOut, ZLoOut, HiOut, LoOut, 
-		InportOut,
-		
-		HiIn, LOIn, CONin, PCin, IRin, Yin, Zin, 
-		MARin, MDRin, Outport_en,Cout, BAout,
-		
-		--ALU Signals
-		ADD, SUB, ANDop, ORop, 
-		SHR, SHL, ROTR, ROTL,
-		MUL, DIV, NEG, NOTop, 
-		IncPC, claADD,
-		
-		--Memory Signals
-		ReadSig, WriteSig 	: OUT STD_LOGIC
-	);
-END ctl_unit;
-
-ARCHITECTURE behavioural OF ctl_unit IS
-	TYPE State IS (Fetch0, Fetch11, fetch12, fetch13, Fetch2,
+package Common is    -- untested...
+   TYPE State IS (Fetch0, Fetch11, fetch12, fetch13, Fetch2,
 						load3, load4, load5, load6, load7,
 						loadi3, loadi4, loadi5,
 						store3, store4, store5,
@@ -61,6 +31,42 @@ ARCHITECTURE behavioural OF ctl_unit IS
 						nop,
 						halt,
 						Reset_State);
+end Common;
+
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+USE work.common.all;
+
+ENTITY ctl_unit IS
+	PORT(
+		Currently						:  OUT State;
+		clk, reset, stop, con_ff	:	IN STD_LOGIC;
+		IR									:	IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+		--Indicators
+		run, 
+		--- Register Control Ports
+		clr,
+		Rin, Rout, Gra, Grb, Grc, RA_en,
+		
+		PCout, MDRout, ZHiOut, ZLoOut, HiOut, LoOut, 
+		InportOut,
+		
+		HiIn, LOIn, CONin, PCin, IRin, Yin, Zin, 
+		MARin, MDRin, Outport_en,Cout, BAout,
+		
+		--ALU Signals
+		ADD, SUB, ANDop, ORop, 
+		SHR, SHL, ROTR, ROTL,
+		MUL, DIV, NEG, NOTop, 
+		IncPC, claADD,
+		
+		--Memory Signals
+		ReadSig, WriteSig 	: OUT STD_LOGIC
+	);
+END ctl_unit;
+
+ARCHITECTURE behavioural OF ctl_unit IS
+	
 	SIGNAL Present_State		: State;
 BEGIN
 	fsm: PROCESS(clk, reset, stop)
@@ -335,6 +341,7 @@ BEGIN
 				when others =>
 			end case;
 		end if;
+		Currently <= Present_State;
 	END PROCESS;
 	
 	worker : PROCESS(Present_State)

@@ -1,5 +1,6 @@
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.all;
+USE Work.common.all;
 
 ENTITY ctl_unit_tb IS
 END ENTITY;
@@ -7,6 +8,8 @@ END ENTITY;
 ARCHITECTURE structural OF ctl_unit_tb IS
 	COMPONENT ctl_unit  
 		PORT(
+			Currently						:  OUT State;
+
 			clk, reset, stop, con_ff	:	IN STD_LOGIC;
 			IR									:	IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 			--Indicators
@@ -30,7 +33,7 @@ ARCHITECTURE structural OF ctl_unit_tb IS
 			ReadSig, WriteSig 	: OUT STD_LOGIC
 		);
 	END COMPONENT;
-
+	SIGNAL Pres_State							: State;
 	SIGNAL IR_tb								: STD_LOGIC_VECTOR(31 DOWNTO 0);
 	SIGNAL clk_tb, reset_tb, stop_tb, con_ff_tb,
 			--Indicators
@@ -55,6 +58,7 @@ ARCHITECTURE structural OF ctl_unit_tb IS
 BEGIN
 	DUT : ctl_unit
 	PORT MAP(
+			Currently =>		 Pres_State,
 			clk  =>            clk_tb, 
 			reset  =>          reset_tb, 
 			stop  =>           stop_tb, 

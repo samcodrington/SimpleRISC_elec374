@@ -1,11 +1,12 @@
 LIBRARY IEEE;
 USE ieee.std_logic_1164.all;
+USE work.common.all;
 
 ENTITY cpu_codyale_ph3_tb IS
 END ENTITY;
 
 ARCHITECTURE behavioural OF cpu_codyale_ph3_tb IS 
-
+SIGNAL Pres_State_tb	: State;
 SIGNAL clk_tb, reset_tb, stop_tb, Strobe_tb, d_Run_tb : std_logic;
 SIGNAL Inport_tb, OutPort_tb, 	
 		d_PCOut_tb,		d_IROut_tb,		d_MDROut_tb,	d_MARout_tb,
@@ -17,6 +18,7 @@ SIGNAL Inport_tb, OutPort_tb,
 		
 COMPONENT cpu_codyale
 	PORT(
+			Present_State : OUT State;
 		--CONTROL PORTS
 			clk,	reset, stop, Strobe : IN STD_LOGIC;
 			InPort	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -36,6 +38,7 @@ END COMPONENT;
 BEGIN
 	DUT : cpu_codyale
 	PORT MAP (
+		Present_State => Pres_State_tb,
 		clk=>clk_tb,	
 		reset=>reset_tb, 
 		stop=>stop_tb, 

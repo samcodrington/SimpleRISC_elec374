@@ -3,8 +3,10 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 LIBRARY work;
+USE work.common.all;
 ENTITY cpu_codyale IS
-	PORT ( 		
+	PORT (
+			Present_State : OUT State;
 		--CONTROL PORTS
 			clk,	reset, stop, Strobe : IN STD_LOGIC;
 			InPort	: IN STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -157,6 +159,7 @@ ARCHITECTURE arch OF cpu_codyale IS
 	
 	COMPONENT ctl_unit
 		PORT(
+			Currently						:  OUT State;
 			clk, reset, stop, con_ff	:	IN STD_LOGIC;
 			IR									:	IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 			--Indicators
@@ -187,6 +190,7 @@ BEGIN
 -- INSTANTIATION OF COMPONENTS
 	ctl_unit_inst : ctl_unit 
 	PORT MAP (
+		Currently => Present_State,
 		clk => clk, reset => reset, stop => stop, con_ff => w_con_ff_out,
 		IR => w_IRout,
 		--Indicators
