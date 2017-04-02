@@ -126,7 +126,7 @@ BEGIN
 		reset_tb <= '0';
 		wait until rising_edge(clk_tb);
 		stop_tb <= '0';
-		IR_tb <= x"00800065";
+		IR_tb <= x"09800087";
 		wait;
 		
 	END PROCESS;

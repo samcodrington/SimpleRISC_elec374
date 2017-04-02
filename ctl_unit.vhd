@@ -375,7 +375,7 @@ BEGIN
 					 BAout <= '1';
 				end if;				
 			when load4 =>
-				Cout <= '1'; Zin <= '1'; 
+				Cout <= '1'; Zin <= '1'; ADD <= '1';
 			when load5 =>
 				ZLoOut <= '1'; MARin <= '1'; 
 			when load6 =>
