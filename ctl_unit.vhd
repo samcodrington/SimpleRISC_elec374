@@ -1,6 +1,6 @@
 package Common is    -- untested...
-   TYPE State IS (Fetch0, Fetch11, fetch12, fetch13, Fetch2,
-						load3, load4, load5, load6, load7,
+   TYPE State IS (Fetch0, fetch11, fetch12, fetch13, Fetch21, Fetch22,
+						load3, load4, load5, load61, load62, load63, load7,
 						loadi3, loadi4, loadi5,
 						store3, store4, store5,
 						loadr3, loadr4, loadr5, 
@@ -84,16 +84,23 @@ BEGIN
 				when fetch12 =>
 					Present_State <= fetch13;
 				when fetch13 =>
-					Present_State <= fetch2;
+					Present_State <= fetch21;
+				when fetch21 =>
+					Present_State <= fetch22;
 				-------------------------------------------
 				when load3 =>
 					Present_State <= load4;
 				when load4 =>
 					Present_State <= load5;
 				when load5 =>
-					Present_State <= load6;
-				when load6 =>
+					Present_State <= load61;
+				when load61 =>
+					Present_State <= load62;	
+				when load62 =>
+					Present_State <= load63;
+				when load63 =>
 					Present_State <= load7;
+				
 				when load7 =>
 					Present_State <= fetch0;
 				-------------------------------------------
@@ -118,9 +125,9 @@ BEGIN
 				when loadr5 =>
 					Present_State <= loadr61;
 				when loadr61 =>
-					Present_State <= loadr61;
-				when loadr62 =>
 					Present_State <= loadr62;
+				when loadr62 =>
+					Present_State <= loadr63;
 				when loadr63 =>
 					Present_State <= loadr7;
 				when loadr7 =>
@@ -276,7 +283,7 @@ BEGIN
 				when halt => -- do nothing, remain halted
 				-------------------------------------------
 				-------------------------------------------
-				when fetch2 =>
+				when fetch22 =>
 					Case IR(31 downto 27) is
 						when "00000" =>
 							Present_State <= load3;
@@ -373,8 +380,8 @@ BEGIN
 			when fetch11 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
 			when fetch12 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
 			when fetch13 =>	ZLoOut <= '1'; PCin <= '1'; ReadSig <= '1'; MDRin <= '1';
-			when fetch2 =>
-				MDRout <= '1'; IRin <= '1';
+			when fetch21 =>	MDRout <= '1'; IRin <= '1';
+			when fetch22 =>	MDRout <= '1'; IRin <= '1';
 			-------------------------------------------	
 			when load3 =>
 				GRB <= '1'; Rout <= '1'; Yin <= '1';
@@ -385,8 +392,9 @@ BEGIN
 				Cout <= '1'; Zin <= '1'; ADD <= '1';
 			when load5 =>
 				ZLoOut <= '1'; MARin <= '1'; 
-			when load6 =>
-				ReadSig <= '1'; MDRin <= '1'; 
+			when load61 =>	ReadSig <= '1'; MDRin <= '1'; 
+			when load62 =>	ReadSig <= '1'; MDRin <= '1'; 
+			when load63 =>	ReadSig <= '1'; MDRin <= '1'; 
 			when load7 =>
 				MDRout <= '1'; GRA <= '1'; Rin <= '1'; 
 			-------------------------------------------					
