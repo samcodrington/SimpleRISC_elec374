@@ -14,16 +14,16 @@ ENTITY cpu_codyale_ph4 IS
 		
 		--DEMONSTRATION PORTS
 			d_Run		: OUT STD_LOGIC;
-			d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
-			d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
-			d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,		d_C_sign_extended,
-			d_ZLoOut, 	d_ZHiOut,	d_MARout,
+--			d_R00Out,	d_R01Out,	d_R02Out,	d_R03Out,	d_R04Out,	d_R05Out,	d_R06Out,	d_R07Out,
+--			d_R08Out,	d_R09Out,	d_R10Out,	d_R11Out,	d_R12Out,	d_R13Out,	d_R14Out,	d_R15Out,
+--			d_HIOut,		d_LOOut,		d_PCOut,		d_MDROut,	d_BusMuxOut, d_IROut, 	d_YOut,		d_C_sign_extended,
+--			d_ZLoOut, 	d_ZHiOut,	d_MARout,
 			OutPort		: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
 		--END DEMO PORTS
 	);
 END cpu_codyale_ph4;
 
-ARCHITECTURE arch OF cpu_codyale IS
+ARCHITECTURE arch OF cpu_codyale_ph4 IS
 --SIGNALS
 	--DISPLAY SIGNALS
 	SIGNAL 
@@ -334,34 +334,34 @@ BEGIN
 	BusMuxInPC,		BusMuxInMDR,	BusMuxInPort,	BusMuxInC, 
 	w_IRout,	w_y2ALU )
 	begin
-		w_R14_en <= (Rin_sel(14) or w_RA_en);
-		d_R00Out <= BusMuxInR00;
-		d_R01Out <= BusMuxInR01;
-		d_R02Out <= BusMuxInR02;
-		d_R03Out <= BusMuxInR03;
-		d_R04Out <= BusMuxInR04;
-		d_R05Out <= BusMuxInR05;
-		d_R06Out <= BusMuxInR06;
-		d_R07Out <= BusMuxInR07;
-		d_R08Out <= BusMuxInR08;
-		d_R09Out <= BusMuxInR09;
-		d_R10Out <= BusMuxInR10;
-		d_R11Out <= BusMuxInR11;
-		d_R12Out <= BusMuxInR12;
-		d_R13Out <= BusMuxInR13;
-		d_R14Out <= BusMuxInR14;
-		d_R15Out <= BusMuxInR15;
-		d_HIOut  <= BusMuxInHi;	
-		d_LOOut  <= BusMuxInLo;	
-		d_PCOut  <= BusMuxInPC;	
-		d_MDROut <= BusMuxInMDR;
-		d_BusMuxOut <= w_BusMuxOut; 
-		d_YOut	<= w_y2ALU;
-		d_ZHiOut <= BusMuxInZHi;
-		d_ZLoOut <= BusMuxInZLo;
-		d_IRout <= w_IRout;
-		d_C_sign_extended <= BusMuxInC;
-		d_MARout <= Marout;
+		--w_R14_en <= (Rin_sel(14) or w_RA_en);
+		--d_R00Out <= BusMuxInR00;
+		--d_R01Out <= BusMuxInR01;
+		--d_R02Out <= BusMuxInR02;
+		--d_R03Out <= BusMuxInR03;
+		--d_R04Out <= BusMuxInR04;
+		--d_R05Out <= BusMuxInR05;
+		--d_R06Out <= BusMuxInR06;
+		--d_R07Out <= BusMuxInR07;
+		--d_R08Out <= BusMuxInR08;
+		--d_R09Out <= BusMuxInR09;
+		--d_R10Out <= BusMuxInR10;
+		--d_R11Out <= BusMuxInR11;
+		--d_R12Out <= BusMuxInR12;
+		--d_R13Out <= BusMuxInR13;
+		--d_R14Out <= BusMuxInR14;
+		--d_R15Out <= BusMuxInR15;
+		--d_HIOut  <= BusMuxInHi;	
+		--d_LOOut  <= BusMuxInLo;	
+		--d_PCOut  <= BusMuxInPC;	
+		--d_MDROut <= BusMuxInMDR;
+		--d_BusMuxOut <= w_BusMuxOut; 
+		--d_YOut	<= w_y2ALU;
+		--d_ZHiOut <= BusMuxInZHi;
+		--d_ZLoOut <= BusMuxInZLo;
+		--d_IRout <= w_IRout;
+		--d_C_sign_extended <= BusMuxInC;
+		--d_MARout <= Marout;
 	end process;
 	
 		
