@@ -6,15 +6,19 @@ END;
 
 ARCHITECTURE alu_tb_arch OF alu_tb IS
 	SIGNAL Ain_tb, Bin_tb, Zhi_tb, Zlo_tb		: std_logic_vector(31 downto 0);
-	SIGNAL opcode_tb										: std_logic_vector(4 downto 0);
-	SIGNAL incpc_tb									: std_logic;
+	SIGNAL ADD, SUB, ANDop, ORop, 
+			SHR, SHL, ROTR, ROTL,
+			MUL, DIV, NEG, NOTop, 
+			IncPC, claADD									: std_logic;
 	COMPONENT ALU
 		PORT
 		(
 			Ain :  IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
 			Bin :  IN  STD_LOGIC_VECTOR(31 DOWNTO 0);
-			opcode :  IN  STD_LOGIC_VECTOR(4 DOWNTO 0);
-			IncPC : IN STD_LOGIC;
+			ADD, SUB, ANDop, ORop, 
+			SHR, SHL, ROTR, ROTL,
+			MUL, DIV, NEG, NOTop, 
+			IncPC, claADD	: IN STD_LOGIC;
 			Zout :  OUT  STD_LOGIC_VECTOR(63 DOWNTO 0)
 		);
 	END COMPONENT;	
@@ -24,68 +28,34 @@ BEGIN
 	PORT MAP(
 		Ain => Ain_tb,
 		Bin => Bin_tb,
-		opcode => opcode_tb,
-		IncPC => incpc_tb,
+		ADD => ADD, 
+		SUB => SUB, 
+		ANDop => ANDop, 
+		ORop=> ORop, 
+		SHR => SHR, 
+		SHL => SHL, 
+		ROTR=> ROTR, 
+		ROTL=> ROTL,
+		MUL => MUL, 
+		DIV => DIV, 
+		NEG => NEG, 
+		NOTop=>NOTop, 
+		IncPC=>IncPC, 
+		claADD=>claADD,
 		Zout(63 downto 32) => Zhi_tb,
 		Zout(31 downto 0) => Zlo_tb
 	);
 	test_proc :process
 	begin
-	incpc_tb <= '0';
-	opcode_tb <= "00000"; --init
-	Ain_tb <= x"00000000";
-	Bin_tb <= x"00000000";
-	
-	wait for 10 ns;
-	Ain_tb <= x"000000F3";
-	Bin_tb <= x"00000008";
-	opcode_tb <= "00110";
-	
-	wait for 10 ns;
-	Ain_tb <= x"00000F31";
-	Bin_tb <= x"00002350";
-	
-	wait for 10 ns;
-	opcode_tb <="00101";
-	
-	wait for 10 ns;
-	Ain_tb <= x"FFFFFF00";
-	Bin_tb <= x"00FFFFFF";
-	opcode_tb <= "00111";
-	
-	wait for 10 ns;
-	opcode_tb <= "01000";
-	
-	wait for 10 ns;
-	Ain_tb <= x"000000F1";
-	opcode_tb <= "10010";
-	
-	wait for 10 ns;
-	opcode_tb <= "10000";
-	
-	wait for 10 ns;
-	Ain_tb <= x"0000000F";
+	incPC <= '0';
+	Ain_tb <= x"00000FF0";
 	Bin_tb <= x"00000001";
-	opcode_tb <= "11000";
-	
 	wait for 10 ns;
-	Ain_tb <= x"00000000";
-	Bin_tb <= x"00000001";
-	
+	SHL <= '1';
 	wait for 10 ns;
-	Ain_tb <= x"00000000";
-	Bin_tb <= x"00000000";
-	
+	SHL <= '0';
 	wait for 10 ns;
-	Ain_tb <= x"0000000F";
-	Bin_tb <= x"0000000F";
-	
-	wait for 10 ns;
-	Ain_tb <= x"0000000F";
-	Bin_tb <= x"00000001";
-	
-	wait for 10 ns;
-	opcode_tb <= "01011";
+	SHR <= '1';
 	wait;
 	
 	end process test_proc;

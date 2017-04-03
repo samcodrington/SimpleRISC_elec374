@@ -163,12 +163,12 @@ begin
 		Zout(63 downto 32) <= x"00000000";
 		Zout(31 downto 0) <= shift_out;	
 		dist <= Bin(4 downto 0); 
-		lr_sel <= '0';		
+		lr_sel <= '1';		
 	elsif SHL = '1' then
 		Zout(63 downto 32) <= x"00000000";
 		Zout(31 downto 0) <= shift_out;
 		dist <= Bin(4 downto 0); 
-		lr_sel <= '1';		
+		lr_sel <= '0';		
 	elsif ROTR = '1' then
 		Zout(63 downto 32) <= x"00000000";
 		Zout(31 downto 0) <=rot_out; 		
