@@ -227,9 +227,9 @@ BEGIN
 				when jal3 =>
 					Present_State <= jal4;
 				when jal4 =>
-					Present_State <= jal5;
-				when jal5 =>
-					Present_State <= fetch0;
+					Present_State <= fetch0;--jal5;
+				--when jal5 =>
+				--	Present_State <= fetch0;
 				-------------------------------------------	
 				when in3 =>
 					Present_State <= fetch0;
@@ -245,7 +245,8 @@ BEGIN
 				-------------------------------------------	
 				when nop =>
 					Present_State <= fetch0;
-				when halt => -- do nothing, remain halted
+				when halt => 
+					Present_State <= halt;-- do nothing, remain halted
 				-------------------------------------------
 				-------------------------------------------
 				when fetch22 =>
@@ -520,10 +521,8 @@ BEGIN
 				Rout <= '1'; GRA <= '1'; PCin <= '1';
 			-------------------------------------------
 			when jal3 =>
-				PCout <= '1'; IncPC <= '1'; Zin <= '1'; 
+				PCout <= '1'; RA_en <= '1'; 
 			when jal4 =>
-				ZLoOut <= '1'; RA_en <= '1'; 
-			when jal5 =>
 				Rout <= '1'; GRA <= '1'; PCin <= '1'; 
 			-------------------------------------------
 			when in3 =>
